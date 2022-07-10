@@ -2,7 +2,7 @@
 
 * 1~2일차(6h)
 	- 리눅스 개요
-	- CentOs 리눅스 소개
+	- CentOS 리눅스 소개
 	- 실습 환경 구축
 		- Oracle Virtual Box 설치
 		- CentOS 리눅스 설치
