@@ -84,5 +84,27 @@
 # 실습 환경 구축
 
 ## Oracle Virtual Box 설치
+- [VirtualBox 다운로드](https://www.virtualbox.org/wiki/Downloads)
+	- Windows OS를 사용하는 경우 [Windows Hosts](https://download.virtualbox.org/virtualbox/6.1.34/VirtualBox-6.1.34a-150636-Win.exe)  클릭
+	- Mac OS를 사용하는 경우 [OS X hosts](https://download.virtualbox.org/virtualbox/6.1.34/VirtualBox-6.1.34-150636-OSX.dmg) 클릭 
+	
+	![image4](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image4.png)
+	
+- 다운로드 받은 설치파일을 실행하여 다음과 같이 설치합니다.
+	
+	![image5](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image5.png)
+	
+	![image6](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image6.png)
+	
+	![image7](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image7.png)
 
+	![image8](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image8.png)
+	
+	![image9](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image9.png)
+	
+	![image10](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image10.png)
+	
+- 설치가 완료 되면 다음과 같은 화면을 볼 수 있습니다.
+	![image11](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image11.png)
+	
 ## CentOS 리눅스 설치
