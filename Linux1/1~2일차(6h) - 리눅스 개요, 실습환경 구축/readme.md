@@ -465,6 +465,114 @@ gedit /etc/sysconfig/selinux -> 파일 편집
 - 잠시 후 언어 선택 화면이 나온다. Server(B)는 텍스트 모드로 사용할 것이므로 그냥 영문판으로 두고 \<Continue\>를 클릭한다.
 > 텍스트 모드에서는 한글 입출력이 되지 않는다.
 
+![bimage1](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image1.png)
+
 - Keyboard는 English로 되어 있고 Language Support는 English(United States)로 되어 있을 것이다. 그대로 두고 "Time & Date"를 클릭한다.
 
 - Region은 "아시아", City는 "Seoul"로 선택하고 "Done"을 클릭한다.
+
+![bimage3](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image3.png)
+
+- 오른쪽의 "Network & Host Name"을 클릭한다. 오른쪽 끝의 \<OFF\> 스위치를 클릭해서 \<ON\>으로 만들면 네트워크 정보가 보일 것이다. \<Done\>을 클릭한다.
+
+![bimage2](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image2.png)
+
+
+![bimage4](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image4.png)
+
+- "Software Selection"을 보면 "Server with GUI"가 선택되어 있을 것이다. 클릭해서 "Minimal Install"로 선택하고 "Done"을 클릭한다.
+
+> "Minimal Install"을 선택하면 텍스트 모드에 최소한의 패키지만 설치된다. 강의에서는 필요한 패키지가 있을 때마다 추가로 설치해서 사용할 것이다.
+
+![bimage5](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image5.png)
+
+- "Installation Destination" 부분을 확인하면 "Automatic partitioning selection"으로 되어 있을 것이다. 변경해야 하므로 클릭한다.
+- "Installation Destination"에서는 80GB 크기의 하드 디스크가 그림처럼 보인다. 하드디스크 그림을 천천히 2회 클릭하여 하드디스크가 파란색으로 선택되고 체크 모양의 아이콘이 보이는 상태가 되는 것을 확인한다. 그리고 아래쪽의 "Custom"을 선택한 다음 "Done"을 클릭한다.
+
+![bimage6](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image6.png)
+
+- "MANUAL PARTITIONING"에서는 중간쯤 "Standard Partition"으로 변경하고, 아래쪽 "+"를 클릭해서 Mout Point는 사상 메로미로 사용되는 swap을, Desired Capacity는 4G를 할당한 후 "Add mount point"를 클릭한다.
+
+![bimage7](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image7.png)
+
+![bimage8](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image8.png)
+
+- 다시 "+"를 클릭한 후 이번에는 Mount Point로 "/"를 선택하고, Desired Capacity는 비워 놓은 채 "Add mount point"를 클릭한다. 그러면 4GB를 제외한 나머지 용량이 루트 파티션 "/"에 할당된다.
+
+![bimage9](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image9.png)
+
+- 최종적으로 다음과 같이 설정되었으면 "Done"을 클릭해서 설정을 마친다. 또 "SUMMARY OF CHANGES"가 나오면 "Accept Changes"를 클릭한다.
+
+![bimage10](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image10.png)
+
+
+- USER SETTINGS의 Root Password를 설정한다.
+- root 비번은 실습의 편의를 위해 password로 입력하고 "Done"을 2회 클릭한다.
+
+![bimage11](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image11.png)
+
+- USER SETTINGS의 User Creation을 클릭하고 centos라는 이름의 사용자를 생성한다. 암호도 기억하기 쉽게 centos로 입력하고 "Done"을 2회 클릭한다.
+
+![bimage13](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image13.png)
+
+- 다시 "INSTALLATION SUMMARY"가 나오면 오른쪽 아래의 "Begin Installation"이 활성화된다. 클릭해서 설치를 진행한다.
+
+![bimage12](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image12.png)
+
+- 본격적으로 잠시 설치가 진행될 것이다.
+
+![bimage14](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image14.png)
+
+- 설치가 완료 되었으면 "Reboot"를 클릭해서 재부팅한다.
+
+- 컴퓨터가 다시 켜지면 일부 설정을 추가로 해줘야 한다.
+	- 부탁 왛면이 나온다. 몇 초를 기다리거나 첫 번째 행이 선택된 상태에서 그냥 "Enter"를 누르면 부팅된다.
+	
+	- 잠시 후 텍스트 환경의 로그인 화면이 나온다. Server(B) 컴퓨터도 root 사용자로 접속해서 사용할 것이다. "localhost login"에 "root"를 입력하고 "Enter"를 누른다. 그리고 "Password"에 "password"를 입력하고 "Enter"를 누른다(암호를 입력하면 화면은 보이지 않으므로 그냥 입력하고 "Enter"를 누르면 된다). 로그인되면 프롬프트가 "[root@localhost ~]#으로 보일 것이다.
+	
+- 필요한 패키지를 미리 설치해 놓는다.
+
+```
+dnf -y install bind-utils net-tools wget unzip bzip2
+```
+
+- Server(B)는 10.0.2.200으로 변경할 것이다.
+- 터미널에서 관련 디렉토리로 이동한 후, 파일을 편집하자
+
+```
+clear  -> 화면을 깨끗하게 한다.
+cd /etc/sysconfig/network-scripts/  -> 네트워크 설정 파일이 저장된 디렉토리로 이동
+ls    -> ifcfg-xxxx 파일 확인(예 : ifcfg-enp0s3)
+vi ifcfg-xxxx  -> 앞에서 확인한 파일 편집
+```
+
+- vi에서 내용을 편집하려면 먼저 "A"를 누른다. 그러면 왼쪽 아래에 "-- INSERT --"가 표시된다. 이제 부터는 메모장처럼 키보드의 모든 키를 이용해서 편하게 사용하면 된다(단, 숫자패드는 작동하지 않을 수 있으므로 숫자는 키보드 위쪽 키를 사용하자. 또 아직 "ESC"는 누르면 안된다.)
+- 일단 다음과 같이 내용을 수정한다. 다음은 Server(B)에 고정IP를 할당하는 것이다.(대소문자를 정확히 구분하고 글자 사이에 띄어쓰기 없이 입력해야 한다.)
+
+	- 수정 : BOOTPROTO=dhcp  -> BOOTPROTO=none
+	- 추가 : IPADDR=10.0.2.200
+	- 추가 : NETMASK=255.255.255.0
+	- 추가 : GATEWAY=10.0.2.2
+	- 추가 : DNS1=8.8.8.8
+	
+- 수정/입력을 마쳤으므로 "Esc" -> :wq -> "Enter"를 차례로 누르고 입력한 후 저장하고 종료한다. 그러면 #프롬프트가 다시 나온다.
+- 터미널에서 다음 명령을 입력하여 설정한 내용을 적용시키고 컴퓨터를 재부팅한다.
+
+```
+nmcli connection down 장치 이름  ->네트워크 장치 중지(예 : enp0s3)
+nmcli connection up 장치 이름  -> 네트워크 장치 시작
+reboot  -> 컴퓨터 재부팅
+```
+
+- root/password로 로그인한다.
+- ip addr 명령을 입력해 네트워크 정보를 확인하자. 설정한10.0.2.200으로 보이면 된다.
+
+- ping -c 3e www.google.com 명령이 잘 응답하면 인터넷이 잘 동작하는 것이다.
+
+
+- 보안이 설정된 SELinux 기능을 끄자
+	- vi /etc/sysconfig/selinux 명령을 입력해 일단 SELinux 설정 파일을 연다.
+	- vi 편집기가 열리면 "A"를 누른다. 그러면 제일 아래에 '-- INSERT --"가 표시될 것이다. 7행의 SELINUX=enforcing을 Selinu=disabled로 수정한다.
+	
+	- "Esc" -> :wq -> "Enter"를 차례로 누르고 입력한 후 저장하고 종료한다. 그러면 # 프롬프트가 다시 나온다.
+	
