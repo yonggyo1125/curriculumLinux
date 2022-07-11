@@ -454,6 +454,17 @@ gedit /etc/sysconfig/selinux -> 파일 편집
 	- 만일 가장 최근에 찍은 스냅샷이 있는데, 이전 스냅샷으로 복원을 한 다음 다시 스냅샷을 찍으면 가상 머신의 변경점을 기준으로 트리가 생성되어 여러 시나리오를 만들 수 있습니다.
 	
 
+### 가상머신 : Server(B) 설치
 
+- Server(B)는 Server와 달리 X 윈도를 사용하지 않고 텍스트 모드에서만 사용한다. 그래서 설치가 빠르고 사용할 때도 상당히 가볍게 운영된다.
 
-	
+- Server(B)의 설치 과정도 앞 Sever 설치 과정과 대부분 비슷한다.
+- "설정(S)" -> "저장소" ->컨트롤러 IDE에서 "비어있음"을 선택하고 다운받은 CentOS-Stream-8...iso 파일을 선택한다.
+- "시작(T)" 버튼을 클릭한 후 가상머신을 시작합니다.
+- Intstall CentOS Stream 8-stream을 선택한다.
+- 잠시 후 언어 선택 화면이 나온다. Server(B)는 텍스트 모드로 사용할 것이므로 그냥 영문판으로 두고 \<Continue\>를 클릭한다.
+> 텍스트 모드에서는 한글 입출력이 되지 않는다.
+
+- Keyboard는 English로 되어 있고 Language Support는 English(United States)로 되어 있을 것이다. 그대로 두고 "Time & Date"를 클릭한다.
+
+- Region은 "아시아", City는 "Seoul"로 선택하고 "Done"을 클릭한다.
