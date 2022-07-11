@@ -84,7 +84,7 @@
 	- Windows용 응용 프로그램과 리눅스 DBMS 연동
 	- Oracle Database Express 설치와 운영
 
-* 7~9일차(9h) : 웹 서버
+* 8~9일차(6h) : 웹 서버
 	- APM 설치와 웹 사이트 구축
 	- nodejs 설치 및 웹사이트 구축 
 	

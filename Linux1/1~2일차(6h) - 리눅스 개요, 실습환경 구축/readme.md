@@ -128,7 +128,7 @@
 - 가상 하드디스크는 사용하는 용량대로 커지게 하고 최대 가능 사이즈를 조정할 수 있도록 동적 할당으로 체크합니다.
 ![image16](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image16.png)
 
-- 하드디스크는 넉넉하게 최대 20GB정도로 설정합니다.
+- 하드디스크는 넉넉하게 최대 80GB정도로 설정합니다(하드 용량이 넉넉하지 않다면 50G 정도 설정합니다.)
 
 ![image17](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image17.png)
 
@@ -275,3 +275,99 @@ systemctl disable dnf-makecache.timer
 
 ![image63](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image63.png)
 
+
+- Server의 IP는 10.0.2.100으로 변경할 것이다.
+- [현재 활동]에서 즐겨찾기의 [터미널] 아이콘을 실행한다.
+- 터미널에서 관련 디렉토리로 이동한 후 파일을 편집한다.
+
+```
+cd /etc/sysconfig/network-scripts/ -> 네트워크 설정 파일이 저장된 디렉토리로 이동
+ls    -> ifcfg-xxxx 파일 확인(예 : ifcfg-enp0s3)
+gedit ifcfg-xxxx
+```
+
+![image64](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image64.png)
+
+- 다음과 같이 내용을 수정하자 다음은 Server에 고정 IP를 할당하는 것이다(대소문자를 정확히 구분하고 각 글자 사이는 띄어쓰기 없이 입력해야 한다.)
+	- 수정 : BOOTPROTO=dhcp  -> BOOTPROTO=none
+	- 추가 : IPADDR=10.0.2.100
+	- 추가 : NETMASK=255.255.255.0
+	- 추가 : GATEWAY=10.0.2.2
+	- 추가 : DNS1=8.8.8.8
+
+![image65](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image65.png)
+
+
+- 터미널에서 다음 명령을 입력하여 설정한 내용을 적용시키고 컴퓨터를 재부팅 한다.
+	- nmcli connection down 장치 이름 -> 네트워크 장치 중지
+	- nmcli connection up 장치_이름 -> 네트워크 장치 시작
+	- reboot -> 컴퓨터 재부팅
+	
+- 다시 재부팅 되면 [목록에 없습니까?]를 클릭한 후 root/password로 로그인 한다.
+- 왼쪽 상단의 [현재활동]->[터미널]을 선택해서 터미널을 연다.
+
+![image66](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image66.png)
+
+- ifconfig enp0s3
+
+![image67](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image67.png)
+
+- 보안이 설정된 SELinux 기능을 끄자.
+- 터미널에서 다음 명령을 입력해 SELinux 설정 파일을 편집하자
+
+```
+gedit /etc/sysconfig/selinux -> 파일 편집
+```
+
+- 편집기가 열리면 6행의 'SELINUX=enforcing'을 'SELINUX=disabled'로 수정하고, 저장한 후 편집기를 닫는다.
+
+![image68](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image68.png)
+
+- exit 명령으로 터미널을 닫는다.
+
+- 한글 사용을 위해 약간의 설정이 필요하다.
+	- 바탕화면에서 마우스 오른쪽 버튼을 클릭한 후 [설정]을 클릭한다. [설정] 초기화면이 아니라면 왼쪽 위 \<\<\>를 클릭해서 설정 초기화면으로 돌린다.
+	- [지역 및 언어]를 선택하고 [입력 소스]의 [한국어]를 선택한 후 <->를 눌러서 삭제한다. 즉, '한국어(Hangul)' 하나만 남겨둬야 한다. 설정을 마쳤으면 오른쪽 위에 있는 <X>를 클릭해서 [설정] 창을 닫는다.
+	
+![image69](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image69.png)
+
+- 이제부터는 한글이 잘 변경된다. 왼쪽 위의 [현재활동] -> [터미널]을 선택한 후 한글을 입력해보자. 한/영 전환은 Shift + Space이다.
+
+![image70](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image70.png)
+
+- 앞으로 자주 사용될 패키지를 미리 설치해놓자. dnf -y install firewall-config 명령으로 설치한다.
+
+![image71](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image71.png)
+
+
+- 오른쪽 위에 있는 전원 모양 버튼을 클릭하고 다시 전원 모양 버튼을 클릭한 후 \<컴퓨터 끄기\>를 클릭해서 Server를 종료한다. 이로써 Server의 설치와 설정은 완전하게 마무리 되었다.
+
+![image73](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image73.png)
+
+- 만약 전체 메모리가 8GB 이상이라면 2048MB 이상으로 조정한다.
+
+![image74](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image74.png)
+
+- 설정이 완료된 Server를 스냅샷하자
+	- 설치된 가상머신의 오른쪽 더보기 메뉴를 클릭한 후 '스냅샷'을 선택합니다.
+	
+	![image75](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image75.png)
+	
+	- 상단의 스냅셧 메뉴 중에서 '찍기'를 선택합니다.
+	
+	![image76](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image76.png)
+	
+	- 스냅샷 이름과 설명을 입력한 후 클릭하면 스냅샷이 생성됩니다.
+	
+	![image77](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image77.png)
+	
+	![image78](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image78.png)
+	
+	- 스냅샷은 여러번 찍을 수 있으며 트리 형태의 단계로 저장됩니다.
+	- 만일 가장 최근에 찍은 스냅샷이 있는데, 이전 스냅샷으로 복원을 한 다음 다시 스냅샷을 찍으면 가상 머신의 변경점을 기준으로 트리가 생성되어 여러 시나리오를 만들 수 있습니다.
+	
+
+
+
+	
+	
