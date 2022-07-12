@@ -115,7 +115,7 @@
 
 ![image12](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image12.png)
 
-- 메모리 크기는 RAM 용량을 의미합니다. 1GB 정도로 설정하였으나 클 수록 쾌적하게 테스트 할 수 있으므로 여유가 있다면 좀 더 설정해도 됩니다.
+- 메모리 크기는 RAM 용량을 의미합니다. 2GB 정도로 설정하였으나 클 수록 쾌적하게 테스트 할 수 있으므로 여유가 있다면 좀 더 설정해도 됩니다.
 
 ![image13](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image13.png)
 
@@ -775,3 +775,6 @@ reboot  -> 컴퓨터 재부팅
 - iso 파일이 생성되면 가상머신으로 windows10을 설치한다.
 
 
+### 실습용 가상머신 파일 다운로드
+
+- [다운로드](https://drive.google.com/drive/folders/1jLtrrE4Lmq77pJLYgrvCEe5UiDm9AcCA?usp=sharing)
