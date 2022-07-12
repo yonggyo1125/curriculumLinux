@@ -526,15 +526,21 @@ gedit /etc/sysconfig/selinux -> 파일 편집
 - 설치가 완료 되었으면 "Reboot"를 클릭해서 재부팅한다.
 
 - 컴퓨터가 다시 켜지면 일부 설정을 추가로 해줘야 한다.
-	- 부탁 왛면이 나온다. 몇 초를 기다리거나 첫 번째 행이 선택된 상태에서 그냥 "Enter"를 누르면 부팅된다.
+	- 부탁 화면이 나온다. 몇 초를 기다리거나 첫 번째 행이 선택된 상태에서 그냥 "Enter"를 누르면 부팅된다.
 	
 	- 잠시 후 텍스트 환경의 로그인 화면이 나온다. Server(B) 컴퓨터도 root 사용자로 접속해서 사용할 것이다. "localhost login"에 "root"를 입력하고 "Enter"를 누른다. 그리고 "Password"에 "password"를 입력하고 "Enter"를 누른다(암호를 입력하면 화면은 보이지 않으므로 그냥 입력하고 "Enter"를 누르면 된다). 로그인되면 프롬프트가 "[root@localhost ~]#으로 보일 것이다.
+	
+	![bimage15](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image15.png)
+
 	
 - 필요한 패키지를 미리 설치해 놓는다.
 
 ```
 dnf -y install bind-utils net-tools wget unzip bzip2
 ```
+
+![bimage16](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image16.png)
+
 
 - Server(B)는 10.0.2.200으로 변경할 것이다.
 - 터미널에서 관련 디렉토리로 이동한 후, 파일을 편집하자
@@ -546,6 +552,9 @@ ls    -> ifcfg-xxxx 파일 확인(예 : ifcfg-enp0s3)
 vi ifcfg-xxxx  -> 앞에서 확인한 파일 편집
 ```
 
+![bimage17](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image17.png)
+
+
 - vi에서 내용을 편집하려면 먼저 "A"를 누른다. 그러면 왼쪽 아래에 "-- INSERT --"가 표시된다. 이제 부터는 메모장처럼 키보드의 모든 키를 이용해서 편하게 사용하면 된다(단, 숫자패드는 작동하지 않을 수 있으므로 숫자는 키보드 위쪽 키를 사용하자. 또 아직 "ESC"는 누르면 안된다.)
 - 일단 다음과 같이 내용을 수정한다. 다음은 Server(B)에 고정IP를 할당하는 것이다.(대소문자를 정확히 구분하고 글자 사이에 띄어쓰기 없이 입력해야 한다.)
 
@@ -554,7 +563,10 @@ vi ifcfg-xxxx  -> 앞에서 확인한 파일 편집
 	- 추가 : NETMASK=255.255.255.0
 	- 추가 : GATEWAY=10.0.2.2
 	- 추가 : DNS1=8.8.8.8
-	
+
+
+![bimage18](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image18.png)
+
 - 수정/입력을 마쳤으므로 "Esc" -> :wq -> "Enter"를 차례로 누르고 입력한 후 저장하고 종료한다. 그러면 #프롬프트가 다시 나온다.
 - 터미널에서 다음 명령을 입력하여 설정한 내용을 적용시키고 컴퓨터를 재부팅한다.
 
@@ -564,15 +576,43 @@ nmcli connection up 장치 이름  -> 네트워크 장치 시작
 reboot  -> 컴퓨터 재부팅
 ```
 
+![bimage19](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image19.png)
+
 - root/password로 로그인한다.
 - ip addr 명령을 입력해 네트워크 정보를 확인하자. 설정한10.0.2.200으로 보이면 된다.
 
+![bimage20](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image20.png)
+
+
 - ping -c 3e www.google.com 명령이 잘 응답하면 인터넷이 잘 동작하는 것이다.
+
+![bimage21](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image21.png)
 
 
 - 보안이 설정된 SELinux 기능을 끄자
 	- vi /etc/sysconfig/selinux 명령을 입력해 일단 SELinux 설정 파일을 연다.
-	- vi 편집기가 열리면 "A"를 누른다. 그러면 제일 아래에 '-- INSERT --"가 표시될 것이다. 7행의 SELINUX=enforcing을 Selinu=disabled로 수정한다.
+	- vi 편집기가 열리면 "A"를 누른다. 그러면 제일 아래에 '-- INSERT --"가 표시될 것이다. 7행의 SELINUX=enforcing을 SELINUX=disabled로 수정한다.
+	
+	![bimage22](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image22.png)
 	
 	- "Esc" -> :wq -> "Enter"를 차례로 누르고 입력한 후 저장하고 종료한다. 그러면 # 프롬프트가 다시 나온다.
 	
+- halt -p 명령을 입력해 시스템을 종료하자. Server (B)의 설정은 마무리 되었다.
+	
+- 설치된 가상머신의 오른쪽 더보기 메뉴를 클릭한 후 '스냅샷'을 선택합니다.
+	
+![bimage23](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image23.png)
+
+- 상단의 스냅셧 메뉴 중에서 '찍기'를 선택합니다.
+
+![bimage24](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image24.png)
+
+	
+- 스냅샷 이름과 설명을 입력한 후 클릭하면 스냅샷이 생성됩니다.
+
+![bimage25](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image25.png)
+
+![bimage26](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/server(B)/image26.png)
+
+
+### 가상머신 : Client 설치
