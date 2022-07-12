@@ -346,6 +346,17 @@
 - 실습의 편의를 위해 대기 모드 역시 해제 합니다. 
 - "전원"을 클릭하고 "절전" 항목을 "안함"으로 변경합니다.
 
+- 실습의 편의를 위해 소프트웨어 업데이트 기능도 해제 합니다.
+	- "현재 활동"을 클릭하고 제일 아래 있는 프로그램 표시 아이콘을 클릭해서 "모두"를 선택한다. 그리고 "소프트웨어"를 클릭해서 실행한다.
+	
+	![image8](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image8.png)
+	
+	- 상단의 더보기 메뉴를 클릭한 후 "업데이트 기본 설정"을 선택하고 모두 "끔"으로 만든 후에 창을 닫는다.
+	
+	![image6](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image6.png)
+	
+	![image7](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image7.png)
+
 ![image61](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/image61.png)
 
 - [현재 활동]을 클릭하고 "터미널"을 클릭합니다.
@@ -633,8 +644,13 @@ reboot  -> 컴퓨터 재부팅
 	- 오른쪽의 "네트워크 및 호스트 이름"을 클릭한다. 오른쪽에 있는 "끔" 스위치를 "켬"으로 만들면 네트워크 정보가 보일 것이다. "완료"를 클릭한다.
 	- "소프트웨어 선택"을 보면 "서버 - GUI 사용"이 선택되어 있을 것이다. 클릭해서 "워크스테이션"으로 선택하고 오른쪽의 "GNOME 응용 프로그램"을 선택한 후 "완료"를 클릭한다.
 	
+	![image1](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image1.png)
+	
 	- "설치 목적지" 부분을 확인하면 "자동 파티션 설정 선택"으로 되어 있을 것이다. 변경해야 하므로 클릭한다.
 	- "설치 목적지"에서는 장착한 80GB크기의 하드디스크가 그림으로 보인다. 하드디스크 그림을 천천히 2회 클릭하여 하드디스크가 파란색으로 선택되고 체크 모양의 아이콘이 보이는 상태를 확인한다. 그리고 아래쪽의 "자동 설정"이 선택된 것을 확인하고 "완료"를 클릭한다.
+	
+	![image2](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image2.png)
+	
 	- "사용자 설정"에서 "root 비밀번호"를 클릭해서 리눅스 관리자인 root 암호를 지정하자.
 	- root의 암호는 기억하기 쉽도록 password로 입력하자. 그리고 "완료"를 2회 클릭한다.
 	- "사용자 생성"을 클릭한 후 centos라는 이름의 사용자를 생성하자. 암호도 기억하기 쉽게 centros로 입력하자. "완료"를 2회 클릭한다.
@@ -667,8 +683,95 @@ reboot  -> 컴퓨터 재부팅
 	- 그리고 5행쯤의 빈 줄에 다음을 추가로 써 준다. 글자가 틀리지 않도록 주의하자. 입력이 끝나면 저장하고 편집기를 닫는다.
 	
 	```
-	auth required pam_succeed_if.so user != root quiet
+	auth required pam_succeed_if.so	user != root quiet
 	```
+	
+	![image3](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image3.png)
 	
 	- reboot 명령으로 재부팅한다.
 	
+- root 사용자로 접속이 안 된다는 것을 확인하자
+	- 로그인 창에서 "목록에 없습니까?"를 클릭하고 root 사용자로 접속해보자. 암호를 입력하고 "로그인"을 클릭하면 인증에 실패할 것이다.
+	
+	![image4](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image4.png)
+	
+	- "취소"를 클릭하고 centos 사용자를 클릭한 후 암호 "centos"를 입력해서 로그인한다.
+	- 그놈(GNOME)의 초기 설정 화면이 나오고 먼저 "환영합니다" 화면이 등장한다. 이미 한국어가 선택되어 있을 것이다. "다음"을 클릭한다.
+	- "입력"이 나온다. 첫 번째에 있는 "한국어(Hangul)"를 선택하고 "다음"을 클릭한다.
+	- "개인 정보"가 나오면 그대로 두고 "다음"을 클릭한다.
+	- "온라인 계정"도 그대로 두고 "건너뛰기"를 클릭한다. 
+	- 마지막 창에서 "CentOS Linux 시작"을 클릭한다. 
+	- "시작하기(GNOME Help)"창이 나온다. 오른쪽 위의 "X"를 클릭해서 닫는다.
+	
+- centos 사용자 환경으로 사용하기 위해 몇 가지 더 설정할 것이 남았다. 바탕화면에서 마우스 오른쪽 버튼을 클릭한 후 "설정"을 선택한다. 
+	- "개인 정보"를 클릭하고 "화면 잠금"을 클릭해서 "자동 화면 잠금"과 "알림 표시"를 "끔"으로 변경하자. 그리고 "화면 잠금" 창을 닫는다.
+	- 이번에는 "전원"을 클릭하고 "빈 화면"을 "안 함"으로 변경하자
+	- "지역 및 언어"를 선택하고 "입력 소스"의 "한국어"를 선택한 후 "-"를 눌러서 삭제한다. 즉, "한국어(Hangul)" 하나만 남겨둬야 한다. 설정을 마쳤으면 오른쪽 위의 X를 클릭해서 "설정" 창을 닫는다.
+	
+- Client 가상 머신의 배경 화면을 바꿔서 Server 가상 머신과 구분되도록 하자
+	- 바탕 화면에서 마우스 오른쪽 버튼을 클릭한 후 "배경 바꾸기"를 선택한다.
+	- "배경"을 클릭한다.
+	
+	![image5](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image5.png)
+	
+- 다른 배경 이미지나 사진을 선택한다.
+> 사진을 사용하려면 웹에서 적당한 이미지를 다운받아 "사진" 폴더에 저장해놓는다. 일례로 https://www.gnome-look.org/ 사이트의 Wallpaper를 사용하면 된다.
+
+
+- 소프트웨어 업데이트 기능도 끄자
+	- "현재 활동"을 클릭하고 제일 아래 있는 프로그램 표시 아이콘을 클릭해서 "모두"를 선택한다. 그리고 "소프트웨어"를 클릭해서 실행한다.
+	
+	![image8](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image8.png)
+	
+	- 상단의 더보기 메뉴를 클릭한 후 "업데이트 기본 설정"을 선택하고 모두 "끔"으로 만든 후에 창을 닫는다.
+	
+	![image6](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image6.png)
+	
+	![image7](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image7.png)
+	
+- Client 가상머신에 별도의 로그인 절차 없이 자동으로  centos 사용자가 접속되도록 하자.
+
+> 서버용으로 사용되는 리눅스에 자동으로 로그인하는 것은 보안에 상당히 좋지 않지만 Client 가상머신은 개인용 PC라는 전제하에서 설정해본다.
+
+	- "현재활동" -> "터미널"을 선택한다.
+	- su - 명령을 사용해서 root 권한으로 접속하자(암호는 password를 입력한다). 다음 명령을 사용해서 파일을 편집한다.
+	
+	```
+	vi /etc/gdm/customer.conf
+	```
+	
+	![image9](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image9.png)
+	
+	- "A"를 누른 후 "demon" 아래에 다음 2줄을 추가하자. 그리고 "Esc"를 누르고 ":wq"를 입력한 후 "Enter"를 누르면 저장 및 종료된다.
+	
+	```
+	AutomaticLoginEnable=True
+	AutomaticLogin=centos  -> 자동 로그인할 사용자 계정
+	```
+	
+	![image10](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image10.png)
+	
+	- reboot 명령을 입력해보자. 재부팅된 후 별도의 입력 없이 centos 사용자로 자동 접속될 것이다.
+	- 오른쪽 위의 전원 버튼을 눌러 가상머신을 종료한다.
+	
+	
+	
+- 설치된 가상머신의 오른쪽 더보기 메뉴를 클릭한 후 '스냅샷'을 선택합니다.
+
+![image11](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image11.png)
+
+- 상단의 스냅셧 메뉴 중에서 '찍기'를 선택합니다.
+
+![image12](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image12.png)
+
+	
+- 스냅샷 이름과 설명을 입력한 후 클릭하면 스냅샷이 생성됩니다.
+
+![image13](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/1~2%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B0%9C%EC%9A%94%2C%20%EC%8B%A4%EC%8A%B5%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95/images/Client/image13.png)
+
+### 가상머신 : WinClient 설치
+
+- windows10 ISO 파일을 생성하는 도구를 [다운로드](https://www.microsoft.com/ko-kr/software-download/windows10) 받는다.
+- iso 파일이 생성되면 가상머신으로 windows10을 설치한다.
+
+
