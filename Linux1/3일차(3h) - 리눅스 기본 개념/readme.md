@@ -256,7 +256,7 @@ reboot
 	cat ifc[Tab]-e[Tab]           -> 파일 내용 확인
 	```
 	
-	[image25](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/3%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image25.png)
+	![image25](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/3%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image25.png)
 	
 	- exit 명령을 입력해서 터미널을 닫는다.
 
