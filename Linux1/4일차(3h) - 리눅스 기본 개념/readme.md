@@ -18,19 +18,32 @@
 - step1
 	- 터미널에서 gedit 명령을 입력하자.
 	-  에디터가 열리면 아무 글자나 입력한다(한/영 전환은 [Shift] + [Space]를 누른다).
+	
+	![image2](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image2.png)
+	
 	- 오른쪽 위의 \<저장\>을 클릭해서 적당한 이름을 입력하고, 저장 위치를 [홈] 폴더로 선택한 후 \<저장\>을 클릭해 저장한다.
+	
+	![image3](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image3.png)
+	
 	- 현재 사용자는 root 사용자인데, root 사용자의 홈 폴더인 "/root"에 저장한 것이다. 만약 centos 사용자라면 홈 폴더는 "/home/centos" 폴더가 된다.
 	- gedit의 오른쪽 위 \<X\>를 클릭해서 gedit을 종료한다. 그리고 터미널에서 gedit "/root/test.txt" 명령을 입력하면 기존 파일이 열릴 것이다. 앞서 설명한 것처럼 gedit은 Windows의 메모장과 비슷한 용도로 사용하면 된다. 다시 gedit 을 종료한다.
 	
 - step2
 	- 이번에는 vi 에디터를 사용해보자. 우선 터미널에서 vi 명령을 입력하면 다음과 같이 실행된다.
-	-  우선 vi 에디터를 종료해보자. [Esc]를 누른 후 'q'를 입력하고 [Enter]를 누르면 종료된다. 입력 시 화면 왼쪽 아래에 입력하는 글자가 보일 것이다. 이렇게 작동하는 것을 'ex 모드' 또는 '라인 명령 모드'라고 부른다.
-	- 이번에는 vi 에디터로 새로운 파일을 만들어보자. vi new.txt 명령을 입력하면 빈 화면이 열리고 왼쪽 아래에 'new.txt[New File]'이라는 문구가 보인다 (new.txt 파일이 이미 존재하면 그 파일을 열어서 보여준다). 이 상태를 '명령 모드'라고 한다. 아직 글자를 입력할 수는 없으며, vi 에디터로 어떤 일을 하게 될지 명령을 기다린다.
+	
+	![image4](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image4.png)
+	
+	-  우선 vi 에디터를 종료해보자. [Esc]를 누른 후 'q'를 입력하고 [Enter]를 누르면 종료된다. 입력 시 화면 왼쪽 아래에 입력하는 글자가 보일 것이다. 이렇게 작동하는 것을 <b>'ex 모드' 또는 '라인 명령 모드'</b>라고 부른다.
+	- 이번에는 vi 에디터로 새로운 파일을 만들어보자. <b>vi new.txt</b> 명령을 입력하면 빈 화면이 열리고 왼쪽 아래에 'new.txt[New File]'이라는 문구가 보인다 (new.txt 파일이 이미 존재하면 그 파일을 열어서 보여준다). 이 상태를 '명령 모드'라고 한다. 아직 글자를 입력할 수는 없으며, vi 에디터로 어떤 일을 하게 될지 명령을 기다린다.
 	- 그 상태에서 "I" 또는 "A"를 누른다(이는 글자를 입력 Insert하거나 추가 Append하겠다는 명령을 내린 것이다). 그러면 왼쪽 아래에 '-- INSERT --'라고 표시되고 글자를 입력할 수 있다. 이 상태를 입력 모드'라고 한다. 적절히 글자를 입력해보자.
 	
-	- 글자를 모두 입력했으면 저장하고 vi 에디터를 종료한다. 우선 글자를 입력하는 '입력 모드'에서 Esc를 누르면 '명령 모드'가 나온다. 화면에서는 왼쪽 아래에 '-- INSERT --' 라는 표시가 없어질 뿐 별다른 변화가 보이지 않는다.
+	![image5](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image5.png)
+	
+	- 글자를 모두 입력했으면 저장하고 vi 에디터를 종료한다. 우선 글자를 입력하는 '입력 모드'에서 Esc를 누르면 <b>'명령 모드'</b>가 나온다. 화면에서는 왼쪽 아래에 '-- INSERT --' 라는 표시가 없어질 뿐 별다른 변화가 보이지 않는다.
 	- 그리고 'wq' 를를 입력해 Enter를 누르면 저장하고 종료하게 된다.
-
+	
+	![image6](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image6.png)
+	
 	- vi 에디터 사용법 개요도
 	
 	![image1](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image1.png)
@@ -76,10 +89,15 @@
 
 - step1
 	- 터미널에서 vi test1.txt 명령을 입력해 파일을 열고 "I"또는 "A"를 누른 후 아무거나 약간 수정한다. 그리고 정상적으로 종료하지 말고 터미널 오른쪽 위에 있는 \<X\>를 클릭해 비정상적으로 종료한다. 경고 창이 나오면 \<터미널 닫기\>를 클릭한다.
-
+	
+	![image7](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image7.png)
+	
 - step2
 	- 터미널을 다시 연다.
 	- 다시 vi test1.txt 명령을 입력하면 다음과 같은 창이 나온다.
+	
+	![image8](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image8.png)
+	
 	- 이 창은 기존 test1.txt 파일의 수정 작업이 정상적으로 종료되지 않았기 때문에 나타난다.
 	
 >  임시 스왑 파일(swap file).test1.txt.swp가 존재하는 것은 앞에서 test1.txt 파일의 수정 작업이 정상적으로 종료되지 않았기 때문이다. 즉 vi test1.txt 명령을 입력하면 자동으로 test1.txt.swp가 생성되며, vi 에디터를 정상적으로 종료하면 이 파일은 자동으로 제거된다. 그러므로 이 파일이 남아 있다는 것은 기존 작업이 정상적으로 종료되지 않았다는 의미다. 참고로 파일 이름 앞에 '.'가 붙으면 숨김 파일을 뜻한다. 
@@ -87,6 +105,8 @@
 
 - step3
 	- 비정상 종료된 파일의 스왑 파일 이름은 '파일 이름.swp'다. 그러므로 test1.txt의 스왑 파일은 .test1.txt.swp다. Is -a 명령을 입력해 파일을 확인하고 rm -f .test1.txt.swp 명령을 입력해 해당 스왑 파일을 삭제하자.
+	
+	![image9](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image9.png)
 	
 - step4
 	- 이제는 test1.txt 파일을 정상적으로 편집할 수 있을 것이다. 가끔 만날 수 있는 상황이므로 잘 기억해두자.
@@ -139,6 +159,8 @@
 - 리눅스에는 많은 명령어가 있으며 각 명령어의 옵션까지 합하면 수천 개가 넘는다. 이 명령어들을 모두 외울 수도 없거니와 외우려고 하는 것도 무모한 일이다.
 
 - 그래서 필요한 것이 'man' 명령어다. 'man'은 manual의 약어로, 리눅스에 포함된 체계화된 도움말이다. 사용법은 <b>man \<명령어\></b>로 아주 간단하다.
+
+![image10](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image10.png)
 
 
 - 위쪽 행과 아래쪽 행으로 이동하려면 "위/아래 버튼" 또는 "K"/"J"를 사용하고, 페이지 단위로 이동하려면 [Page Up] [Page Down] 또는 [Space bar]/B 를 사용한다.
