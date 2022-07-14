@@ -193,16 +193,25 @@
 - step1
 	- <code>Server</code> Server의 기존 마운트 정보를 확인해보자.
 	- mount 명령을 입력해 현재 마운트된 장치들을 확인해보자.
+	
+	![image11](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image11.png)
+	
 	- 결과가 좀 복잡한데, 우선 "/dev/sda2"가 루트 파티션 ('/')에 마운트된 것만 확인한다.  Server를 설치할 때 '/'를 sda2에 76GB로 설정했기 때문에, "/dev/sda2"가에 계속 마운트되어 있던 것이다.
 	
 	
 - step2
 	- <code>Server</code>이제는 Server에 CD/DVD를 넣어보자.
 	- 우선 기존에 CD/DVD가 마운트되어 있을 수도 있으니 <b>umount /dev/cdrom</b> 명령을 입력해서 마운트를 해제하자. 기존 마운트를 해제하는 명령으로 오류가 나도 상관 없다.
-	- 먼저 VirtualBox에 CD나 DVD를 넣어보자. 각 가상머신의 설정에서 저장소의 CD 모양 아이콘을 마우스 오른쪽 버튼으로 클릭한 후 CentOS8 ISO 파일을 선택한다. 설정이 끝나면 OK를 클릭하낟.
+	
+	![image12](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image12.png)
+	
+	- 먼저 VirtualBox에 CD나 DVD를 넣어보자. 각 가상머신의 설정에서 저장소의 CD 모양 아이콘을 마우스 오른쪽 버튼으로 클릭한 후 CentOS8 ISO 파일을 선택한다. 설정이 끝나면 확인을 클릭한다.
+	
+	![image13](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image13.png)
+	
 	
 	- 잠시 기다리면 자동으로 화면 위쪽에 DVD가 연결되었다는 표시가 잠깐 나왔다가 사라진다.
-	- 터미널에서 <b>mount</b> 명령을 입력하면 제일 아래에 CD/DVD 장치인 "/dev/sr01"이 "/run/media/root/CentOS-8-BaseOS-x86_64" 디렉터리에 자동으로 마운트되어 있는 것을 확인할 수 있다.
+	- 터미널에서 <b>mount</b> 명령을 입력하면 제일 아래에 CD/DVD 장치인 "/dev/sr01"이 "/run/media/root/CentOS-Stream-8-x86_64" 디렉터리에 자동으로 마운트되어 있는 것을 확인할 수 있다.
 	
 - step3
 	- Server에 마운트된 CD/DVD를 사용해보자.
