@@ -211,7 +211,12 @@
 	
 	
 	- 잠시 기다리면 자동으로 화면 위쪽에 DVD가 연결되었다는 표시가 잠깐 나왔다가 사라진다.
+	
+	![image14](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image14.png)
+	
 	- 터미널에서 <b>mount</b> 명령을 입력하면 제일 아래에 CD/DVD 장치인 "/dev/sr01"이 "/run/media/root/CentOS-Stream-8-x86_64" 디렉터리에 자동으로 마운트되어 있는 것을 확인할 수 있다.
+	
+	![image15](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image15.png)
 	
 - step3
 	- Server에 마운트된 CD/DVD를 사용해보자.
@@ -224,6 +229,8 @@
 	ls
 	```
 	
+	![image16](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image16.png)
+	
 	- DVD 안의 파일을 확인해보자.
 	
 	```
@@ -231,21 +238,36 @@
 	ls 
 	```
 	
+	![image17](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image17.png)
+	
 	- BascOS/Packages 디렉터리 안에는 알파벳 순으로 정렬된 rpm 파일이 들어 있다.  CentOS를 설치할 때 이 파일들이 자동으로 설치된 것이다.
 	- DVD를 더 이상 사용하지 않는다면 <b>umount /dev/cdrom</b> 명령을 입력해 마운트를 해제한다.
+	
+	![image18](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image18.png)
+	
 	- 그런데 메시지를 보니 target is busy'라고 나오면서 마운트 해제에 실패한다. 지금 작업 중인 디렉터리가 DVD가 마운트된 "/run/media/root/"의 하위 디렉터리이기 때문이다. cd 등의 명령을 입력해 마운트 디렉터리가 아닌 디렉터리로 이동한 후 "umount /dev/cdrom" 명령으로 마운트를 해제해야 한다.
+	
+	![image19](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image19.png)
+	
 	- 결국 DVD의 마운트를 해제할 때 현재 마운트된 디렉터리에서 명령을 실행하면 안 된다. 처음 리눅스를 사용할 때 자주 실수하는 부분이므로 잘 기억해두자.
 	
 	- mount 명령을 입력해서 확인하면 아까와 달리 "/dev/sr0"이 마운트되어 있지 않을 것이다. 
-	- DVD의 마운트를 완전히 해제하려면 다시 
-
+	- DVD의 마운트를 완전히 해제하려면 설정 -> 저장소 -> 컨트롤러 IDE에서 CD를 선택 -> 오른쪽 CD 모양의 아이콘을 선택 -> 가상드라이브에서 디스크 꺼내기 클릭 한다.
+	
 - step4
 	- <code>Client</code> 이번에는 Client에서 USB 메모리를 사용해보자. CD/DVD와 크게 다르지 않다. USB 포트 장치는 Client에 장착시켰다.
-	
+		
 	- Client를 부팅한다. 사용자로 자동 로그인된다.
 	-  이제 진짜 컴퓨터에 USB 메모리를 꽂는다. 
-	- 해당 아이콘을 마우스 오른쪽 버튼으로 클릭한 후 [Connect (Disconnect from host)]를 선택한다. 그러면 호스트에서는 USB 메모리 연결이 해제되고 가상머신 안에 USB 메모리가 마운트된다. 그리고 아이콘 색상은 진하게 바뀔 것이다 (메시지창이 나오면 \<OK\>를 클릭한다).
+	
+	![image20](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image20.png)
+	
 	- 잠시 기다리면 바탕 화면 상단에 USB가 연결된 것이 확인된다. [현재 활동] [파일]을 선택하면 Windows의 파일 탐색기와 비슷한 [파일 관리자] 프로그램이 열리고 USB 내부 내용을 확인할 수 있다. [파일 관리자] 왼쪽에 있는 USB 메모리의 레이블(label)을 클릭하면 된다.
+	
+	![image21](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image21.png)
+	
+	![image22](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image22.png)
+	
 	- 현재 USB 메모리는 Client에 인식되어 있는 상태다. 그래서 호스트 컴퓨터의 파일 탐색기에서는 USB 메모리 연결이 확인되지 않는다.
 
 	- 터미널을 열고 직접 해당 디렉터리로 이동해서 다른 곳의 파일을 복사해보자.
@@ -257,12 +279,19 @@
 	cp  /boot/con[Tab] .      -> 파일(/boot/confiog~~파일)을 현재 디렉토리(.)에 복사(제일 뒤에 . 있음).
 	ls
 	```
-
+	
+	![image23](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image23.png)
+	
 	- CD/DVD와 달리 USB 메모리에는 당연히 읽기/쓰기가 가능하다.
 	- mount 명령을 입력해서 USB 메모리가 마운트된 장치를 확인하자.
-
+	
+	![image24](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image24.png)
+	
 	- 제일 아래를 보면 "/dev/sda1" 이라는 장치로 인식되어 있음을 확인할 수 있다.
 	- USB 사용이 끝났다면, VirtualBox에서 USB 메모리 마운트를 해제하자. 
+	
+	![image25](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image25.png)
+	
 	- 호스트 컴퓨터의 파일 탐색기에서 확인하면 USB 메모리가 확인되며, 아까 CentOS에서 복사했던 파일도 확인할 수 있
 	- Client에서 오른쪽 위의 전원 아이콘을 클릭하고, 다시 전원 아이콘을 클릭한 후 <컴퓨터 끄기>를 선택해서 Client를 종료한다.
 	
@@ -276,14 +305,25 @@
 	- 이번 실습은 USB 메모리의 내용이 지워질 수도 있다. USB 메모리에 중요한 데이터가 들었다면 백업한 후 실습을 진행하자.
 	- 왼쪽 Server(B)를 클릭해 Server(B) 실행을 준비한다(아직은 부팅하지 않는다).
 	-  Server (B)에는 USB 장치를 추가하지 않았으므로 USB 장치를 추가하자.
+	
+	![image27](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image27.png)
+	
 	- 이제 USB 장치 및 CD/DVD가 모두 장착되었으므로 Server (B)를 부팅하고 root 사용자로 접속한다.
+	
+	![image26](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image26.png)
+	
 	- mount 명령을 입력해 기존에 마운트된 장치가 있는지 확인한다. CD/DVD 장치인 "/dev/sr0" 과 USB 장치인 "/dev/sdb1" 은 아직 마운트되어 있지 않다.
 	- 먼저 CentOS 8 DVD ISO 파일을 넣어보자 그리고 USB 메모리도 연결한다.
+	
 	- mount 명령을 다시 입력해보자. CD/DVD를 넣거나 USB 메모리를 연결하기 전과 차이가 없을 것이다. 즉 텍스트 모드에서는 CD/DVD를 넣거나 USB 메모리를 연결했다고 자동으로 마운트되는 것이 아니다. 
-	- CD/DVD 장치 이름은 전통적인 "/dev/cdrom"으로 제공된다. 하지만 USB 장치 이름은 종종 변할 수 있으므로 Is /dev/sd\* 명령을 입력해 장치 이름을 확인하자.
+	
+	- CD/DVD 장치 이름은 전통적인 "/dev/cdrom"으로 제공된다. 하지만 USB 장치 이름은 종종 변할 수 있으므로 <b>Is /dev/sd\*</b> 명령을 입력해 장치 이름을 확인하자.
+	
+	![image28](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image28.png)
+	
 	- /dev/cdrom 링크 파일이며 /dev/sr0 이 실제 CD/DVD 장치다. 하지만 대부분의 리눅스는 /dev/cdrom 링크 파일을 제공하므로 그냥 /dev/cdrom CD/DVD 장치라고 기억해놓는 것이 편리하다.
 	-  /dev/sdb1 이 방금 장착한 USB 메모리의 장치 이름이다. 실습 상황에따라 달라질 수 있다.
-	-  /dev/sd\*는 하드디스크나 USB 메모리 등을 의미한다. /dev/sda는 CentOS가 설치된 최초 하드디스크를 나타내며 /dev/sdb 는 추가한 USB 메모리를 나타낸다. 독자의 상황에 따라 USB 메모리의 이름은 달라질 수 있다.
+	-  /dev/sd\*는 하드디스크나 USB 메모리 등을 의미한다. "/dev/sda"는 CentOS가 설치된 최초 하드디스크를 나타내며 /dev/sdb 는 추가한 USB 메모리를 나타낸다. 독자의 상황에 따라 USB 메모리의 이름은 달라질 수 있다.
 	- CD/DVD 및 USB 메모리를 직접 마운트시켜보자. 이번에는 /media 디렉터리에 연결하겠다. 그런데/media 디렉터리 아래에 하위 디렉터리가 없기 때문에 먼저 /media 아래에 연결할 적절한 디렉터리를 만들어 마운트한다.
 	
 	```
@@ -293,18 +333,30 @@
 	mount /dev/sdb1  /media/usb            -> USB 메모리 마운트
 	```
 	
+	![image29](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image29.png)
+	
 	- mount 명령을 입력해 마운트한 장치의 디렉터리를 확인해보자. 그리고 <b>Is /media/cdrom</b> 명령과 <b>Is/media/usb</b> 명령을 입력해 해당 파일들이 잘 보이는지 확인하자.
+	
+	![image30](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image30.png)
+	
+	![image31](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image31.png)
+	
 	- 만약 /media/usb 디렉터리에서 파일 이름이 깨진 상태로 보인다면, 해당 파일 이름이 한글일 것이다. 텍스트 모드에서는 한글을 지원하지 않는다.
 	- 마찬가지로 USB 메모리 (/media/usb 디렉터리)에 필요한 파일을 저장하거나 복사할 수 CentOS 리눅스의 아무 파일이나 USB 메모리에 복사하자.
 	
 	```
 	cp /media/usb/py*  .    --> 적당한 파일을 현재 디렉토리에 복사(제일 뒤에 . 있음)
 	ls
-	cp	cd ana* /media/usb   -->적당한 파일을 USB 메모리에 복사
+	cp	ana* /media/usb   -->적당한 파일을 USB 메모리에 복사
 	ls /media/usb
 	```
-		
+	
+	![image32](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image32.png)
+	
 	- 사용이 끝났다면 <b>umount 마운트장치</b> 명령를 입력해 마운트된 장치의 연결을 해제하자. 아무 메시지도 안 나오면 마운트 해제된 것이다.
+	
+	![image33](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/4%EC%9D%BC%EC%B0%A8(3h)%20-%20%EB%A6%AC%EB%88%85%EC%8A%A4%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90/images/image33.png)
+	
 	
 	- 그런데 이번에는 장치 이름인 /dev/cdrom 이나 /dev/sdb1 이 아니라, 마운트된 디렉터리인 /media/cdrom과 /media/usb 를 언마운트시켰다. 이렇게 언마운트시켜도 잘 작동한다(단, 현재 디렉터리가/media/cdrom이나 /media/usb 면 안 된다. 그럴 경우 언마운트되지 않고 target is busy'라는 메시지가 나올 것이다).
 	
@@ -316,7 +368,7 @@
 
 - 리눅스에 따라서 "/dev/sr0"이라는 이름은 변경될 수 있으나, "/dev/cdrom"이라는 링크 이름은 대부분 고정되어 있다. 그러므로 앞으로는 CD/DVD 장치를 "/dev/cdrom"으로 기억하는 것이 편리할 것이다.
 
-- 가상머신 중 Client를 선택하고 설정 버튼을 클릭한 후 왼쪽 USB 항목을 클릭, USB 장치를 하나 추가합니다.
+
 
 
 
