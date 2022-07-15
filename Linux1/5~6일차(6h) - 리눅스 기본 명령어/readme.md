@@ -121,7 +121,7 @@
 #### head,tail 
 - 텍스트 형식으로 작성된 파일의 앞 10 행 또는 마지막 10만 화면에 출력한다. 
 
-````
+```
 #head anaconda-ks.cfg           -> 해당 파일의 앞 10행을 화면에 출력
 # head -3 anaconda-ks.cfg      -> 앞 3행만 화면에 출력
 # tail -5 anaconda-ks.cfg         -> 마지막 5행만 화면에 출력
