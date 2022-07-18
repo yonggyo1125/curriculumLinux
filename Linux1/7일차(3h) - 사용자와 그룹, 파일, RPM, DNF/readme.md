@@ -452,8 +452,8 @@ cat softlink    -> 소프트 링크의 내용 확인
 ![image27](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image27.png)
 
 - 앞에 나온 그림 보면서 결과 창을 확인하자. 
-- 원본 파일(basefile)은 inode가 inodel(1573326번)으로 지정되어 있다. 그리고 하드 링크 파일(hardlink)도 그림과 마찬가지로 inodel(1573326번)으로 지정되어 있다. 
-- 그러나 심볼릭 링크 파일(softlink)은 inode2(1573324번)로 다르게 지정되어 있다. 
+- 원본 파일(basefile)은 inode가 inode1(35462204번)으로 지정되어 있다. 그리고 하드 링크 파일(hardlink)도 그림과 마찬가지로 inode1(35462204번)으로 지정되어 있다. 
+- 그러나 심볼릭 링크 파일(softlink)은 inode2(35462203번)로 다르게 지정되어 있다. 
 - 원본 파일(basefile)과 하드 링크 파일(hardlink)은 Data 블록에 같은 원본 파일 데이터를 사용하므로 크기가 61바이트로 동일하며, 심볼릭 링크 파일(softlink)은 별도의 원본 파일 포인터를 갖기 때문에 8바이트로 크기가 다르다.
 	
 - 파일 이름에서도 심볼릭 링크 파일 (softlink)은 원본 파일 (basefile)을 지정한다는 의미로 화살표(→)가 표시되어 있다.
@@ -477,8 +477,378 @@ ls -il
 ![image29](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image29.png)
 
 
- # 리눅스 관리자를 위한 명령어
+# 리눅스 관리자를 위한 명령어
  
- ### 프로그램 설치를 위한 RPM
- 
- ### 편리하게 패키지를 설치하는 DNF
+## 프로그램 설치를 위한 RPM
+
+- CentOS에서 패키지 (프로그램 모음 또는 꾸러미)를 설치하는 데 가장 많이 사용되는 것은 RPM과 DNF(또는 YUM)다. 
+- DNF(또는 YUM)이 나오기 전에는 주로 RPM(Redhat Package Manager)이 사용되었으나, DNF는 RPM의 개념과 기능을 포함하기 때문에 최신 버전 CentOS에서는 DNF를 사용하면 된다.
+- 그러나 <b>DNF가 별도로 존재한다기보다 RPM을 포함한 확장 개념에 가까우므로 먼저 RPM의 개념을 익혀야 한다.</b>
+
+### RPM
+
+- 초창기 리눅스의 경우 새로운 프로그램을 설치하기가 꽤 어려웠기 때문에, 초보자에게는 프로그램을 설치하는 것조차 하나의 난제였다.  
+- 이 점을 개선하여 레드햇(RedHat)사에서 Windows의 setup.exe와 같이 프로그램 설치 후 바로 실행할 수 있는 설치 파일을 제작했다.
+- 설치 파일의 확장명은 \*.rpm이며 이를 '패키지(package)'라고 부른다.
+
+### 파일의 의미
+- CentOS-Stream8 DVD ISO 파일을 연결하면 자동으로 마운트 되는 폴더 "/run/media/root/CentOS-Stream-8-x86_64/BaseOS/Packages/"에는 많은 rpm 파일이 존재한다. 그 중 압축 프로그램인 gzip에 대해 살펴보자.
+
+![image30](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image30.png)
+
+- 우선 rpm 파일의 형식은 일반적으로 다음과 같다(패키지에 따라 형식이 좀 다를 수 있다).
+
+```
+패키지이름-버전-릴리즈번호.CentOS버전.아키텍쳐.rpm
+```
+
+- CentOS8 DVD에 포함된 gzip은 다음과 같다.
+	- 패키지 이름: gzip  -> 패키지(프로그램)의 이름이다.
+		- 패키지 이름은 gzip처럼 단순할 수도 있고, 하이픈(-)으로 연결되어 긴 이름으로 존재할 수도 있다. 예를 들어 main-pages-4.15-6.el8.x86_64.rpm 패키지 파일의 패키지 이름은 main-pages까지다. 즉, 버전 바로 앞까지가 패키지 이름이다.
+		
+	- 버전: 1.9   -> 대부분 2자리 또는 3자리 수로 구성된다. 주 버전, 부버전, 패치 버전 순서며, 당연히 숫자가 높을 수록 최신이다.
+	- 릴리즈 번호 : 13  -> 문제점을 개선할 때마다 붙여지는 번호다.
+	- CentOS 버전 : el8  -> CentOS 8에서 배포할 경우 붙여진다. el8은 Redhat Enterprise Linux 8을 의미한다.
+	
+		- el8은 Redhat Enterprise Linux 8 또는 CentOS 8용을 의미하지만, 꼭 CentOS 8에만 설치할 수 있는 것은 아니며 일반적으로 다른 버전의 CentOS나 다른 리눅스에도 설치할 수 있다.
+		
+	- 아키텍처: x86_64 -> x86 계열의 64bit CPU를 의미한다. 즉, 이 파일을 설치할 수 있는 CPU를 뜻한다.
+		- 아키텍처 부분에 올 수 있는 것은 다음과 같다. 강의에서는 x86_64 또는 noarch용을 사용한다.
+		- i386, i486, i586, i686 : 인텔 또는 AMD 계열의 32bit CPU  -> 구형 CPU
+		- x86_64 : 인텔 또는 AMD 계열의 64bit CPU    -> 가장 보편적으로 사용되는 CPU
+		- alpha/sparc/ia64: 미국 DEC사의 알파 (ALPHA) 프로세서 썬 마이크로 시스템즈의 스팍(SPARC) 프로세서, 인텔의 아이테니엄(Itanium) 프로세서로 모두 CPU 명령어의 개수를 줄여 하드웨어 구조를 좀 더 간단하게 만드는 RISC (Reduced Instruction Set Computer) 설계 방식 CPU를 의미한다.   -> 잘 사용하지 않음.
+		- src : 소스 파일 패키지 설치 후에는 컴파일을 별도로 해줘야 한다.
+		- noarch : 모든 CPU에 설치 가능하다(NO ARCHitecture).
+			
+### 자주 사용하는 rpm 명령어 옵션
+
+#### 설치
+
+```
+rpm -Uvh 패키지파일이름.rpm
+```
+
+- U (대문자)  -> 기존에 패키지가 설치되지 않았다면 일반적인 설치를 진행하고, 패키지가 설치되어있다면 업그레이드한다(설치되어 있을 경우 i 옵션은 오류가 발생하므로 U 옵션이더 편하다).
+- v   -> 설치 과정 확인
+- h   -> 설치 진행 과정을 #기호로 화면에 출력
+
+#### 삭제
+
+```
+rpm -e 패키지이름 
+```
+- e  -> erase (지움)의 약자
+
+#### 이미 설치된 패키지 조회
+
+- rpm -qa 패키지이름   -> 시스템에 패키지가 설치되어 있는지 확인
+- rpm -qf 파일의 절대경로 -> 이미 설치된 파일이 어느 패키지에 포함된 것인지 확인
+- rpm -ql 패키지이름  -> 특정 패키지에 어떤 파일이 포함되었는지 확인
+- rpm -qi 패키지이름  -> 설치된 패키지의 상세 정보
+
+![image31](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image31.png)
+
+![image32](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image32.png)
+
+
+- CentOS에서는 설치 시 RPM보다 더 편리한 DNF를 제공하므로 RPM을 사용할 일이 많이 줄었지만, 이미 설치된 패키지 정보를 보는 데는 앞에 나온 4가지 질의 옵션을 자주 사용한다. 잘 기억해놓
+
+#### 아직 설치되지 않은 rpm 파일 조회
+
+- rpm -qlp 패키지파일이름.rpm   -> 패키지 파일에 어떤 파일들이 포함되었는지 확인 
+- rpm -qip 패키지파일이름.rpm   -> 패키지 파일의 상세 정보
+
+> 특히 <b>rpm -qip 패키지파일이름.rpm</b> 명령은 패키지를 설치하기 전, rpm 파일 안에 해당 기능이 포함되었는지 미리 확인하는 데 유용하게 사용할 수 있다.
+
+### RPM의 단점
+
+- 예전 리눅스의 프로그램 설치보다는 획기적으로 편리해졌지만, rpm 명령어 역시 단점이 있다. 
+- 가장 큰 문제점은 '의존성'이다. 간단한 예로 CentOS의 기본 웹 브라우저인 Firefox는 당연히 X 윈도상에서 가동된다. 그런데, X 윈도가 설치되지 않은 상태에서 Firefox를 설치한다면? Firefox는 X 윈도에 의존성이 있으므로 설치가 되지 않을 것이다.
+
+- 이러한 불편을 해결한 것이 dnf 명령이다. dnf 명령은 잠시 후에 알아보고, 이번에는 rpm 명령으로 프로그램을 설치하는 실습을 진행하자.
+
+### 실습4
+- rpm 패키지를 이용해서 프로그램을 설치해본다.
+
+#### step0
+
+- Server를 실행하자.
+
+#### step 1
+
+DVD에 있는 간단한 rpm 패키지를 설치하자 (DVD가 마운트되어 있지 않다면 마운트 한다).
+
+- 터미널을 연다. 명령어를 편리하게 사용할 수 있는 mc 패키지를 설치할 계획이다. rpm -qi mc 명령으로 이미 설치되어 있는지 확인하고, 설치되어 있지 않다면 <b>"cd /run/media/root/Ce[Tab]/App[Tab]/Pac[Tab]/"</b> 명령을 입력해 해당 rpm 패키지가 있는 디렉터리로 이동한 후 "<b>rpm -qip mc-[Tab]</b>" 명령을 입력해 해당 rpm 파일에 기능이 포함되어 있는지 미리 확인한다.
+
+> DVD에는 주로 기본 설치 패키지가 들어 있는 BaseOS 폴더와 주로 X 윈도 응용 프로그램 등의 추가 설치 패키지가 들어있는 AppStream 폴더로 구분되어 있다.
+
+![image33](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image33.png)
+
+- mc 패키지를 <b>rpm -Uvh mc-[Tab]</b> 명령을 입력해 설치해보자.
+
+![image34](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image34.png)
+
+- <b>rpm -qi mc</b> 명령을 입력해 설치한 패키지의 정보를 확인한다.
+
+![image35](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image35.png)
+
+- 그 외에도 <b>rpm -ql mc</b> 명령을 입력하면 이 mc 패키지와 관련된 파일의 목록을 보여준다.
+
+- 터미널에서 <b>mc</b> 명령을 입력하면 실행된다. 마우스를 사용해서 파일을 선택할 수도 있다. <b>exit</b> 명령을 입력하면 mc가 종료된다.
+
+![image36](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image36.png)
+
+- 이제 mc 패키지를 제거하자 패키지를 제기할 때는 배기지 파일이 필요 없다. 즉 /rum/media/root/CentOS-Stream-8-x86_64/AppStream/Packages/ 디렉터리가 아닌 다른 아무 디렉터리에서 제기해도 된다.
+
+- <b>rpm -e mc</b> 명령을 입력하면 된다. 즉 pm 파일 이름이 아닌 패키지 이름만 쓰면 된다.
+
+![image37](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image37.png)
+
+- 성공적으로 제거되면 아무 메시지도 나오지 않는다.
+
+#### step2
+
+의존성 문제가 있는 rpm 파일을 설치해보자.
+
+- mysql-errmsg 패키지를 설치해보자 (패키지의 기능은 중요하지 않다). 패키지를 설치하기 위해 <b>rpm-Uvh mysql-err[Tab]</b> 명령을 입력하자. 하지만 의존성 문제로 설치되지 않을 것이다. 즉 mysql-errmsg패키지가 설치되려면 관련 있는 다른 패키지를 먼저 설치해야 한다.
+
+![image38](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image38.png)
+
+- <b>의존성 문제를 해결하기 위해 메시지에 특정 파일명이나 패키지가 필요하다고 나오기는 했지만, 해당파일이나 패키지를 설치하는 데 또다시 어떤 패키지가 의존성이 있을 수도 있다.</b> 또 어떤 rpm 파일이 필요한지 알아내더라도 해당 rpm 파일이 CentOS 8 DVD에 들어 있지 않을 수도 있다. 이러한 문제를 한 번에해결하기 위해 CentOS에서는 "dnf"라는 명령을 제공한다.
+
+> <b>rpm-qRp 패키지파일이름.rpm</b> 명령을 실행해 의존성 관련 정보를 미리 살펴볼 수 있지만, 어떤 패키지를 설치해야 하는지 정확히 알아내는 것은 좀 복잡하다.
+
+- 이 외에도 강제로 패키지를 설치하는 '--force' 옵션과 의존성을 무시하고 설치하는 '--nodeps' 옵션도 사용할 수 있으나, 이러한 옵션은 정상 설치를 보장할 수 없으므로 주의해서 사용해야 한다.
+
+## 편리하게 패키지를 설치하는 DNF
+
+- RPM은 분명히 유용하지만 앞 실습에서 보았듯이 의존성 문제로 불편한 점이 발생한다. 이를 해결하기 위해 제공하는 것이 DNF Danditied yum 명령어다. DNF는 RPM과 별도라기보다 rpm 패키지를 설치하는 편리한 도구라고 생각하면 된다.
+
+>  CentOS 7까지는 패키지 설치 관리자로 YUM (Yellow Dog Updater, Modified)을 사용했으나, CentOS 8부터는 YUM의 기능이 대폭 개선된 DNF를 주로 사용한다(그래서 DNF를 Dandified Yum으로도 부르는 것 같다). DNF는 YUM과 사용법이 거의 비슷하며 저장소(Repository) 또한 동일하게 "/etc/yum.repos.d/"를 사용하기 때문에, 이전 버전의 centos 사용자도 yum 명령 대신 dnf 명령으로만 변경하면 특별히 사용법을 새로 익힐 필요가 없다. 필요하다면 yum 명령을 계속 사용할 수 있지만 dnf 명령을 사용하는 것이 속도 등에서 더 효율적이다.
+
+
+### DNF
+
+- dnf 명령은 rpm 명령의 패키지 의존성 문제를 완전히 해결해준다. 즉 특정 패키지를 설치하고자 할 때, 의존성이 있는 다른 패키지를 자동으로 먼저 설치하는 인공지능(?)을 갖춘 명령어다. 
+- rpm 명령어는 설치하려는 rpm 파일이 DVD에 있거나 인터넷에서 미리 다운로드한 후 설치해야 한다. 하지만 DNF는 CentOS 프로젝트가 제공하는 rpm 파일 저장소 Repository에서 설치할 rpm 파일은 물론, 해당 파일과 의존성이 있는 다른 rpm 파일까지 인터넷을 통해 모두 알아서 다운로드한 후 자동으로 설치까지 해준다.
+- 그러므로 사용자는 rpm 패키지 설치 시 의존성 문제를 고민하지 않아도 된다. 단, '인터넷을 통해' 다운로드한 후 설치하게 되므로 당연히 인터넷에 정상적으로 연결된 상태여야 한다.
+
+- 또한, 추가적으로 궁금해 할만한 사항은 '저장소의 URL은 어떻게 아는가?'라는 문제다. 이 저장소의 URL은 "/etc/yum.repos.d/" 디렉터리의 파일에 저장되어 있다. 이 저장소는 잠시 후 상세히 살펴보고 일단 사용법을 알아보자.
+
+### DNF의 기본 사용법
+- DNF의 기본 사용법은 무척 간단하며 대개는 이 기본 사용법으로 충분하다.
+
+#### 기본 설치 방법
+
+```
+dnf -f install 패키지이름
+```
+- 패키지를 설치한 때 사용한다. dnf install은 패키지를 다운로드한 후 사용자에게 설치 여부를 묻는 부분이 나온다. 여기서 -y 옵션을 싸주면 사용자에게 yes/no를 묻는 부분에서 무조건 ves를 입력한 것으로 간주하고 자동으로 넘어가므로 편리하다.
+
+> 주의할 점은 rpm 패키지 파일이 아닌 패키지 이름만 적어야 한다는 것이다. 예를 들어 앞에서 설치한 mc 패키지의 경우 <b>dnf -y install mc</b>까지만 적어줘야 한다. 만약 <b>dnf -y install mc-4.8.19-9.el8.x86_64.rpm</b> 명령으로 전체 rpm 패키지 파일 이름을 적으면 로컬에 있는 rpm 파일을 설치하려고 시도할 것이다.
+
+#### rpm 파일 설치 방법
+
+```
+dnf install rpm파일이름.rpm
+```
+
+- rpm 파일을 설치하고자 한다면 <b>rpm -Uvh rpm파일이름.rpm</b> 명령 대신 <b>dnf install rpm파일이름.rpm</b> 명령을 실행해 패키지를 설치할 수 있다. dnf가 rpm 명령보다 좋은 점은 <b>현재 디렉터리의 rpm 파일에 의존성 문제가 있을 때, 문제를 해결할 수 있는 파일을 인터넷에서 다운로드하여 설치한다는 점</b>이다. 앞으로 갖고 있는 rpm 파일을 설치할 때는 <b>rpm -Uvh rpm파일이름.rpm</b> 명령 대신 사용한다.
+
+#### 업데이트 가능한 목록 보기
+
+```
+dnf check-update
+```
+
+- 시스템에 설치된 패키지 중에서 업데이트가 가능한 패키지의 목록을 출력한다. 이 명령을 실행하기 전에 <b>dnf clean all</b> 명령을 실행해서 기존의 dnf 관련 임시 파일을 지우는 것이 좋다.
+
+
+#### 업데이트
+
+```
+dnf update 패키지이름
+```
+
+- 소개는 하지만 별로 사용할 필요가 없다. <b>dnf install 패키지이름</b> 명령을 실행하면 기존에 설치되지 않은 패키지는 새로 설치(install)하고, 이미 설치되어 있으면 업데이트한다. 물론 설치가 되어 있고 업데이트할 것이 없다면 그냥 실행을 끝낸다.
+
+- 아무런 옵션을 정하지 않고 <b>dnf update</b> 명령만 실행하면 업데이트 가능한 모든 패키지를 업데이트하므로 시간이 무척 오래 걸릴 것이다.
+
+#### 삭제
+
+```
+dnf remove 패키지이름
+```
+
+- 기존에 설치된 패키지를 제거한다.
+
+#### 정보 확인
+
+```
+dnf info 패키지이름
+```
+
+- 패키지의 요약 정보를 보여준다.
+
+### 실습5
+
+- 의존성 문제가 있는 패키지를 dnf 명령으로 설치해본다. 앞 \<실습 4\>에서 설치에 실패한 mysql-errmsg패키지를 설치해보겠다.
+
+#### step 0
+
+Server를 실행하고 root 사용자로 접속한다. 
+
+- 이번 실습은 모두 인터넷에서 패키지 파일을 다운로드한 후 설치하므로 CentOS DVD가 없어도 된다. 단, 네트워크는 꼭 정상적으로 작동해야 한다. DVD가 연결되어 있다면 지금 연결을 끊자.
+
+
+#### step 1
+
+앞 실습에서 설치에 실패한 mysql-errmsg 패키지를 설치하자.
+
+- 먼저 <b>dnf info mysql-errmsg</b> 명령을 입력해 설치할 패키지의 정보를 확인해보자. 입력 후 CentOS저장소(Repository) 에 접속하느라 시간이 좀 걸릴 수 있다.
+
+![image39](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image39.png)
+
+- 해당 패키지를 설치하기 위해 <b>dnf install mysql-errmsg</b> 명령을 입력한다. 인터넷상에서 의존성 있는목록을 확인한 후 몇 개를 설치해야 하는지 확인한다.
+
+> 패키지(Package)가 한글 '꾸러미'로 해석되어 있다.
+
+![image40](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image40.png)
+
+- 지금 설치할(Installing) mysql-errmsg 패키지의 경우, 먼저 의존성 있는 종속성 설치=Installing for dependencies) mariadb-connector-c-config 및 mysql-common 패키지 2개가 설치되어야 한다는 메시지가 나왔다. 총 3개의 패키지가 설치되고 총 다운로드 크기와 설치 크기(=설치 이후 크기)까지 나타낸다.
+
+- 여기서 설치하겠다는 'y'를 입력하면 관련 패키지를 모두 다운로드한 후 자동으로 설치한다. 패키지 크기에 따라 설치 시간이 달라질 것이다. 설치가 완료되면 제일 아래 행에 '완료되었습니다!'라는 메시지가 나온다.
+
+![image41](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image41.png)
+
+>  'y'를 입력하면 CentOS 프로젝트에서 운영하는 사이트에 접속을 시도한다. 그런데 종종 해당 사이트에 문제가 생겨서 접속이 안 될 수 있다. 그럴 경우 dnf 명령어는 자동으로 다른 미러 사이트(Mirror Site)에 접속을 시도한다. 메시지 중에서 Tring other mirror'라는 메시지가 나오면 정상적으로 접속되는 미러 사이트를 찾는 과정임을 알아두자.
+
+#### step2
+
+그런데 패키지를 설치한 것이 확실하다면 확인 메세지에서 'y'를 입력을 생략하는 것이 훨씬 편리하다.
+
+- 이번에는 앞에서 rpm으로 설치했던 mc 패키지를 dnf로 설치한다. <b>dnf -y install mc</b> 명령을 입력해 설치해보다.
+
+- 설치가 끝날 때까지 아무것도 묻지 않고 설치를 완료할 것이다. 앞으로 대부분의 패키지 설치는 지금과 같은 방식으로 편리하게 진행할 것이다.
+
+#### step3
+
+- 이번에는 <b>dnf -y remove mc</b> 명령을 입력해 설치된 패키지를 삭제해보자.
+
+### DNF 고급 사용법
+
+- 패키지 설치는 대부분 앞에서 사용한 <b>dnf -y install 패키지이름</b> 명령을 실행하는 것으로 충분하다. 그 외에 추가로 알아두면 좋은 것들을 확인하고 이어서 간단한 실습을 해본다.
+
+#### 패키지 그룹 설치
+
+```
+dnf groupinstall "패키지그룹이름"
+```
+
+- 패키지 그룹 설치는 패키지 그룹에 포함된 패키지들을 통째로 설치할 때 사용할 수 있다.
+- 패키지 그룹의 종류는 <b>dnf grouplist</b> 명령으로 확인할 수 있다. 
+- 설치 시 패키지 그룹의 이름은 띄어쓰기가 많으므로큰따옴표("") 안에 써야 한다
+
+####  패키지 리스트 확인
+
+```
+dnf list 패키지이름
+```
+
+- CentOS에서 제공하는 패키지 리스트를 보여준다. 일례로 <b>dnf list all</b> 명령을 실행하면 모든 패키지 목록을 보여주며, <b>dnf list httpd</b> 명령을 실행하면 httpd라는 이름이 들어간 패키지 목록을 보여준다. 그리고 <b>dnf list available</b> 명령을 실행하면 현재 설치 가능한 목록을 모두 보여준다.
+
+
+#### 특정 파일이 속한 패키지 이름 확인
+
+
+```
+dnf provides 파일이름
+```
+
+- 특정 파일이 어느 패키지에 들어 있는지 확인할 수 있다. 
+- 예를 들어 <b>dnf provides ifconfig</b> 명령은 ifconfig 명령이 들어 있는 패키지를 알려준다.
+
+#### GPG 키 검사 생략
+
+```
+dnf install --nogpgcheck rpm파일이름.rpm
+```
+
+- CentOS 8에서 인증되지 않은 rpm 파일을 dnf install로 설치하면 설치되지 않는 경우도 있다. 
+- 그런 때 '--nogpgcheck' 옵션을 사용하면 GPG 키 인증을 생략하므로 설치할 수 있다.
+
+#### 기존 저장소 목록 지우기
+
+```
+dnf clean all
+```
+
+- 기존에 다운로드한 패키지 목록을 지운 다음 <b>dnf install 패키지이름</b> 명령을 실행하면 패키지 목록을 다시 다운로드한다.
+
+### DNF의 작동 방식과 설정 파일
+
+- dnf 명령어와 관련된 설정 파일은 "/etc/yum.conf"와 "/etc/yum.repos.d/" 디렉터리가 있다. yum.conf 파일은 특별히 설정을 변경할 것이 없으므로 앞으로도 신경 쓸 필요 없다. 중요한 것은 "/etc/yum.repos.d/" 디렉터리에 있는 여러 개의 파일이다. 각 파일에는 dnf 명령을 실행했을 때 인터넷에서 해당 패키지 파일을 검색하는 네트워크 주소가 들어 있기 때문이다.
+
+![image42](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image42.png)
+
+- 앞의 \<실습 5\>에서 설치한 mysql-errmsg 패키지를 예로 위 그림의 흐름도를 살펴보자. 
+- 먼저 ①에서 dnf install mysql-errmsg 패키지 설치 명령을 입력하면, 
+- ②에서 자동으로 "/etc/yum.repos.d/" 디렉터리의 repo 파일을 확인한다. 
+- 몇 개의 파일 중 핵심 파일은 CentOS-Base.repo 파일과 CentOS-AppStream.repo 파일이다. 이 파일에는 'CentOS 8 패키지 저장소'의 인터넷 주소가 적혀 있다. 
+- 그리고 ③, ④와 같이 전체 패키지 목록 파일을 요청하고 다운로드한다. 
+- 여기서 주의할 점은 실제 패키지 파일을 다운로드하는 것이 아니며, 패키지의 이름이 들어 있는 목록만 가져온다는 것이다.
+
+- 그리고 다운로드한 패키지 목록 파일을 근거로 사용자가 요청한 mysql-errmsg 패키지와 의존성있는 패키지 목록을 이와 같이 화면에 출력한다. 
+- 그림 ⑩에서 사용자가 패키지 목록을 확인하고 설치할 의향이 있다면 모를 입력해 실제 패키지 다운로드를 요청하고 ①에서 해당 패키지 파일 (rpm 파일)을 다운로드해 자동으로 설치한다. 이 흐름에서 독자는 dnt 명령어와 y 입력하면 되며 나머지는 모두 자동으로 처리된다. 또 <b>dnf -y install</b> 패키지파일 명령을 실행하면까지 모두 한 번에 처리된다.
+
+> CentOS 8 패키지 저장소'는 CentOS 사이트(contos.org)뿐 아니라 전 세계적으로 수백 개의 동일한 저장소가 제공된다. 당연한 말이지만, 저장소가 한 곳이라면 셀 수 없을 정도로 많이 설치된 CentOS에서 실행하는 dnf 명령어 실행을 감당할 수 없을 것이다. 방금 설명한 동일한 저장소는 대학 연구소 기업체 등에서 자발적으로 참여해 구축하고 있으며 우리나라도 카카오 네이버 등 몇몇 기업에서 참여하고 있다. 이러한 동일 저장소를 미러 (mirror) 사이트라고 하며 "https://www.centos.org/download/mirrors/"에서 미러 사이트의 주소를 확인할 수 있다.
+
+- 하지만 그러한 것을 신경 쓸 필요 없이 <b>dnf -y install 패키지이름</b> 명령만 실행하면 미러 사이트 중 가장 적절한 곳에 자동으로 접속해서 다운로드한다.
+
+- 이제 repo 파일이 어떻게 구성되었는지 살펴보자. "/etc/yum.repos.d/CentOS-Stream-BaseOS.repo" 파일을 gedit로 열어보면 다음과 같다. 우선 화장명인 repo는 Repository (저장소)의 약자다.
+
+![image43](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image43.png)
+
+
+#### '#' 
+- 주석이므로 없는 것과 마찬가지다.
+
+#### name
+
+- 저장소의 이름이다. 보기 편한 것으로 아무 이름이나 지정해도 되며 별로 중요하지 않다.
+
+
+#### baseurl
+
+- URL이 적혀 있어야 한다. http, ftp, file 3가지 중 하나가 오면 된다. 독자가 저장소의 URL을 정확히 안다면 직접 적어도 된다. 
+- 여러 개가 나올 수 있는데, 지금처럼 baseurl 다음에 여러 URL이 이어져 나오면 앞의 주소가 응답하지 않을 경우 다음 주소를 확인하는 방식으로 패키지를 검색한다.
+
+#### gpgcheck
+
+- 패키지의 GPG 서명을 확인할지 여부를 1 (사용), 0(사용 안 함)으로 지정할 수 있다. 1로 지정할 경우, 이어서 gpgkey 항목을 반드시 설정해야 한다
+> GPG 서명은 GnuPG(Gnu Privacy Guard)라고도 부르는데, rpm 패키지를 인증할 때 암호화된 서명을 사용하는 방법이다. CentOS 프로젝트에서 제공하는 rpm 패키지는 GPG 서명을 함으로써 잘못된 패키지가 설치되는 일을 방지한다. 더 상세한 내용은 "https://www.gnupg.org/"를 참조하자.
+
+#### gpgkey
+
+- 앞의 gpgcheck가 1일 경우 아스키 GPG 키가 들어 있는 저장소의 URL이 적혀 있으면 된다.
+
+
+#### mirrorlist
+
+- baseurl에 설정 값(URL)이 생략되어 있으면 그 대신 mirrorlist에 적힌 URL이 사용된다. 이 mirrorlist의 URL에는 전 세계에 분포된 여러 개의 저장소가 연결되어 있다.
+
+#### enabled
+
+- 이 저장소를 사용할지의 여부를 1 (사용), 0 (사용 안함)으로 지정할 수 있다. 이 행을 생략하면 기본값은 1이다.
+
+- 이 중에서 꼭 필요한 것은 [식별자]와 name, baseurl, gpgcheck 정도다. 지금까지 repo 파일 안의 내용을 길게 설명했는데, 사실 이 내용을 잘 몰라도 CentOS의 dnf 명령을 사용하는 데 별 문제가 없다.
+
+- 기본으로 제공되는 repo 파일은 특별히 변경하지 않는 것이 바람직하지만, 만약 시간이 오래 지나서 CentOS 8의 URL이 변경된다면 dnf 명령어가 작동하지 않을 수 있다. 이럴 때는 직접 이 파일의 내용을 수정해주면 된다. 그럼 이 파일을 직접 변경하는 방법을 실습해보자.
+
+# 실습6
+
+- DNF의 고급 기능을 실습해보자.
+
+### step0
+
+- \<code\>Server\</code> Server를 처음 설치 상태로 초기화하자 
