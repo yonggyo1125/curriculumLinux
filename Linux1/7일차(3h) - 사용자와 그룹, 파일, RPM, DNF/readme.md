@@ -6,7 +6,10 @@
 
 - 우선 gedit이나 vi 에디터로 "/etc/passwd" 파일을 열면 다음과 같이 된다.
 
-... 사진
+![image1](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image1.png)
+
+![image2](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image2.png)
+
 
 - 여러 명의 사용자가 보일 것이다. 제일 위의 root 사용자부터 제일 아래의 바로 위인 tcpdump 사용자까지는 리눅스에서 기본적으로 존재하는 표준 사용자다.
 
@@ -21,8 +24,10 @@
 - 제일 아래의 centos 사용자를 살펴보면, 사용자 이름은 centos 암호가 x로 표시되는데 이는 "/etc/shadow" 파일에 비밀번호가 지정되어 있다는 의미다. 그리고 centos의 사용자 id는 1000번이고, centos가 속한 그룹의 id는 1000번이다. 전체 이름도 centos로 사용하며 centos 사용자의 홈 디렉터리는 "/home/centos"이고 로그인 시 제공되는 셸은 /bin/bash다
 - root 사용자의 행을 살펴보면 사용자 id와 그룹 id가 0번으로 설정되어 있음을 확인할 수 있다. 이번에는 "/etc/group" 파일을 확인해보자.
 
-... 그림 
 
+![image3](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image3.png)
+
+![image4](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image4.png)
 
 - 각 행의 의미는 다음과 같다.
 
@@ -154,17 +159,24 @@ Server를 처음 설치 상태로 초기화하자
 
 새로운 사용자를 만들어보자 (사용자 생성 작업은 root 사용자만 할 수 있다).
 
-- useradd user1 명령을 입력해 user l 사용자를 만들자.
+- useradd user1 명령을 입력해 user1 사용자를 만들자.
+
+![image5](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image5.png)
 
 - "tail /etc/passwd" 명령을 입력해 user1 사용자가 추가되었는지 확인한다(tail은 파일의 마지막 10행을 보여주는 명령이다).
 	- 제일 마지막 행에 사용자가 추가된 것이 보인다. 사용자 이름은 앞에서 지정한 user1으로 되어 있다. 그리고 암호는 "/etc/shadow" 파일에 지정되어 있다. 3번째 열에서 user1의 ID는 1001 번으로 되어 있는데, 이는 그 앞에 있는 centos의 1000번 다음에 자동으로 1을 더해서 할당된 것이다. 그룹 ID도 1001번으로 지정되어 있다. 
 	- 여기서 주의할 점은 그룹 이름이 아닌 그룹 ID가 지정되어 있다는 점이다. 왜 그런지는 잠시 후 다시 살펴보겠다. 사용자의 홈 디렉터리는 기본 설정인 '/home/사용자이름으로 지정되었고, 셸은 기본 설정인 "/bin/bash"로 지정되었다.
 
+![image6](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image6.png)	
+	
+
 - user 사용자는 그룹을 별도로 지정하지 않았다. 우선 "tail -5 /etc/group" 명령을 입력해 그룹을 확인해보자.
 	- 제일 마지막 행에 그룹이 추가되었다. 그룹 이름을 보니 사용자 이름과 동일한 user 으로 되어 있으며, 그룹 ID는 자동으로 마지막 그룹 번호인 1000에서 1이 증가한 1001로 생성되었다.
 	- 결론적으로 useradd 명령을 실행해 별도의 그룹을 지정하지 않으면, 자동으로 사용자 이름과 동일한 그룹이 생성되고 새로운 사용자는 생성된 그룹에 자동으로 포함된다. 즉 새로 생성된 그룹(여기서는 user1)은 소속된 사용자가 1명인그룹이 된다.
 
-- 많은 사용자를 관리할 때 지금과 같은 방식으로 관리하면 '사용자 이름 = 그룹 이름'이 되어 관리하기불편하다(직원 이름이 '홍길동'인데 직원의 부서 이름도 '홍길동'이면 좀 이상하다). 그래서 사용자를 관리할경우 먼저 그룹을 만들고 사용자를 만든 그룹에 속하도록 생성하는 것이 바람직하다.
+![image7](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image7.png)	
+
+- 많은 사용자를 관리할 때 지금과 같은 방식으로 관리하면 '사용자 이름 = 그룹 이름'이 되어 관리하기불편하다(직원 이름이 '홍길동'인데 직원의 부서 이름도 '홍길동'이면 좀 이상하다). <b>그래서 사용자를 관리할경우 먼저 그룹을 만들고 사용자를 만든 그룹에 속하도록 생성하는 것이 바람직하다.</b>
 
 #### step 2
 
@@ -172,21 +184,34 @@ Server를 처음 설치 상태로 초기화하자
 
 - 먼저 user 사용자를 삭제한다. 그리고 centosGroup 그룹을 먼저 만든다.
 
+![image8](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image8.png)	
+
 - 새로운 user1, user2 사용자를 만들면서 그룹을 centosGroup 그룹으로 지정해준다.
+
+![image9](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image9.png)	
 
 - "/etc/passwd" 파일을 확인해보니 그룹 ID가 모두 1001로 되어 있다. "/etc/group" 파일에서 1001번은centosGroup임을 알 수 있다.
 
 - "/etc/shadow" 파일을 확인해보면 제일 아래에 user1, user2라는 두 사용자가 추가되었음을 알 수 있다. 그런데 centos의 경우 암호가 코드화되어 들어 있지만, user1 user2는 해당 부분에 '!!'라는 표시만되어 있다. 이는 아직 암호가 지정되어 있지 않다는 의미다.
 
+![image10](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image10.png)	
+
 - user1 사용자와 user2 사용자의 암호를 지정하자. 둘 다 간단하게 '1234'로 입력한다.
 
 > 간단한 암호 입력 시 경고는 나오지만, root 사용자가 암호를 지정해줄 경우에는 간단한 암호도 지정할 수 있다. 단, 일반 사용자가 자신의 암호를 변경할 때는 간단한 암호가 아닌 8글자 이상으로 영어 사전에 등록되지 않은 단어를 사용해야 한다.
 
+![image11](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image11.png)	
+
+
 - 다시 /etc/shadow 파일을 확인하면 user1과 user2 사용자에 암호가 지정된 것을 알 수 있다. 그런데 재미있는 점은 앞서 두 사용자의 암호를 모두 '1234'로 입력했으나 코드화된 암호는 서로 다르다는것이다. 이는 "/etc/shadow" 파일을 살펴보더라도 암호를 알 수 없다는 것을 의미한다.
+
+![image12](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image12.png)	
 
 - 이번에는 userl 사용자의 홈 디렉터리인 "/home/user1"과 "/etc/skel" 디렉터리를 비교해보자. 두 디렉터리에 동일한 파일이 들어 있을 것이다. 즉 새로운 사용자를 생성하면 해당 사용자의 홈 디렉터리 기본 설정은 '/home/사용자이름'으로 지정되며, "/etc/skel" 디렉터리의 모든 내용을 사용자의 홈 디렉터리에 복사하는 작업이 발생한다. 그러므로 앞으로 생성하는 사용자에게 특정한 파일 등을 배포하고 싶은 경우 "/etc/skel" 디렉터리에 넣어두면 된다.
 
 > 이름에서 예측할 수 있듯이 '/skel' 디렉터리는 skeleton (뼈대)의 약자다.
+
+![image13](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image13.png)	
 
 
 #### step 3
@@ -198,11 +223,19 @@ Server를 처음 설치 상태로 초기화하자
 groupdel centosGroup
 ```
 
+![image14](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image14.png)	
+
 # 파일과 디렉토리의 소유권과 허가권
 
 - 리눅스는 각각의 파일과 디렉터리마다 소유권과 허가권이라는 속성이 있다. root 사용자가 자신의 홈 디렉터리에서 <b>touch sample.txt</b> 명령을 실행해 빈 파일을 만들고 <b>Is -I</b> 명령을 실행하면 다음과 같이 나타날 것이다.
 
+![image15](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image15.png)	
+
+
 - 방금 생성한 sample.txt 파일 정보를 다음과 같이 간략히 나타냈다.
+
+![image16](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image16.png)	
+
 
 - 표시된 정보의 의미를 각 항목별로 확인해보자.
 
@@ -221,17 +254,56 @@ groupdel centosGroup
 
 - sample.txt 파일의 허가권을 다음과 같이 숫자로도 표현할 수 있다.
 
+<table>
+	<thead>
+		<tr>
+			<th colspan='3'>소유자(User)</th>
+			<th colspan='3'>그룹(Group)</th>
+			<th colspan='3'>그 외 사용자(Other)</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>r</td>
+			<td>w</td>
+			<td>-</td>
+			<td>r</td>
+			<td>-</td>
+			<td>-</td>
+			<td>r</td>
+			<td>-</td>
+			<td>-</td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td>2</td>
+			<td>0</td>
+			<td>4</td>
+			<td>0</td>
+			<td>0</td>
+			<td>4</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td colspan='3'>6</td>
+			<td colspan='3'>4</td>
+			<td colspan='3'>4</td>	
+		</tr>
+	</tbody>
+</table>
+
 - 소유자의 허가권인 이라는 숫자는 2진수 110 이므로 rw-로 표현할 수 있고, 그룹의 허가권인 4 라는 숫자는 2진수 100이므로 r--로, 그 외 사용자의 허가권인 4 라는 숫자도 2진수로 100이므로 r--로 표현되는 것이다. 몇 가지 예를 들면, 파일 허가권이 754 라는 것은 rwxr-xr--가 되므로 소유자는 읽고/쓰고/실행할 수 있고, 그룹은 읽고/실행할 수만 있으며 그 외 사용자는 읽을 수만 있다는 것을 의미한다. 참고로 <b>디렉터리 (=폴더)의 경우 해당 디렉터리로 이동하려면 반드시 실행 (x)권한이 있어야 한다. 그래서 디렉터리는 일반적으로 소유자/그룹/기타 사용자 모두에게 실행 (x) 권한이 설정되어 있을 것이다.</b>
 
 #### 파일 확장명
 
 - Windows의 경우 \*.exe는 실행 파일, \*.txt는 텍스트 파일 등과 같이 확장명으로 해당 파일의 종류를 판단하지만, <b>리눅스는 확장자에 별 의미를 두지 않는다.</b> 즉 실행 파일이든 텍스트 파일이든 모두 일반적으로 확장명을 갖지 않으며, 확장명을 갖더라도 편리함을 위해서일 뿐 확장명이 파일의 종류를 판단하는 절대적인 의미는 아니다. 그래서 해당 파일이 어떤 파일인지 알려면 file 명령을 사용해야 한다.
 
-- 파일의 허가권을 변경하는 명령어로 chmod 명령이 있다. 이 명령어는 root 사용자 또는 해당 파일의 소유자만 실행할 수 있다. 일례로 chmod 777 sample.txt 명령을 실행하면 sample.txt 파일은 모든 사용자가 읽고 쓰고, 실행할 수 있는 파일이 된다.
+- 파일의 허가권을 변경하는 명령어로 chmod 명령이 있다. 이 명령어는 root 사용자 또는 해당 파일의 소유자만 실행할 수 있다. 일례로 <b>chmod 777 sample.txt</b> 명령을 실행하면 sample.txt 파일은 모든 사용자가 읽고 쓰고, 실행할 수 있는 파일이 된다.
 
 > 파일의 허가권을 실행할 수 있도록 설정되어 있어도, 파일이 실제로 실행 가능한 코드가 아니라면 실행 시 오류가 발생할 것이다. Windows에서 그림 파일인 mypic.jpg 파일을 실행 파일인 mypic.exe로 확장명을 변경할 수 있지만, mypic.exe가 실제로 실행되지 않는 것과 같은 이치다.
 
-- chmod 명령을 상대 모드(symbolic method)로도 사용할 수 있다. <b>chmod u+x 파일이름</b> 명령은 '소유자(User)에게 실행 execute 권한을 허가하라 (+)'는 의미다. 몇 가지 예를 들면, u-wx는 사용자에게 쓰기와 실행 권한을 제거하라는 의미며, g+rx는 그룹에게 읽기와 실행 권한을 허가하라는 의미고, o+rwx는 그 외 사용자에게 읽기/쓰기/실행 권한을 허가하라는 의미다.
+- chmod 명령을 상대 모드(symbolic method)로도 사용할 수 있다. <b>chmod u+x 파일이름</b> 명령은 '소유자(User)에게 실행(execute) 권한을 허가하라 (+)'는 의미다. 몇 가지 예를 들면, u-wx는 사용자에게 쓰기와 실행 권한을 제거하라는 의미며, g+rx는 그룹에게 읽기와 실행 권한을 허가하라는 의미고, o+rwx는 그 외 사용자에게 읽기/쓰기/실행 권한을 허가하라는 의미다.
 
 
 ### 파일 소유권
@@ -249,12 +321,16 @@ Server를 실행해 root 사용자로 접속한다.
 
 - 터미널을 열고 연습용 파일을 하나 생성하자. <b>vi test</b> 명령을 입력한 후 "I" 또는 "A"를 눌러 다음 내용을 쓴 다음 ':wq'를 입력해 내용을 저장하고 vi 에디터를 종료한다. 아직 vi 에디터에 익숙하지 않다면 gedit test 명령을 입력해 gedit을 사용해도 관계없다 (한/영 전환은 [shift] + Space bar)다).
 
+
+
 ```
 안녕하세요? 그냥 연습 파일입니다.
 ls /car
 ```
 
 - Is -I test 명령를 입력해 파일의 속성을 확인하자.
+
+![image17](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image17.png)	
 
 - 이 파일은 허가권이 rw-r--r--로 설정되어 있고 소유자는 root 사용자이며 그룹은 root 그룹으로 되어있다. 즉 root 사용자는 이 파일을 rw- (읽고, 쓰고) 할 수 있고 x (실행) 할 수 없다. 또 root 그룹 및 그 외 사용자는 r-- (읽기)만 가능하다.
 
@@ -268,18 +344,30 @@ ls /car
 whoami   -> 현재 사용자가 누구인지 알려줌
 ./test       -> 현재 디렉토리의 test 파일 실행('./'는 현재 디렉토리에 있는 파일을 의미함)
 ```
-	- 허가가 거부되었다는 메시지가 나왔다. 현재 사용자인 root의 실행 권한이 rw--이므로 실행할 수 없기 때문이다.
+
+![image18](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image18.png)	
+
+- 허가가 거부되었다는 메시지가 나왔다. 현재 사용자인 root의 실행 권한이 rw--이므로 실행할 수 없기 때문이다.
 
 - 이 파일을 실행할 수 있도록 rwxr-xr-x (755)로 변경하기 위해 <b>chmod 755 test</b> 명령을 입력한다. 그리고 <b>Is -I test</b> 명령을 입력해 test 파일의 변경 사항이 있는지 확인한다. 마지막으로 <b>./test</b> 명령을 입력해 다시 파일을 실행해본다.
+
+![image19](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image19.png)	
+
+- 일단 실행이 되었다. 하지만 첫 번쨰 행인 '안녕하세요~~'는 명령이 아니고 오류가 발생했고, 두 번째 행인 'ls /var'은 실행되어 /var 디렉토리의 내용이 출력되었다. 이렇듯 실행 코드가 없는 파일을 실행되도록 변경하는 것은 주의해야 한다.
 
 ### step 2
 
 이번에는 소유권을 변경해보자.
 
-- 먼저 chown centos test 명령을 입력해 test 파일의 소유권을 centos 사용자로 변경한다.
+- 먼저 <b>chown centos test</b> 명령을 입력해 test 파일의 소유권을 centos 사용자로 변경한다.
 
-- chgrpcentos test 명령을 입력해 그룹도 centos 그룹으로 변경한다.
-	- 사용자와 그룹을 한꺼번에 바꾸려면 chown centos.centos test 또는 chown centos:centos test 명령을 입력한다.
+![image20](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image20.png)	
+
+- <b>chgrp centos test</b> 명령을 입력해 그룹도 centos 그룹으로 변경한다.
+
+![image21](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image21.png)	
+
+- 사용자와 그룹을 한꺼번에 바꾸려면 <b>chown centos.centos test</b> 또는 <b>chown centos:centos test</b> 명령을 입력한다.
 
 - 이제는 centos 사용자로 접속한 후 test 파일의 속성을 모두 읽기/쓰기/실행(777)할 수 있도록 변경한다.
 
@@ -288,8 +376,9 @@ su - centos    -> centos 사용자로 접속(root)가 접속할 경우 암호를
 pwd             -> 현재 디렉토리의 확인. 사용자 홈 디렉토리가 나올 것임
 ls -l /root/test
 ls -ld /root    -> /root 디렉토리의 속성 확인
-
 ```
+
+![image22](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image22.png)
 
 - 그런데 앞에서 test 파일의 소유권을 centos에게 확실히 넘겨줬는데도 centos 사용자는 "/root/test" 디렉터리 접근이 거부되었다. 그 이유는 "/root" 디렉터리의 속성이 r-xr-x---로 되어 있기 때문이다. 마지막 '---'가 기타 사용자의 허가권인데, 아무런 읽기/쓰기/실행 권한이 허가되지 않았으므로 centos 사용자는 '/root' 디렉터리의 접근이 거부된 것이다. 그래서 '/root' 디렉터리 안에 있는 test 파일의 소유가 centos 사용자에게 있더라도 사용할 수 없다.
 
@@ -303,30 +392,19 @@ ls -l test
 chmod 777 test
 ls -l test
 ```
-	- 별 이상 없이 잘 실행되었다.
+
+![image23](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image23.png)
+
+- 별 이상 없이 잘 실행되었다.
 
 
 - 이번에는 <b>chown root.root test</b> 명령을 입력해 test의 소유권을 다시 root 사용자에게 돌려준다.
-	- 그런데 명령을 허용하지 않는다는 메시지가 나온다. 정상적인 상황이다. 만약 이 test 파일이 심각한 바이러스 파일이고 지금 명령이 실행되었다면 centos 사용자가 마음대로 root 사용자에게 바이러스 파일을 전달하게 되는 것이다. 그러므로 파일의 소유권을 바꾸는 chown 명령은 root 사용자만 실행할 수 있다. 
+
+![image24](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image24.png)
+
+- 그런데 명령을 허용하지 않는다는 메시지가 나온다. 정상적인 상황이다. 만약 이 test 파일이 심각한 바이러스 파일이고 지금 명령이 실행되었다면 centos 사용자가 마음대로 root 사용자에게 바이러스 파일을 전달하게 되는 것이다. 그러므로 <b>파일의 소유권을 바꾸는 chown 명령은 root 사용자만 실행할 수 있다.</b> 
 
 - exit 명령을 입력해 다시 root 사용자로 돌아온다.
-
-
-#### 특수한 형태의 파일 권한
-
-- 파일의 허가권은 앞에서 배운 rwx 외에도 특수한 용도의 setuid, setgid, stiky bit가 있다. 앞에서는 파일의 허가권을 주로 8진수 000~777 로 3자리만 표현했으나, 실제로는 8진수 0000~0777까지 4자리로 표현할 수 있다. 첫 번째 자리의 8진수를 2진수로 표현하면 1002(=4), 0102(=2), 0012(=1), 000z(=0) 네 가지중 하나가 올 수 있는데, 지금까지는 모두 2진수 0002로 취급하고 언급했던 것이다.
-
-- setuid bit
-	- 8진수 네 자리 중 첫 번째 값을 1002(=4)로 표현하는 것을 setuid 부르는데, 리눅스의 파일 중 비밀번호를 지정하는 "/bin/passwd"가 이에 해당한다. "/bin/passwd" 파일의 속성을 확인하면 다음과 같이 표시된다.	<br> <b>-rwsr-xr-x. 1 root root 27880 8월 4 16:44 /bin/passwd</b>
-	
-	- 이 파일은 root의 소유이므로 원칙적으로는 root만 접근할 수 있으나, 47558(=rwsr-xr-x)로 설정되었기 때문에 일반 사용자도 실행할 수 있다. 단, 실행하는 순간에 root의 권한을 잠깐 빌려와서 사용하는 효과를 갖는다. passwd 명령의 경우 root가 모든 사용자의 비밀번호를 변경할 수 있다는 점은 기억하고 있을 것이다. 하지만 일반 사용자도 passwd 명령으로 자신의 비밀번호는 변경할 수 있었다. 그 이유가 이 파일이 setuid로 설정되어 있기 때문이다. setuid로 설정하려면 <b>chmod u+s 파일명</b> 명령을 사용한다. 하지만 특별한 경우가 아니라면 사용자의 파일을 setuid bit로 설정하는 것은 보안상 바람직하지 않다.
-
-- setgid bit
-	- 8진수 네 자리 중 첫 번째 값을 010>(=2)로 표현하는 것을 setgid라 부르는데, setuid bit와 작동 개념이 비슷하다. 단, 사용자가 아닌 그룹에 대해서 적용된다고 보면 된다.
-	
-- stiky bit
-	- 8진수 네 자리 중 첫 번째 값을 0012(=1)로 표현하는 것을 stiky bit라 부른다. stiky bit는 여러 사람이 공유할 디렉터리에 주로 설정되는데, stiky bit로 설정된 디렉터리 안에서는 모든 사용자가 파일/디렉터리를 생성해 사용할 수 있지만, 다른 사용자의 파일을 삭제하지는 못한다. stiky bit로 설정한 디렉터리는 회사에서 업무상 공유할 내용들을 업로드시키는 목적으로 주로 사용된다. stiky bit로 설정하려면 <b>chmod o+t 파일명</b> 등의 명령을 사용한다.
-
 
 ### 링크
 
@@ -334,9 +412,11 @@ ls -l test
 
 #### inode
 
-- inode는 리눅스/유닉스의 파일 시스템에서 사용하는 자료구조를 말하는데, 파일이나 디렉터리의 여러 가지 정보가 있다. 모든 파일이나 디렉터리는 각자 1개씩의 inode가 있으며 각 inode에는 해당 파일의 소유권 허기권, 파일 종류 등의 정보와 해당 파일의 실제 데이터 위치(주소)도 있다. 이러한 inode가 모여 있는 공간이 inode 블록이며 일반적으로 전체 디스크 공간의 1% 정도 차지한다. Data 블록은 실제 데이터가 저장된 디스크 공간으로 전체 디스크의 대부분을 차지한다.
+- <b>inode</b>는 리눅스/유닉스의 파일 시스템에서 사용하는 자료구조를 말하는데, <b>파일이나 디렉터리의 여러 가지 정보</b>가 있다. 모든 파일이나 디렉터리는 각자 1개씩의 inode가 있으며 <b>각 inode에는 해당 파일의 소유권 허기권, 파일 종류 등의 정보와 해당 파일의 실제 데이터 위치(주소)도 있다.</b> 이러한 inode가 모여 있는 공간이 <b>inode 블록</b>이며 일반적으로 전체 디스크 공간의 1% 정도 차지한다. <b>Data 블록은 실제 데이터가 저장된 디스크 공간</b>으로 전체 디스크의 대부분을 차지한다.
 
-- 원본 파일에 심볼릭 링크를 생성하면 새로운 inode2를 만들고, 데이터는 원본 파일과 연결되는 효과를 갖는다. 일반적으로 사용자는 주로 심볼릭 링크를 사용하며, Windows의 바로 가기 아이콘도 심볼릭 링크에 해당된다. 심볼릭 링크를 생성하려면 <b>In -s 링크대상파일이름 링크파일이름</b> 명령을 실행한다. 개념이 잘 이해되지 않는다면 실습을 통해 이해해보자.
+- <b>원본 파일에 심볼릭 링크를 생성하면 새로운 inode2를 만들고, 데이터는 원본 파일과 연결되는 효과를 갖는다.</b> 일반적으로 사용자는 주로 심볼릭 링크를 사용하며, Windows의 바로 가기 아이콘도 심볼릭 링크에 해당된다. 심볼릭 링크를 생성하려면 <b>In -s 링크대상파일이름 링크파일이름</b> 명령을 실행한다. 개념이 잘 이해되지 않는다면 실습을 통해 이해해보자.
+
+![image25](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image25.png)
 
 #### 하드 링크와 심볼릭 링크의 비교
 
@@ -353,6 +433,8 @@ ls -l test
 
 - "/root/linktest" 디렉터리를 만들고 그 안에 basefile이란 파일을 만들자. 그리고 vi 에디터나 gedit을 이용해 “파일 링크를 실습하기 위한 원본 파일입니다."를 입력하고 저장한 후 cat 명령을 사용해 파일 내용을 확인하자.
 
+![image26](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image26.png)
+
 ### step 2
 
 하드 링크와 심볼릭 링크를 확인해보자.
@@ -367,12 +449,14 @@ cat hardlink   -> 하드 링크의 내용 확인
 cat softlink    -> 소프트 링크의 내용 확인
 ```
 
-	- 앞에 나온 그림 보면서 결과 창을 확인하자. 
-	- 원본 파일(basefile)은 inode가 inodel(1573326번)으로 지정되어 있다. 그리고 하드 링크 파일(hardlink)도 그림과 마찬가지로 inodel(1573326번)으로 지정되어 있다. 
-	- 그러나 심볼릭 링크 파일(softlink)은 inode2(1573324번)로 다르게 지정되어 있다. 
-	- 원본 파일(basefile)과 하드 링크 파일(hardlink)은 Data 블록에 같은 원본 파일 데이터를 사용하므로 크기가 61바이트로 동일하며, 심볼릭 링크 파일(softlink)은 별도의 원본 파일 포인터를 갖기 때문에 8바이트로 크기가 다르다.
+![image27](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image27.png)
+
+- 앞에 나온 그림 보면서 결과 창을 확인하자. 
+- 원본 파일(basefile)은 inode가 inodel(1573326번)으로 지정되어 있다. 그리고 하드 링크 파일(hardlink)도 그림과 마찬가지로 inodel(1573326번)으로 지정되어 있다. 
+- 그러나 심볼릭 링크 파일(softlink)은 inode2(1573324번)로 다르게 지정되어 있다. 
+- 원본 파일(basefile)과 하드 링크 파일(hardlink)은 Data 블록에 같은 원본 파일 데이터를 사용하므로 크기가 61바이트로 동일하며, 심볼릭 링크 파일(softlink)은 별도의 원본 파일 포인터를 갖기 때문에 8바이트로 크기가 다르다.
 	
-	- 파일 이름에서도 심볼릭 링크 파일 (softlink)은 원본 파일 (basefile)을 지정한다는 의미로 화살표(→)가 표시되어 있다.
+- 파일 이름에서도 심볼릭 링크 파일 (softlink)은 원본 파일 (basefile)을 지정한다는 의미로 화살표(→)가 표시되어 있다.
 	
 - 원본 파일 (basefile)을 다른 곳으로 이동시키고 하드 링크 파일(hardlink)과 심볼릭 링크 파일(softlink)을 확인해보자.
 
@@ -382,10 +466,15 @@ ls -il
  car hardlink
  cat softlink
 ```
-	
-	- 결과를 보면 하드링크는 디렉토리 원본 파일이 없어져도 아무 이상이 없고, 심볼릭 링크는 디렉토리에서 원본파일이 없어지면 연결이 끊어진다.
+
+![image28](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image28.png)
+
+
+- 결과를 보면 하드링크는 디렉토리 원본 파일이 없어져도 아무 이상이 없고, 심볼릭 링크는 디렉토리에서 원본파일이 없어지면 연결이 끊어진다.
 
 - 원본 파일을 현재 디렉토리로 가져와서 다시 한 번 확인해보면 심볼릭 링크가 원상태로 복구되었음을 확인할 수 있다.
+
+![image29](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image29.png)
 
 
  # 리눅스 관리자를 위한 명령어
