@@ -4,6 +4,10 @@
 - 문의 답변 및 공지사항 전달을 위해 오픈채팅을 개설합니다.
 - [코리아IT인천 - 리눅스(저녁반)](https://open.kakao.com/o/gkxGpHpe)
 
+## 실습용 가상머신 파일 다운로드
+
+- [다운로드](https://drive.google.com/drive/folders/1jLtrrE4Lmq77pJLYgrvCEe5UiDm9AcCA?usp=sharing)
+
 # Linux 1 (60시간)
 
 * 1~2일차(6h)

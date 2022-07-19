@@ -810,7 +810,7 @@ dnf clean all
 ![image43](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image43.png)
 
 
-#### '#' 
+#### #
 - 주석이므로 없는 것과 마찬가지다.
 
 #### name
@@ -846,9 +846,51 @@ dnf clean all
 - 기본으로 제공되는 repo 파일은 특별히 변경하지 않는 것이 바람직하지만, 만약 시간이 오래 지나서 CentOS 8의 URL이 변경된다면 dnf 명령어가 작동하지 않을 수 있다. 이럴 때는 직접 이 파일의 내용을 수정해주면 된다. 그럼 이 파일을 직접 변경하는 방법을 실습해보자.
 
 # 실습6
+이번에는 여러 개의 패키지 묶음인 '패키지 그룹'을 설치해보자.
 
-- DNF의 고급 기능을 실습해보자.
+#### step0
+- 패키지 그룹은 <b>dnf grouplist</b> 명령을 입력해 확인할 수 있다. 그런데 X 윈도상에서는 패키지 그룹 이름이 한글로 나온다. '패키지 그룹 이름'으로 패키지 그룹을 설치할 경우 오히려 한글이 불편하므로 영문 패키지 그룹 이름을 파악해보자. <b>chvt 3</b> 명령을 입력해 가상 콘솔 3번의 텍스트 모드로 가서 root 사용자로 접속한다.
 
-### step0
+> X 윈도 터미널에서 dnf grouplist 명령을 입력하면 한글 환경이므로 패키지 그룹 이름이 한글로 나온다. 패키지 그룹 이름을 한글로 사용해도 관계없지만, 텍스트 모드에서는 한글을 지원하지 않으므로 영문 패키지 그룹 이름 사용을 권장한다. 참고로 hidden 옵션은 CentOS에서 갖고 있는 모든 그룹 패키지를 보여준다.
 
-- \<code\>Server\</code> Server를 처음 설치 상태로 초기화하자 
+- 다음 명령으로 패키지 그룹의 이름을 glist.txt 에 저장하고 다시 X 윈도 모드로 돌아온다.
+
+```
+dnf clean all   -> 기존 dnf 저장소 정보 초기화
+dnf grouplist hidden > glist.txt  -> 결과를 glist.txt 파일에 저장(시간이 조금 걸릴 수 있음)
+chvt 2    -> X 윈도(2번 콘솔)로 돌아감
+```
+
+
+![image48](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image48.png)
+
+- cd 명령으로 root의 홈 디렉터리로 이동한 후 gedit /root/glist.txt & 명령으로 목록 파일을 열어보자 (&는 백그라운드로 실행하라는 명령이다).
+
+![image49](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image49.png)
+
+- 패키지 환경 그룹(Available Environment Groups) 이미 설치된 패키지 그룹(Installed Groups) 및 추가로 설치 가능한 패키지 그룹(Available Groups) 등으로 나눠서 표시된다.
+
+- 먼저 패키지 그룹은 패키지 파일(\*.rpm)을 필요한 주제에 따라 묶어놓은 것으로 1개 이상의 패키지 파일을 포함한다. 패키지 환경 그룹은 더 큰 단위로 패키지 그룹을 주제에 따라 묶어놓은 것이라고 생각하면 된다. 즉 '패키지 파일(\*.rpm)  -> 패키지 그룹 -> 패키지 환경 그룹'으로 포함 관계를 갖는다.
+
+-  패키지 그룹 중에서 Server에 설치되지 않은 패키지 그룹인 Java Platform을 설치해보자. <b>dnf -y groupinstall “Java Platform"</b> 명령을 입력해 Java 개발 관련 패키지 그룹을 설치하자 (패키지 그룹 이름은 큰따옴표("")로 묶어줘야 한다).
+
+![image50](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/7%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%EC%99%80%20%EA%B7%B8%EB%A3%B9%2C%20%ED%8C%8C%EC%9D%BC%2C%20RPM%2C%20DNF/images/image50.png)
+
+
+#### step1
+- 이어지는 실습을 위해서 미리 Server 가상머신을 초기화한다
+
+
+- 이상으로 CentOS에서 패키지 (프로그램)를 추가/제거하는 방법을 모두 살펴보았다. 결론적으로 RPM은 인터넷에서 다운로드한 1개의 rpm 파일을 설치할 때, <b>rpm -Uvh rpm파일이름.rpm</b> 명령 또는 <b>dnf install rpm파일이름.rpm</b>으로 사용하면 된다. 그 외에 CentOS 프로젝트에서 제공되는 패키지라면 <b>dnf install 패키지이름</b> 명령으로 설치하는 것이 훨씬 간편하고 강력하다.
+
+## 실습7
+- dnf 명령어로 Server (B)에 X 윈도가 작동되도록 추가 설치해보자 (이번 실습은 약 1GB의 파일을 다운로드한 후 설치하므로 상당히 오랜 시간이 걸릴 수 있다).
+
+- Server(B)를 초기화한 후, 메모리를 1.5GB (=1536MB) 이상으로 올리고 부팅한다. 
+- 패키지 환경 그룹 중에서 다음 명령으로 Workstation을 설치하면 된다 (-x rpm 옵션은 설치 시 충돌 문제 때문에 rpm 패키지를 제외시키기 위해 사용했다). 
+
+```
+dnf x rpm -y groupinstall Workstation
+```
+
+- 설치 완료 후 재부팅하고 startx 명령으로 X 윈도를 시작한다.
