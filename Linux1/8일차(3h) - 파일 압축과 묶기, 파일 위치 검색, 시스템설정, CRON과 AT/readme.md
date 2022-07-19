@@ -112,9 +112,31 @@
 
 * * * 
 # 파일 위치 검색
+
 - 리눅스에서 특정 파일의 위치를 검색하는 명령어는 다음과 같다. 가장 많이 사용되는 명령어는 find다. 다음 
 
 
 #### find 경로 옵션 조건 action
 
+- 옵션  -> -name, -user(소유자), -newer(전, 후), -perm(허가권), -size(크기)
+- action -> -print(기본값), -exec(외부 명령 실행)
 
+- 기본 사용 예
+
+```
+# find /etc -name "*.conf"  -> '/etc' 디렉토리 하위에 확장자명이 "*.conf"인 파일 검색
+# find /home -user centos  -> '/home' 디렉토리 하위에 소유자가 centos인 파일 검색
+# find ~ -perm 644    -> 현재 사용자의 홈디렉토리 하위에 허가권이 644인 파일 검색
+# find /usr/bin -size +10k -size -100k
+		-> /usr/bin 디렉토리 하위의 파일 크기가 10KB~100KB인 파일 검색
+```
+
+- 고급 사용 예
+
+```
+# find ~ -size 0k -exec ls -l { } \;
+		-> 현재 사용자의 홈 디렉터리 하위에 파일 크기가 0인 파일의 목록을 상세히 출력
+		
+# find /home -name "*.swp" -exec rm { } \;
+		-> /home 디렉토리의 하위에 확장명이 *.swp인 파일 삭제
+```
