@@ -39,7 +39,7 @@
 - 앞서 살펴본 "/etc/passwd" 파일에서는 centos 사용자가 속한 그룹이 1000번으로 표현되었다. 즉 "/etc/group" 파일에서도 centos 그룹의 ID가 1000번이므로 centos 그룹에는 centos 사용자가 속해 있는 것이다. 
 - 사용자 및 그룹과 관련된 명령어는 다음과 같은 것들이 있다. 
 
-#### useradd(또는 addUser)
+#### useradd(또는 adduser)
 
 - 새로운 사용자를 추가해준다. 
 - 이 명령을 실행하면 "/etc/passwd", "/etc/shadow", "/etc/group" 또는 파일에 새로운 행이 추가된다.
