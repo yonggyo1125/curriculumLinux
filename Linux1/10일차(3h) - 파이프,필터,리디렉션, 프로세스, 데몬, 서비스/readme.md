@@ -113,10 +113,24 @@
 
 - 터미널에서 <b>yes \> /dev/null</b> 명령을 입력해 무한루프를 도는 단순한 프로세스를 생성하자.
 
+![image1](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/10%EC%9D%BC%EC%B0%A8(3h)%20-%20%ED%8C%8C%EC%9D%B4%ED%94%84%2C%ED%95%84%ED%84%B0%2C%EB%A6%AC%EB%94%94%EB%A0%89%EC%85%98%2C%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%2C%20%EB%8D%B0%EB%AA%AC%2C%20%EC%84%9C%EB%B9%84%EC%8A%A4/images/image1.png)
+
 > <b>yes</b> 명령은 단순히 yes라는 글자를 화면에 무한출력한다. /dev/null 은 아무것도 아닌(아무 반응도 하지 않는) 장치를 말한다.
 
 - 터미널 메뉴의 [파일] → [새창]을 선택해서 터미널을 하나 더 열고 <b<ps -ef | grep yes</b> 명령으로 프로세스 번호를 확인한다. 다음을 살펴보면 제일 앞에 나오는 root는 프로세스의 소유주고 그 다음 6559은 프로세스 번호며 그다음 2670는 부모 프로세스 번호다. 프로세스 번호를 확인했다면 <b>kill -9 6559</b> 명령을 입력해 프로세스를 종료한다.
 
 > <b>ps -ef | grep 프로세스이름</b> 명령의 결과 중에서 'grep --color=auto yes'라는 글자가 들어간 행은 무시한다.
+
+![image2](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/10%EC%9D%BC%EC%B0%A8(3h)%20-%20%ED%8C%8C%EC%9D%B4%ED%94%84%2C%ED%95%84%ED%84%B0%2C%EB%A6%AC%EB%94%94%EB%A0%89%EC%85%98%2C%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%2C%20%EB%8D%B0%EB%AA%AC%2C%20%EC%84%9C%EB%B9%84%EC%8A%A4/images/image2.png)
+
+![image3](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/10%EC%9D%BC%EC%B0%A8(3h)%20-%20%ED%8C%8C%EC%9D%B4%ED%94%84%2C%ED%95%84%ED%84%B0%2C%EB%A6%AC%EB%94%94%EB%A0%89%EC%85%98%2C%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%2C%20%EB%8D%B0%EB%AA%AC%2C%20%EC%84%9C%EB%B9%84%EC%8A%A4/images/image3.png)
+
+- kill 명령으로 프로세스를 종료하면 기존의 다른 터미널에서 실행되던 것이 자동으로 종료되는 것을 확인할 수 있다. 현재 작동 중인 포그라운드 프로세스를 그냥 종료하려면 프로세스가 실행되고 있는 터미널에서 Ctrl + C 를 눌러도 된다.
+
+#### step2
+
+포그라운드 프로세스 → 백그라운드 프로세스 포그라운드 프로세스로 프로세스 상황을 바꿔보자.
+
+
 
 
