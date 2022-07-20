@@ -131,6 +131,32 @@
 
 포그라운드 프로세스 → 백그라운드 프로세스 포그라운드 프로세스로 프로세스 상황을 바꿔보자.
 
+- 다시 <b>yes > /dev/null</b> 명령을 입력해 포그라운드 프로세스를 생성한다.
+- Ctrl + Z 를 눌러 프로세스를 일시 중지시키고, <b>bg</b> 명령을 입력해서 잠시 중지된 프로세스를 백그라운드 프로세스로 계속 실행시킨다
 
+![image4](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/10%EC%9D%BC%EC%B0%A8(3h)%20-%20%ED%8C%8C%EC%9D%B4%ED%94%84%2C%ED%95%84%ED%84%B0%2C%EB%A6%AC%EB%94%94%EB%A0%89%EC%85%98%2C%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%2C%20%EB%8D%B0%EB%AA%AC%2C%20%EC%84%9C%EB%B9%84%EC%8A%A4/images/image4.png)
 
+- <b>jobs</b> 명령을 입력하면 현재 백그라운드로 가동 중인 프로세스를 확인할 수 있다. 제일 앞에 나오는 것이 작업 번호다. <b>fg 작업번호</b> 명령을 입력하면 다시 포그라운드 프로세스로 만들 수 있다.
+
+![image5](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/10%EC%9D%BC%EC%B0%A8(3h)%20-%20%ED%8C%8C%EC%9D%B4%ED%94%84%2C%ED%95%84%ED%84%B0%2C%EB%A6%AC%EB%94%94%EB%A0%89%EC%85%98%2C%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%2C%20%EB%8D%B0%EB%AA%AC%2C%20%EC%84%9C%EB%B9%84%EC%8A%A4/images/image5.png)
+
+- Ctrl + C를 눌러 프로세스를 종료한다.
+
+#### step3
+
+명령을 실행할 때 처음부터 백그라운드로 실행되도록 해보자
+
+- gedit 명령을 입력해서 gedit을 실행한다. 그런데 명령을 입력한 터미널은 더 이상 사용할 수 없다.
+
+- gedit을 종료하고 이번에는 <b>gedit &</b> 명령을 입력한다. 터미널을 계속 사용할 수 있다. 즉 <b>명령어 뒤에 붙이는 &는 백그라운드로 프로세스를 실행하겠다는 의미</b>다.
+
+![image6](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/10%EC%9D%BC%EC%B0%A8(3h)%20-%20%ED%8C%8C%EC%9D%B4%ED%94%84%2C%ED%95%84%ED%84%B0%2C%EB%A6%AC%EB%94%94%EB%A0%89%EC%85%98%2C%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%2C%20%EB%8D%B0%EB%AA%AC%2C%20%EC%84%9C%EB%B9%84%EC%8A%A4/images/image6.png)
+
+- 이처럼 프로세스 실행 시 바로 백그라운드 프로세스로 만들 수 있다. 즉 모든 명령어 뒤에 &를 붙이면 자동으로 백그라운드로 실행된다. 그런데 사용 시 주의할 사항이 있다.
+
+- firefox, gedit 등은 별도의 창에서 실행되므로 백그라운드로 실행해도 아무 문제가 없다. 또 xz, bzip2, gzip 같은 압축 프로그램으로 대용량 압축 파일을 만든다면 시간이 오래 걸릴 텐데 이럴 때 백그라운드 프로세스로 실행하면 유용할 것이다.
+
+- 하지만 vi 에디터와 같이 현재 터미널에서 입출력해야 하는 프로세스를 백그라운드 프로세스로 실행하는 것은 아무런 의미가 없다. 즉 다음과 같이 <b>vi 파일이름 &</b> 명령을 실행해도 화면에서 입출력할 수 없으므로 무의미하다는 뜻이다.
+
+![image7](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/10%EC%9D%BC%EC%B0%A8(3h)%20-%20%ED%8C%8C%EC%9D%B4%ED%94%84%2C%ED%95%84%ED%84%B0%2C%EB%A6%AC%EB%94%94%EB%A0%89%EC%85%98%2C%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%2C%20%EB%8D%B0%EB%AA%AC%2C%20%EC%84%9C%EB%B9%84%EC%8A%A4/images/image7.png)
 
