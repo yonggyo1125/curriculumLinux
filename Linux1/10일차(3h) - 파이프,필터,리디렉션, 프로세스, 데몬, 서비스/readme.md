@@ -160,3 +160,8 @@
 
 ![image7](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/10%EC%9D%BC%EC%B0%A8(3h)%20-%20%ED%8C%8C%EC%9D%B4%ED%94%84%2C%ED%95%84%ED%84%B0%2C%EB%A6%AC%EB%94%94%EB%A0%89%EC%85%98%2C%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%2C%20%EB%8D%B0%EB%AA%AC%2C%20%EC%84%9C%EB%B9%84%EC%8A%A4/images/image7.png)
 
+## 서비스 
+
+- <b>데몬(daemon)이라고도 부르는 서비스(service)는 서버 프로세스를 말한다.</b> 즉 서비스는 웹서버, 네임서버, DB 서버 등의 프로세스를 지칭한다. 또는 웹 서버 데몬, 네임 서버 데몬 등으로 부르기도 한다. 
+- 서비스는 눈에 보이지 않지만 현재 시스템에서 동작 중인 프로세스이므로 백그라운드 프로세스의 일종이라고 할 수 있다. 바로 이어서 나오는 서버 유형과 밀접한 관련이 있으므로, 우선은 '서비스=데몬서버 프로세스' 정도로만 이해해두자.
+
