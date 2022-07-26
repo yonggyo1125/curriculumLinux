@@ -82,7 +82,7 @@ GRUB_BACKGROUND="/boot/grub2/wall.png"
 
 - <b>su -c 'grub2-mkconfig -o /boot/grub2/grub.cfg'</b> 명령을 입력해 변경된 내용을 새로 GRUB에 적용시킨다.
 - <b>reboot</b> 명령어를 입력해 재부팅한다.
-- <b>이제 초기 GRUB 화면에 설정한 배경 이미지가 출력될 것이다.
+- 이제 초기 GRUB 화면에 설정한 배경 이미지가 출력될 것이다.
 
 ![image11](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image11.png)
 
