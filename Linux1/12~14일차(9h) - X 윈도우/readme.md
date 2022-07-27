@@ -196,9 +196,136 @@ ISO 파일을 마운트해서 사용해보자.
 
 ### 웹 브라우저 - Firefox
 
+- CentOS에서 기본으로 제공하는 웹 브라우저이며 많은 기능과 안전성을 제공한다. 필요한 경우 최신 버전으로 업그레이드할 수도 있다.
+
+- Firefox는 CentOS에서도 제공하지만 최신 버전은 http://www.mozilla.or.kr/ 에서 직접 다운로드할 수 있다. 실습을 통해 직접 업그레이드해보자. 
+
+## 실습3 
+- Firefox를 직접 다운로드해서 최신 버전으로 업그레이드하자. 또 현재 영문판 Firefox를 한글판 Firefox로 변경하자.
+
+###step0
+
+Client를 처음 설치 상태로 초기화하자.
+
+- Client 가상머신의 RAM을 2GB (=2048 MB)로 올리고 부팅하자.
+- Client 가상머신은 centos 사용자로 자동 로그인된다.
+
+### step 1
+
+기존에 설치된 Firefox 버전을 확인해보자.
+
+- [현재 활동] → [Firefox]를 선택해서 Firefox를 실행한 후 오른쪽 끝 '더보기 메뉴' 아이콘을 클릭하 [도움말] → [firefox 정보]를 선택해 버전을 확인한다.
+
+![image30](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image30.png)
+
+- 터미널에서 <b>rpm -gi firefox</b> 명령을 입력해 버전을 확인할 수도 있다. 버전은 91.10.0 이고 이 프로그램의 URL도 보여준다.
+
+![image31](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image31.png)
+
+- 한국어용 최신 버전을 다운로드하기 위해 https://www.mozilla.org/ko/firefox/all/ 에 접속한 후 아래로 스크롤해서 한국어 버전 64bit Linux용을 클릭하고 다운로드하자. 현재 시점의 최신 버전이 다운로드된다. 잠시 기다리면 다운로드가 시작되는데 \<파일 저장\>을 선택해서 저장해놓는다.
+
+![image32](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image32.png)
+
+![image33](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image33.png)
+
+### step2
+
+- 다운로드가 완료되면 열린 웹 브라우저를 닫는다. 그리고 다운로드한 Firefox 새 버전을 설치한다.
+
+- 원칙적으로는 기존의 Firefox를 <b>dnf remove firefox</b> 명령으로 삭제해야 하지만, 이런 경우 메뉴의 아이콘 등이 사라지고 다시 등록해야 하는 번거로움이 있으므로 그냥 최신 파일로 덮어씌우는 방식을 사용한다.
+
+- 다운로드한 파일의 압축을 풀고 새로운 버전의 Firefox를 사용하자. 다음 명령을 차례로 실행하면 된다.
+
+```
+cd ~/다운로드/   
+	-> 현재 사용자의 '다운로드' 디렉토리로 이동(/home/centos/다운로드/ 디렉토리)
+tar xfj fire[Tab]    -> 압축 풀기
+su           -> root 사용자 권한 얻기
+mv firefox /usr/local/
+chown -R root.root /usr/local/firefox/
+	-> Firefox 관련 파일을 모두 root 사용자 소유로 변경
+cd /usr/local/bin/
+ln -s /usr/local/firefox/firefox .
+	-> 현재 디렉토리(/usr/local/bin/)에 firefox 링크를 새로 생성(제일 뒤에 . 이 있다)
+```
+
+![image34](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image34.png)
+
+
+- [현재 활동] -> [Firefox]를 실행한다.
+- [Firefox를 기본 브라우저로 설정] 을 클릭한다.
+
+![image35](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image35.png)
+
+- 오른쪽 끝 Firefox 메뉴의 [도움말] → [Firefox 정보]를 선택해 비전을 확인하면 한글판 103.0으로 바뀐 것을 확인할 수 있다.
+
+![image36](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image36.png)
+
 ### 메일 클라이언트 - 에볼루션
+
+- 에볼루션(Evolution)은 MS Outlook과 비슷한 기능을 하는 이메일 클라이언트로, 처음 실행할 때 메일서버와 계정을 입력해야 한다. evolution 패키지를 설치한 후 [현재 활동] → [에볼루션]을 선택하거나 터미널에서 <b>evolution</b> 명령을 실행하면 된다. 
+
+![image37](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image37.png)
 
 ### 메신저 - 피진
 
+- 피진은 Bonjour, Google Talk, ICQ 등의 메신저 서비스 프로그램으로 사용할 수 있다. [현재 활동] -> [프로그램 표시] -> [Pidgin] 을 선택하거나 터미널에서 <b>pidgin</b> 명령을 실행하면 열 수 있다.
+
+![image38](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image38.png)
+
 ### FTP 클라이언트 - gftp
+
+- CentOS 8에서는 gftp를 제공하지 않으므로, Fedora Linux 29의 사이트( https://archives. fedoraproject.org/pub/archive/fedora/linux/releases/29/Everything/x86_64/os/Packages/g/gftp-2.0.19-19.fc29.x86_64.rpm )에서 다운로드한 후 <b>su -c 'dnf -y install gftp\*.rpm'</b> 명령으로 설치한다.
+
+- 설치 후에는 [현재 활동] -> [프로그램 표시] -> [gFTP]를 클릭하거나 <b>gftp</b>명령을 실행하면 열 수 있다.
+
+![image39](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image39.png)
+
+![image40](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image40.png)
+
+![image41](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image41.png)
+
+## 사운드 설정
+
+### 사운드 설정
+
+- CentOS 8은 설치될 때 대부분의 사운드 카드를 인식해서 자동으로 설치한다.
+
+- 지금 사용하는 Client 가상머신에는 사운드 카드가 설치되어 있다. X 윈도 화면 오른쪽 위의 [설정] 아이콘을 클릭하거나 
+- <b>gnome-control-center</b> 명령을 실행한 후, [설정]창이 열리면 왼쪽 아래에 있는 [소리] 아이콘을 클릭한다. [소리] 창에서 기본 사운드 설정을 할 수 있다. 
+- 출력 음량을 어느 정도 올리고 [스피커 시험]을 클릭해서 테스트할 수도 있다.
+
+![image42](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image42.png)
+
+### 음량 조정
+
+- 바탕 화면 오른쪽 위에 있는 [볼륨] 아이콘을 클릭하면 된다. 아래의 [소리 설정]을 클릭하면 다음처럼 사운드 설정 창이 나온다.
+
+![image43](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image43.png)
+
+
+## 멀티미디어 응용 프로그램
+
+### 음악 재생과 인터넷 라디오 재생
+
+- [현재 활동] → [리듬박스]를 클릭하거나 <b>rhythmbox</b> 명령을 실행하면 열 수 있다. 왼쪽의 [라디오]를 클릭하면 재생 가능한 인터넷 라디오 방송국이 나온다.
+
+![image44](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image44.png)
+
+### DVD 재생 및 동영상 플레이어
+
+- [현재 활동] → 프로그램 표시 → [모두] → [동영상]을 선택한다. 또는 <b>totem</b> 명령을 실행해도 된다. 
+- 위쪽 [채널]을 클릭하고 "The Guardian Videos"를 클릭하면 인터넷상에서 제공되는 동영상을 볼 수 있다.
+
+- 동영상을 보려면 코덱(Codec)을 설치해야 하는데 일반적인 과정은 좀 복잡하므로 다음 URL에서 다운받아 설치한다.
+
+- [http://download.hanbit.co.kr/centos/8/ffmpeg.tar.bz2](http://download.hanbit.co.kr/centos/8/ffmpeg.tar.bz2) 
+
+- 코덱 설치 방법
+	- <b>su</b> 명령어로 root 권한을 얻는다. 
+	- <b>tar xfj ffmpeg.tar.bz2</b> 명령으로 압축을 푼다.
+	- ffmpeg 폴더로 이동해서 <b>dnf -y install \*.rpm</b> 명령으로 관련 rpm을 설치한다.
+	- 동영상 플레이어를 종료하고 다시 실행한다.
+	
+![image45](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image45.png)
 
