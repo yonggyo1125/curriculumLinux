@@ -329,3 +329,78 @@ ln -s /usr/local/firefox/firefox .
 	
 ![image45](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image45.png)
 
+## 문서 편집기/뷰어
+
+### gedit
+- 일반적인 텍스트 편집기로 Windows의 메모장 정도라고 보면 된다. 
+- [현재 활동] → [프로그램 표시] → [텍스트 편집기]를 선택하거나 gedit 명령을 실행한다.
+
+
+### 문서보기
+
+- PDF, XPS, TIFF 등의 다중 문서를 볼 수 있는 간편한 뷰어 프로그램이다. 
+- [현재 활동] → [프로그램 표시] → [유틸리티] → [문서 보기]를 선택하거나 <b>evince</b> 명령을 실행한다.
+
+![image46](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image46.png)
+
+## Foxit PDF Reader
+
+무료이며 PDF 파일 전용 뷰어인 Foxit Reader를 사용해보자.
+
+### 실습4
+
+Foxit Reader를 설치하고 사용하자.
+
+#### step 0
+
+Client를 처음 설치 상태로 초기화하자
+
+- Client 가상머신의 RAM을 2GB (=2048 MB)로 올리고 부팅하자.
+- Client 가상머신은 centos 사용자로 자동 로그인된다.
+
+#### step 1
+
+설치 파일을 다운로드하자.
+
+- 웹 브라우저로 https://www.foxitsoftware.com/downloads/ 에 접속한 후 Foxit Reader(FoxitReader.enu.setup.2.4.4.0911.x64.run.tar.gz) 파일을 다운로드하자. 그리고 \<파일 저장\>을 선택해서 파일을 저장해놓자. 다운로드가 완료되면 웹 브라우저를 닫는다.
+
+- 다운로드 폴더로 이동한 후 터미널에서 다음 명령을 실행하고 설치하자.
+
+```
+cd ~/다운로드/   -> 현재 사용자의 '다운로드' 디렉토리로 이동
+ls -l Foxit*
+tar xfz Foxit* -> 압축 해제
+ls
+./Foxit*.run  -> 설치 진행(기본값으로 진행)
+```
+- 나머지는 계속 \<Next\> 및 \<Finish\>를 클릭해서 진행한다.
+
+#### step 2
+
+설치가 완료된 Foxit Reader를 실행해보자.
+
+- [현재 활동] → [프로그램 표시] → [Foxit Reader]를 선택한다. 2-2 메뉴의 [도움말] → [언어] → [영어]를 선택해서 영문 환경으로 만든다.
+
+> Foxit Reader는 한글 환경에서 약간의 충돌이 발생할 수 있다.
+
+- 메뉴의 [파일] → [열기]를 선택해서 pdf 파일을 연다. 사용법은 Windows용 Foxit Reader와 동일하다.
+
+
+## CD/DVD 레코딩-브라세로
+
+- CentOS 8은 CD/DVD를 레코딩하는 툴로 브라세로(Briasero)라는 프로그램을 제공한다. \<실습 2\>에서 사용한 것과 마찬가지로 일반적인 CD/DVD 레코딩 프로그램과 사용법이 비슷해 쉽게 사용할 수 있다.
+
+- 바탕 화면 왼쪽 위의 [현재 활동] → [프로그램 표시] → [브라세로]를 선택하거나 <b>brasero</b> 명령을 실행하면 된다.
+
+![image47](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image47.png)
+
+## 그래픽 프로그램
+
+- Windows의 경우 많은 그래픽 응용 프로그램이 존재한다. 예를 들면 포토샵(Photoshop)이나 페인트샵(Pantshop) 같은 그래픽 편집 프로그램과 각종 그래픽 뷰어 프로그램이 있다. 
+- CentOS도 이와 유사한 기능을 하는 프로그램을 제공하며, 특히 GIMP(GNU Image Manipulation Program)는 포토샵과 비교해도 거의 대등한 기능과 역할을 수행하는 뛰어난 그래픽 편집 프로그램이다.
+
+### 그래픽 편집 - GIMP
+
+- Windows의 포토샵과 비슷한 그래픽 응용 프로그램이다. 
+- 먼저 <b>su-c 'dnf -y install gimp'</b> 명령을 실행해 설치한다. 
+- 설치 후 메뉴의 [현재 활동] → [프로그램 표시] → [GNU Image Manipulation Program]을 선택하거나 <b>gimp</b> 명령을 실행한다.
