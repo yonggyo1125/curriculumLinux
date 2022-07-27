@@ -203,7 +203,7 @@ ISO 파일을 마운트해서 사용해보자.
 ## 실습3 
 - Firefox를 직접 다운로드해서 최신 버전으로 업그레이드하자. 또 현재 영문판 Firefox를 한글판 Firefox로 변경하자.
 
-###step0
+### step0
 
 Client를 처음 설치 상태로 초기화하자.
 
@@ -364,6 +364,8 @@ Client를 처음 설치 상태로 초기화하자
 
 - 웹 브라우저로 https://www.foxitsoftware.com/downloads/ 에 접속한 후 Foxit Reader(FoxitReader.enu.setup.2.4.4.0911.x64.run.tar.gz) 파일을 다운로드하자. 그리고 \<파일 저장\>을 선택해서 파일을 저장해놓자. 다운로드가 완료되면 웹 브라우저를 닫는다.
 
+![image48](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image48.png)
+
 - 다운로드 폴더로 이동한 후 터미널에서 다음 명령을 실행하고 설치하자.
 
 ```
@@ -373,18 +375,23 @@ tar xfz Foxit* -> 압축 해제
 ls
 ./Foxit*.run  -> 설치 진행(기본값으로 진행)
 ```
+
+![image49](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image49.png)
+
 - 나머지는 계속 \<Next\> 및 \<Finish\>를 클릭해서 진행한다.
 
 #### step 2
 
 설치가 완료된 Foxit Reader를 실행해보자.
 
-- [현재 활동] → [프로그램 표시] → [Foxit Reader]를 선택한다. 2-2 메뉴의 [도움말] → [언어] → [영어]를 선택해서 영문 환경으로 만든다.
+- [현재 활동] → [프로그램 표시] → [Foxit Reader]를 선택한다. 
+- 메뉴의 [도움말] → [언어] → [영어]를 선택해서 영문 환경으로 만든다.
 
 > Foxit Reader는 한글 환경에서 약간의 충돌이 발생할 수 있다.
 
 - 메뉴의 [파일] → [열기]를 선택해서 pdf 파일을 연다. 사용법은 Windows용 Foxit Reader와 동일하다.
 
+![image50](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image50.png)
 
 ## CD/DVD 레코딩-브라세로
 
@@ -404,3 +411,158 @@ ls
 - Windows의 포토샵과 비슷한 그래픽 응용 프로그램이다. 
 - 먼저 <b>su-c 'dnf -y install gimp'</b> 명령을 실행해 설치한다. 
 - 설치 후 메뉴의 [현재 활동] → [프로그램 표시] → [GNU Image Manipulation Program]을 선택하거나 <b>gimp</b> 명령을 실행한다.
+
+![image51](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image51.png)
+
+
+### 그림 보기 -eog(Eye Of Gnome)
+
+- Windows의 [사진] 앱 같이 여러 가지 그림 파일을 보여주는 그래픽 뷰어 프로그램이다. 
+- [현재 활동] → [프로그램 표시] → [유틸리티] → [이미지 보기]를 선택하거나 eog 명령을 사용한다.
+
+![image52](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image52.png)
+
+### 스크린샷
+
+- 화면을 캡쳐할 때 사용한다. [현재 활동] → [프로그램 표시] → [유틸리티] → [스크린샷]을 실행하면 된다.
+
+![image53](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image53.png)
+
+### LibreOffice(리브레오피스)
+
+- PC의 활용도가 가장 높은 분야 중 하나는 바로 문서 작성 및 표 계산일 것이다. 이번에는 Microsoft Office와 견주어도 별로 뒤떨어지지 않으며 오픈 소스로 제공되는 LibreOffice를 사용해보자. 이 프로그램의 특징은 MS Office와 호환성이 아주 우수하다는 점이다. 따라서 MS Office 때문에 Windows에서 리눅스로 옮기지 못하는 사용자에게는 어느 정도 보상이 될 것이다. 또 사용법도 크게 르지 않으므로 짧은 시간에 익숙하게 사용할 수 있다.
+
+- MS Office에 워드(Word), 엑셀(Excel), 파워포인트(Powerpoint), 액세스(Access)가 있듯이 LibreOffice에도 워드에 대응하는 라이터(Writer), 엑셀에 대응하는 캘크(Calc), 파워포인트에 대응하는 임프레스(Impress), 액세스에 대응하는 베이스(Base)가 있다. 그 외에 그리기 툴인 드로우(Draw), 수식 작성 툴인 매쓰(Math)도 제공한다.
+
+> LibreOffice 제품<br><br>LibreOffice는 원래 OpenOffice라는 제품에서 갈라져 나온 제품이다. OpenOffice는 오랫동안 오픈 소스오피스 제품으로 사용되어 왔으나, OpenOffice를 후원하는 오라클(Oracle)사의 정책에 반발해서 2010년11월, 많은 개발자가 OpenOffice에서 독립해 LibreOffice를 개발하게 되었다. LibreOffice의 Libre'는 라틴어로 자유(Free)를 의미한다. 즉 '자유롭게 사용할 수 있는 오피스'라는 의미를 담은 이름이다. LibreOffice는 Windows용, Mac용, Linux용 모두를 무료로 배포하며 한국어 사이트는 http://ko.libreoffice.org/ 다.
+
+### 실습5
+ 
+- 리브레오피스 최신 버전을 설치하자.
+
+
+#### step0
+
+Client 가상머신에서 진행한다.
+
+#### step1
+
+https://ko.libreoffice.org/download/libreoffice-fresh/ 주소에서 Linux x64 (rpm)용 [기본 설치 프로그램]과 [한국어 언어팩]을 내려받자.
+
+![image54](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image54.png)
+
+#### step2
+
+다운로드 받은 파일을 설치하자.
+
+다운로드 받은 파일은 설치 rpm 파일인 LibreOffice_7.3.5_Linux_x86-64_rpm.tar.gz(252MB)와 한글팩인 LibreOffice_6.3.3_Linux_x86-64_rpm_langpack_ko.tar.gz(0.8MB)다. 두 파일의 압축을 tar xfz 명령으로 각각 푼다.
+
+![image55](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image55.png)
+
+- 압축이 풀린 ~/다운로드/LibreOffice_7.3.5.2_Linux_x86-64_rpm/RPMS/ 폴더로 이동해서 <b>su -c 'dnf -y install \*.rpm'</b> 명령으로 설치를 시작한다. 리브레오피스 관련 파일이 모두 설치될 것이다.
+
+![image56](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image56.png)
+
+- 설치가 완료ㅕ되면 다시 ~/다운로드/LibreOffice_7.3.5.2_Linux_x86-64_rpm_langpack_ko/RPMS/ 폴더로 이동해서 <b>su -c 'dnf -y install \*.rpm</b> 명령으로 설치를 시작한다. 한글 언어팩이 설치될 것이다.
+
+![image57](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image57.png)
+
+#### step 3
+
+- 설치가 완료되었다.
+- 터미널에서 <b>libreoffice7.3</b> 명령을 실행한다.
+
+![image58](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image58.png)
+
+### 워드프로세서 – Writer
+
+- [현재 활동] → [프로그램 표시] → [LibreOffice Writer]를 선택하거나 <b>libreoffice7.3 --writer</b> 명령을 실행한다. MS Word의 파일 포맷인 doc와 docx를 지원하며, PDF 파일로 저장하는 기능도 있다. 
+
+### 스프레드시트 - Calc
+
+- [현재 활동] - [프로그램 표시] → [LibreOffice Calc]를 선택하거나 <b>libreoffice7.3 --calc</b> 명령을 실행한다. MS Excel의 파일 포맷인 xls xlsx 를 지원하며, PDF 파일로 저장하는 기능도 있다. 
+
+### 프레젠테이션 툴 - Impress
+
+-[현재 활동] → [프로그램 표시] → [LibreOffice Impress]를 선택하거나 <b>libreoffice7.3 --impress</b>명령을 실행한다. MS Powerpoint의 파일 포맷인 ppt와 pptx를 지원하며, PDF 파일로 저장하는기능도 있다.
+
+## 소프트웨어 센터
+
+- CentOS는 '소프트웨어 센터'라는 응용 프로그램 스토어를 제공한다. CentOS 소프트웨어 센터에서는 검색을 통해 원하는 소프트웨어를 클릭만으로 설치할 수 있다. 
+- 소트프웨어 센터를 실행하려면 [현재 활동]→[소프트웨어]를 선택한다.
+
+> 소프트웨어 센터에서 검색되는 패키지는 터미널에서 dnf 명령으로 설치해도 된다.
+
+![image59](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image59.png)
+
+- 필요한 소프트웨어를 클릭하거나 검색해서 설치하면 된다. 이미 설치된 소프트웨어는 오른쪽 위에 파란색으로 체크 표시가 되어 있다.
+- 설치되지 않은 소프트웨어를 클릭해서 \<설치\>를 클릭하면 자동으로 다운로드 및 설치가 된다.
+- 설치 완료 후 \<실행\>을 클릭하면 실행된다.
+
+* * * 
+# 리눅스에서 Windows 응용 프로그램 실행
+
+- 리눅스에서 Windows 응용 프로그램을 사용하는 방법은 여러 가지로 연구되어 왔고, 지금도 계속 개발 및 발전 중이다. 그중 가장 확실한 방법은 가상머신 소프트웨어를 이용하는 것이다. 지금 우리가 Windows 환경에서 VirtualBox를 이용해 리눅스를 사용하듯이, 리눅스 환경에서도 가상머신 소프트웨어를 이용해서 Windows를 사용할 수 있다.
+
+- 리눅스에서 가동이 가능한 가상머신 소프트웨어로는 VMware Workstation for Linux, Oracle VirtualBox for Linux, KVM/Qemu, Xen 등이 있으며, CentOS에서 자체적으로 제공하는 가상머신 소프트웨어도 있다. CentOS에서 설치 가능한 Oracle VirtualBox 가상머신 프로그램을 사용해보겠다.
+
+> Windows 응용 프로그램 작동<br><br>리눅스에서 Windows 응용 프로그램을 작동시키는 방법에는 가상머신을 사용하지 않고 직접 Windows 응용 프로그램을 설치하도록 도와주는 프로그램도 있다. Wine, PlayOnLinux, CrossOver 등이 대표적인 패키지며, 필요한 경우 자세한 사용법은 독자가 직접 인터넷을 검색해보자. 설정이 좀 까다롭고 생각만큼 Windows 응용 프로그램이 원활하게 작동하지 않을 수도 있다.
+
+## 실습6
+
+가상머신 프로그램을 이용해 CentOS 안에 Windows를 설치해보자.
+
+### step 0
+
+- Client를 처음 설치 상태로 초기화하자.
+- 부팅하면 자동으로 centos 사용자로 접속된다.
+
+### step 1
+
+- VirtualBox를 사용하는 데 필요한 추가 패키지를 미리 설치하자. 
+- 터미널에서 다음 명령을 실행하면 약 100개 이상의 패키지가 설치될 것이다. 설치가 완료되면 exit 를 2회 입력해서 터미널을 닫는다.
+
+```
+su -   -> root로 접속
+dnf -y install make perl patch kernel-devel elfutils-libelf-devel
+```
+
+### step 2
+
+- 오라클사에서 제작한 VirtualBox라는 가상머신 프로그램을 설치해보자.
+
+- 웹 브라우저로 https://www.virtualbox.org/wiki/Linux_Downloads 에 접속해서 [Oralce Linux8 / Red Hat Enterprise Linux 8 / CentOS 8]을 클릭한 후 다운로드하자.
+
+![image60](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image60.png)
+
+- 터미널을 열고 다음 명령으로 다운로드한 VirtualBox를 설치하자.
+
+```
+cd ~/다운로드/   -> 폴더 이동
+ls Virtual*    -> 파일 확인
+su -c 'dnf -y install Virtual*'  -> 설치
+```
+
+![image61](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image61.png)
+
+- VirtualBox를 사용하기 위해 마지막 설정을 진행하자.
+
+```
+su -
+usermod -a -G vboxusers centos   -> centos 사용자를 vboxusers 그룹에 추가
+/usr/lib/virtualbox/vboxdrv.sh setup  -> 시간이 몇 분 걸림
+/sbin/vboxconfig   -> 시간이 몇 분 걸림
+exit
+```
+
+![image62](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image62.png)
+
+### step 3
+
+- 가상머신을 생성하자.
+- [현재 활동] → [프로그램 표시] → [Oralce VM VirtualBox]를 실행하거나 <b>virtualbox</b> 명령을 입력한다. [Oracle VM VirtualBox 관리자]가 실행되면 \<새로 만들기\>를 클릭한다.
+
+![image63](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/12~14%EC%9D%BC%EC%B0%A8(9h)%20-%20X%20%EC%9C%88%EB%8F%84%EC%9A%B0/images/image63.png)
+
+
+
