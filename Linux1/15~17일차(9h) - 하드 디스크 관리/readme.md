@@ -559,6 +559,8 @@ mdadm 명령을 이용해 실제 RAID를 구성하자
 /dev/md0    /raid0    ext4    defaults     0  0
 ```
 
+![image42](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image42.png)
+
 #### step3
 
 - <b>mdadm --detail/dev/md0</b> 명령을 입력해 구축한 RAID 0을 자세히 확인해보자.
@@ -569,6 +571,50 @@ mdadm 명령을 이용해 실제 RAID를 구성하자
 앞의 RAID 0과 거의 동일하다.
 
 ### 실습5
+
+- RAID 1을 구성해보자.  /dev/sdf 와  /dev/sdg를 사용한다.
+
+#### step0
+
+- 앞의 \<실습 4\>에 이어서 진행해야 한다.
+
+#### step1
+
+- 하드디스크 파티션 등의 선처리 작업은 이미 되어 있으므로 생략한다.
+
+#### step2
+
+<b>mdadm</b> 명령을 이용해서 실제 RAID를 구성하자.
+
+- 다음 명령을 참고해 /dev/sdf1 과 /dev/sdg1 을 RAID 1 장치인 /dev/md1 로 생성하고, 잘 생성되었는지 확인해본다.
+
+```
+mdadm --create /dev/md1 --level=1 --raid-devices=2 /dev/sdf1 /dev/sdg1
+	-> 'Continue creating array?' 메시지가 나오면 y를 입력해서 계속 진행한다.
+	
+mdadm --detail --scan
+```
+> RAID 1 생성 시 나오는 경고 메시지는 부팅 장치로 사용할 수 없다는 경고다. 지금 만드는 RAID 1은 부팅 장치로 사용할 일이 없으므로 관계 없다.
+
+- <b>mkfs.ext4 /dev/md1</b> 또는 <b>mkfs -t ext4 /dev/md1</b> 명령을 입력해 /dev/md1 파티션 장치를 포맷한다.
+
+- <b>mkdir /raid1</b> 명령를 입력해 마운트할 디렉터리 (/raid1) 를 생성하고, <b>mount /dev/md1 /raid1</b> 명령을 입력해 마운트시킨다. 그리고 <b>df</b> 명령으로 확인한다.
+
+![image43](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image43.png)
+
+
+- RAID 0인 /raid0 디렉터리의 용량이 약 2GB 정도인데, RAID 1인 /raid 디렉터리는 1GB 정도 밖에 되지 않는다는 것을 확인할 수 있다. 동일한 데이터를 2회 저장하므로 실제 가용 용량은 2GB의 절반인 1GB 정도로 나온다.
+
+
+-  이번에는 컴퓨터를 켤 때 언제든지 /dev/md] 장치가 /raid 디렉터리에 마운트되어 있도록 설정하자. /etc/fstab 파일을vi 에디터나 gelit으로 열어서 맨 아랫부분에 다음을 추가하면 된다.
+
+```
+/dev/md1    /raid1    ext4    defaults    0  0
+```
+
+#### step3
+
+- <b>mdadm --detail /dev/md1</b> 명령을 입력해 구축한 RAID 1을 자세히 확인한다.
 
 
 
