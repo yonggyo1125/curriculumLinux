@@ -372,7 +372,7 @@ Command : w   -> 설정 저장
 		</tr>
 		<tr>
 			<td>1GB</td>
-			<td colspan='3'>RAID5</td>
+			<td rowspan='3'>RAID5</td>
 		</tr>
 		<tr>
 			<td>1GB</td>
