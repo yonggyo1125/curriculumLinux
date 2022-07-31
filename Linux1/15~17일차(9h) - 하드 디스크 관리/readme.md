@@ -948,8 +948,69 @@ Command : w     -> 설정 저장
 - 부팅하고 root 사용자로 접속한다.
 - 8개의 하드디스크(sdb ~ sdi) 각각에 <b>fdisk /dev/하드디스크이름</b> 명령을 입력해 RAID 파티션을 생성하자. 
 
+![image76](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image76.png)
+
+#### step 2
+
+/dev/sdb1 ~ /dev/sde1 을 RAID 6 장치인 /dev/md6 으로 생성하자.
+
+- <b>mdadm --create /dev/md6 --level=6 --raid-devices=4 /dev/sdb1 /dev/sdc1 /dev/sdd1 /dev/sde1</b> 명령을 입력해 RAID 6을 만든다. 그리고 <b>mdadm --detail /dev/md6</b> 명령을 입력해서 만들어진 RAID 6 구성을 확인한다.
+
+![image77](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image77.png)
+
+- <b>mkfs.ext4 /dev/md6</b> 명령을 입력해서 /dev/md6 파티션을 포맷한다.
+
+- <b>mkdir /raid6</b> 명령을 입력해서 마운트 디렉터리 (/raid6) 를 생성하고, <b>mount /dev/md6 /raid6</b> 명령을 입력해서 마운트시킨다. 그리고 <b>df</b> 명령으로 확인한다.
+
+![image78](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image78.png)
+
+- 결과를 보면 /raid6 디렉터리에 약 2GB 정도의 공간이 있는 것을 확인할 수 있다. 
+- RAID 개념에서 설명했듯이 RAID 6은 <b>하드디스크개수-2</b> 만큼의 용량을 사용할 수 있다.
+
+> 지금은 하드디스크 4개를 이용해서 RAID 6을 설치했으므로 2개의 용량인 2GB를 사용할 수 있는 것이다. 하드디스크 개수가 적어서 공간 효율성이 너무 떨어진다. 그러므로 RAID 6은 7~8개 이상의 하드디스크를 사용해야 공간 효율성의 효과를 볼 수 있다.
+
+#### step 3
+- 이번에는  /dev/sdf1 ~ /dev/sdi1을 RAID 1+0 장치인 /dev/md10 으로 생성하자.
+
+- 먼저 <b>mdadm --create /dev/md2 --level=1 --raid-devices=2 /dev/sdf1 /dev/sdg1</b> 명령을 입력해 /dev/def 와 /dev/sdg 를 /dev/md2 에 RAID 1로 구성하자. /dev/sdh 와 /dev/sdi 도 <b>mdadm --create /dev/md3 --level=1 --raid-devices=2 /dev/sdh1 /dev/sdi1</b> 명령을 입력해 /dev/md3 에 역시 RAID1로 구성하자. 이때 확인 메시지가 나오면 y를 입력해서 계속 진행한다.
+
+> 혹시 혼란스러울까봐 다시 언급하지만 '/dev/md번호'에서 번호는 임의로 지정한 것이다. 다른 RAID 장치와 중복되지 않는다면 아무 번호나 지정해도 상관없다.
+
+![image79](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image79.png)
+
+![image80](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image80.png)
+
+- 이번에는 <b>mdadm --create /dev/md10 --level=0 --raid-devices=2 /dev/md2 /dev/md3</b>명령을 입력해 두 개의 RAID 1장치를 RAID 0(/dev/md10)으로 묶는다. 이 상태가 RAID1+0이 구성된 결과다.
+
+- 이제 <b>mkfs.ext4 /dev/md10 명령을 입력해 /dev/md10 파티션을 포맷한다.
+- <b>mkdir /raid10</b> 명령을 입력해서 마운트할 디렉터리(/raid10)를 생성하고, <b>mount /dev/md10 /raid10</b> 명령을 입력해 마운트시킨다. 그리고 <b>df</b> 명령으로 확인한다.
+
+![image81](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image81.png)
 
 
+- 결과를 보면 /raid10 디렉터리에 약 2GB 정도의 공간이 있는 것을 확인할 수 있다. RAID 1+0은 RAID 1과 마찬가지로 공간 효율이 <b>하드디스크개수 / 2(50%)</b>가 된다는 것을 확인할 수 있다. 이제 RAID 방식 중에서 성능 (속도)이 가장 빠른 RAID 0의 효과를 내면서, 안정성은 RAID 1만큼 확보된 RAID 1+0 장치를 사용할 수 있다.
+
+#### step 4
+
+- <b>cp /boot/vmlinuz-4\* /raid6/testFile</b> 명령과 <b>cp /boot/vmlinuz-4\* /raid10/testFile</b> 명령을 입력해 RAID 6과 RAID 1+0 장치에 적당한 파일을 복사하자.
+
+
+#### step 5
+
+- 이번에는 컴퓨터를 켤 때 언제든지 /dev/md6 장치는 /raid6 디렉터리에, /dev/md10 장치는 /raid10 디렉터리에 마운트되어 있도록 설정하자. /etc/fstab 파일을 vi 에디터나 gedit으로 열고, 맨 아랫부분에 다음 2줄을 추가하면 된다.
+
+```
+/dev/md6    /raid6    ext4    defaults    0 0
+/def/md10   /raid10    ext4    defaults    0 0
+```
+
+#### step 6
+
+- <b>reboot</b> 명령으로 정상적으로 부팅되는지 확인하자. 또 /raid6 과 /raid10 의 파일도 잘 있는지 확인하자.
+
+#### step 7
+
+- <b>halt -p</b> 명령을 입력해 시스템을 종료한다.
 
 
 * * * 
