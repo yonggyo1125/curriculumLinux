@@ -982,7 +982,7 @@ Command : w     -> 설정 저장
 
 - 이번에는 <b>mdadm --create /dev/md10 --level=0 --raid-devices=2 /dev/md2 /dev/md3</b>명령을 입력해 두 개의 RAID 1장치를 RAID 0(/dev/md10)으로 묶는다. 이 상태가 RAID1+0이 구성된 결과다.
 
-- 이제 <b>mkfs.ext4 /dev/md10 명령을 입력해 /dev/md10 파티션을 포맷한다.
+- 이제 <b>mkfs.ext4 /dev/md10</b> 명령을 입력해 /dev/md10 파티션을 포맷한다.
 - <b>mkdir /raid10</b> 명령을 입력해서 마운트할 디렉터리(/raid10)를 생성하고, <b>mount /dev/md10 /raid10</b> 명령을 입력해 마운트시킨다. 그리고 <b>df</b> 명령으로 확인한다.
 
 ![image81](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image81.png)
