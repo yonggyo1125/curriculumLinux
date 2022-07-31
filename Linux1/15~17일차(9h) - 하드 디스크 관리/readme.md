@@ -617,6 +617,339 @@ mdadm --detail --scan
 - <b>mdadm --detail /dev/md1</b> 명령을 입력해 구축한 RAID 1을 자세히 확인한다.
 
 
+### RAID 5 구축
+
+- 다음 그림을 참고해 RAID 5를 만든다. 방법은 앞에서 진행한 것과 거의 비슷하며, 하드디스크 개수만 최소 3개 이상으로 구성하면 된다.
+
+
+#### RAID 5 구축 순서
+ 
+![image44](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image44.png)
+
+### 실습6
+
+- RAID 5를 구성해보자. /dev/sdh, /dev/sdi, /dev/sdj 를 사용한다.
+
+#### step 0
+
+- 앞의 \<실습 5\>에 이어서 진행해야 한다.
+
+#### step 1
+
+- 하드디스크 파티션 등의 선처리 작업은 이미 되어 있으므로 생략한다.
+
+#### step 2
+
+<b>mdadm</b> 명령을 이용해서 실제 RAID 5를 구성하자.
+
+- 다음 명령을 참고해 /dev/sdh1, /dev/sdi1, /dev/sdj1 을 RAID 5 장치인 /dev/md5 로 생성한다.
+
+```
+mdadm --create /dev/md5 --level=5 -raid-devices=3 /dev/sdh1 /dev/sdi1 /dev/sdj1
+		-> 만약 경로 창이 나오면 그냥 두고 약 1-2분 정도 기다리자. 자동으로 없어진다.
+		
+mdadm --detail --scan
+```
+- <b>mkfs.ext4 /dev/md5</b> 명령을 입력해 /dev/md5 파티션을 포맷한다.
+- <b>mkdir /raid5</b> 명령을 입력해 마운트할 디렉터리 (/raid5) 를 생성하고, <b>mount /dev/md5/raid5</b> 명령을 입력해 마운트시킨다. 그리고 <b>df</b> 명령으로 확인한다.
+
+![image45](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image45.png)
+
+- RAID 5는 <b>하드디스크 개수-1</b>만큼의 용량을 사용할 수 있다. 지금은 3개를 설치했으므로 2개의 용량인 2GB만 사용할 수 있다. 10개를 설치할 경우 9GB의 용량을 사용할 수 있다.
+
+- 이번에는 컴퓨터를 켤 때 언제든지 /dev/md5 장치가 /raid5 디렉터리에 마운트되어 있도록 설정하자. /etc/fstab 파일을 vi 에디터나 gedit으로 열어서 맨 아랫부분에 다음을 추가하면 된다.
+
+```
+/dev/md5   /raid5   ext4    defaults   0 0
+```
+
+![image46](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image46.png)
+
+- <b>mdadm --detail /dev/md5</b> 명령을 입력해 구축한 RAID 5를 자세히 확인해보자.
+
+#### step 3
+
+- <b>reboot</b> 명령으로 재부팅한 후 root 사용자로 로그인한다.
+- <b>df</b> 명령으로 RAID 장치를 확인한다.
+
+![image47](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image47.png)
+
+#### step 4
+
+- <b>halt -p</b> 명령으로 종료한다.
+- 지금까지 설정한 내용을 'RAID 5까지 구성 완료' 이름으로 스냅숏으로 저장하자.
+
+![image48](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image48.png)
+
+## Linear RAID, RAID 0, RAID 1, RAID 5에서의 문제 발생과 조치 방법
+
+- 이제 각 RAID 장치들이 우리가 기대하는 것처럼 잘 작동하는지 테스트해볼 차례다.
+- Linear RAID나 RAID 0은 하드디스크 중 하나라도 고장나면 해당 하드디스크에 저장된 데이터를모두 복구할 수 없다고 이미 말했다. 
+- 또 RAID 1과 RAID 5는 하드디스크 중 하나가 고장 나도 데이터가 안전하다는 점도 말했다.
+
+### Linear RAID, RAID 0, RAID 1, RAID 5의 문제 발생 테스트
+
+- RAID의 개념에서 배웠듯이 RAID 1, 5는 '결함 허용' 기능이 있다. 즉 하드디스크에 문제가 발생해도 저장된 데이터는 안전하다는 의미다. 
+- 테스트를 위해 다음과 같이 각 RAID 구성과 연결된 하드디스크를 1개씩 고장 내겠다.
+
+
+#### 각 RAID 구성과 연결된 하드디스크를 고장 내기 위한 하드웨어 구성도
+
+![image49](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image49.png)
+
+- 위 구성도를 보면 기존에 /dev/sdb ~ /dev/sdj 까지 9개였던 장치가 /dev/sdb ~ /dev/sdf 까지 5개만 보인다. 즉 기존의 /dev/sdc (SCSI 0:2)가 없어지면 /dev/sdc 장치가 없어지는 것이 아니라, 위의 구성도의 /dev/sdc (SCSI 0:3) 처럼 하나씩 밀리는 것이다.
+
+### 실습7
+
+Linear RAID, RAID 0, 1, 5의 하드디스크가 고장난 상황을 살펴보고, 정상적으로 부팅이 가능하도록 하자.
+
+#### step 0
+
+- 앞의 \<실습 6\>에 이어서 진행해야 한다.
+- Server를 부팅하고 root로 접속한다.
+
+#### step 1
+
+정상적으로 작동하는 RAID에 적당한 파일을 복사해놓자.
+
+- <b>df</b> 명령을 입력해서 확인했을 때 다음과 같이 정상적으로 raid에 마운트되어 있어야 한다.
+
+![image50](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image50.png)
+
+- /raidLinear, /raid0, /raid1, /raid5 디렉터리에 아무 파일이나 testFile이라는 이름으로 복사해 넣는다.
+
+![image51](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image51.png)
+
+- 각 디렉터리에 동일한 파일이 있는 것을 확인할 수 있다.
+- 현재는 RAID가 모두 정상적으로 작동하는 상태다. <b>halt -p</b>명령을 입력해 종료한다.
+
+#### step 2
+
+다음과 같이 4개의 하드디스크를 고장 내자.
+
+- [설정] - [저장소] - [컨트롤러 IDE]에서 추가한 하드 중 2번째, 4번째 6번째, 8번째 하드디스크를 제거한다.
+
+![image53](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image53.png)
+	
+![image54](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image54.png)
+
+#### step 3
+
+- 다시 부팅하자.
+- 그런데, 잠시 기다리면 정상적으로 부팅되지 않고 응급 모드 Emengency mode로 접속될 것이다. RAID로 구성된 하드디스크가 고장 나면 일단 응급 모드로 접속된다.
+- 일단 접속하기 위해 root 사용자의 비밀번호인 password를 입력하고 [Enter]를 누르자.
+
+- 먼저 <b>Is -l /dev/sd\*</b> 명령을 입력해 장치 이름을 확인해보자. 앞서 설명한 것처럼 /dev/sdb ~ /dev/sdj 까지 9개 였던 것이 /dev/sdb ~ /dev/sdf 까지 5개만 남았다.
+
+![image55](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image55.png)
+
+- df 명령을 입력해서 확인하면 기존의 /raidLinear, /raid0 디렉터리는 보이지 않고 결함 허용을 하는/raid1, /raid5 만 보인다.
+
+![image56](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image56.png)
+
+- <b>ls -l /raid1 /raid5</b> 명령을 입력해 RAID 1 및 RAID 5에 저장했던 파일을 확인하자. 잘 있을 것이다.
+
+![image57](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image57.png)
+
+- <b>mdadm --detail /dev/md1</b> 명령을 입력해 RAID 1 장치가 어떻게 작동하는지 상세히 확인해보자.
+
+![image58](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image58.png)
+
+- 총 2개의 하드디스크 중 1개가 작동하는 것을 확인할 수 있다. RAID 1에서 작동되는 장치는  /dev/sdd 가 작동된다. 비록 2개 중 하나만 작동하지만 결함 허용 기능으로 인해 데이터가 안전하게 보관된 것이 확인되었다.
+
+- 같은 방식으로 <b>mdadm --detail /dev/md5</b> 명령을 입력해 RAID 5 장치도 확인해보자.
+
+![image59](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image59.png)
+
+#### step 4
+
+이번에는 결함 허용을 제공하지 않는 RAID 장치를 다시 가동시켜보자.
+
+- <b>mdadm --run /dev/md9</b> 명령을 입력해 Linear RAID (/dev/md9) 장치를, <b>mdadm --run /dev/md0</b> 명령을 입력해 RAID 0(/dev/md0)을 다시 가동시켜보자.
+
+![image60](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image60.png)
+
+#### step 5
+
+- 우선 시스템이 정상적으로 가동되도록 하기 위해 Linear RAID와 RAID 0 장치를 중지시키고, /etc/fstab 에서도 제거하자.
+
+- <b>mdadm --stop /dev/md9</b> 명령과 <b>mdadm --stop /dev/md0</b> 명령을 입력해 결함 허용이 없는 Linear RAID, RAID 0을 중지하자
+
+![image61](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image61.png)
+
+-  vi 에디터로 /etc/fstab 을 열어서 /dev/md9 와  /dev/md0 두 행 앞에 주석(#)을 붙인 후 저장하고 종료하자.
+
+![image62](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image62.png)
+
+- <b>reboot</b> 명령을 입력해 재부팅하자.
+
+#### step 6
+
+정상적으로 X 윈도로 부팅된다. root 사용자로 로그인하자.
+
+- <b>df</b> 명령을 입력해서 확인하면 /raid1 과 raid5 디렉터리는 작동하고 있고, <b>Is</b> 명령으로 확인하면 기존의 데이터도 안전하다. 하지만 각 하드디스크가 하나씩 고장 난 상태라서 완전한 상태는 아니다. 또, Linear RAID와 RAID 0은 현재 가동조차 하지 않는다. 다음 실습에서 완전히 정상 상태가 되도록 복구해보겠다.
+- <b>halt -p</b> 명령을 입력해 우선 시스템을 종료시킨다.
+
+
+### Linear RAID, RAID 0, RAID 1, RAID 5의 원상복구
+
+- 지금은 RAID 1과 RAID 5의 데이터를 정상적으로 사용할 수 있지만, 만약 RAID 1 또는 RAID 5에서 정상 작동 중인 다른 하드디스크까지 고장 난다면 영구히 복구할 수 없게 된다. 그러므로 될 수있으면 빨리 다음과 같이 고장 난 하드디스크를 제거하고 새로운 하드디스크로 교체해줘야한다
+
+- 또 Linear RAID와 RAID 0의 구성은 원상 복구할 수 있지만, 당연히 그 안의 데이터는 살릴 수없다.
+
+![image63](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image63.png)
+
+### 실습8
+
+- Linear RAID, RAID 0, RAID 1, RAID 5 장치의 고장 난 하드디스크를 새로운 하드디스크로 교체하자.
+
+#### step 0
+
+- 앞의 \<실습 7\>에 이어서 실습한다.
+
+#### step 1
+
+고장난 장치를 새로운 하드디스크로 교체하자. 가상머신이 꺼진 상태여야 한다.
+
+- [설정] -> [저장소] -> [컨트롤러: IDE] -> [하드디스크 추가 아이콘]을 클릭하고 다음과 같이 1GB씩 같은 하드디스크를 4개 더 추가한다.
+
+![image64](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image64.png)
+
+- 부팅하면 정상적으로 X 윈도 화면으로 부팅될 것이다. root 사용자로 로그인하자.
+
+#### step 2
+
+새로운 하드디스크를 추가했다고 자동으로 RAID 장치가 복구되는 것은 아니다. 직접 수동으로 복구해야한다.
+
+- 먼저 RAID 1장치의 구성을 다시 살펴보자.
+
+```
+mdadm --detail /dev/md1
+```
+
+![image65](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image65.png)
+
+- 역시 자동으로 복구되지는 않았지만, 새 하드디스크를 교체하기 전과 약간의 차이를 확인할 수 있다 장치가 /dev/sdd 에서 /dev/sdf로 변했다. 
+
+- 내부 파일인 /raid1/testFile /raid5/testFile은 아직도 이상 없이 존재한다
+
+
+#### step 3
+
+새로 장착한 하드디스크를 이용해서 Linear RAID, RAID 0, RAID 1, RAID 5를 복구하자.
+
+- 우선 새로운 하드디스크 /dev/sdc 의 파일 시스템을 만들자.
+
+```
+# fdisk /dev/sdc 
+Command : n    -> 새로운 파티션 분할
+Select : p     -> Primary 파티션 선택
+Partition number : 1   -> 파티션 번호 1번 선택
+First Sector : [Enter]   -> 시작 섹터 번호 입력
+Last Sector : [Enter]   -> 마지막 섹터 번호 입력
+Command : t      -> 파일 시스템 유형 선택
+Hex Code : fd     -> 'Linux raid autodetect' 유형 번호 입력
+Command : p     -> 설정된 내용 확인
+Command : w     -> 설정 저장 
+```
+
+- 같은 방법으로 하드디스크 /dev/sde , /dev/sdg , /dev/sdi 의 파일 시스템을 만들자.
+- 모든 파티션이 작성되었는지 확인한다.
+
+![image66](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image66.png)
+
+- <b>mdadm --stop /dev/md9</b> 명령을 입력해 Linear RAID 장치(/dev/md9)를 중지하고 <b>maadm --create /dev/md9 --level=linear --raid-devices=2 /dev/sdb1 /dev/sdc1</b> 명령을 입력해 다시 구성하자. 확인 메시지가 나오면 y를 입력한다.
+
+![image67](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image67.png)
+
+- 같은 방식으로 <b>mdadm --stop /dev/md0</b> 명령을 입력해 RAID 0 장치(md0)를 중지하고 <b>mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sdd1 /dev/sde1</b> 명령을 입력해 다시 구성하자.
+
+![image68](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image68.png)
+
+- <b>mdadm --detail /dev/md9</b> 명령과 <b>mdadm --detail /dev/md0</b> 명령을 입력해 두 RAID 장치가 잘 작동되는지 확인하면 구성했을 때와 동일하게 잘 작동할 것이다.
+
+#### step 4 
+
+이번에는 결함 허용이 있는 RAID 1, 5를 구성하자.
+
+- RAID 1을 재구성하자. 그런데 RAID 1은 하드디스크가 1개 빠졌을 뿐 잘 작동한다. 그러므로 새로운 하드디스크만 추가하는 명령인 <b>mdadm /dev/md1 --add /dev/sdg1</b> 명령을 입력해야 한다.
+
+- <b>mdadm /dev/md5 --add /dev/sdi1</b> 명령을 입력해서 같은 방식으로 RAID 5를 재구성하자.
+
+![image69](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image69.png)
+
+-<b>mdadm --detail /dev/md1</b> 명령과 <b>mdadm --detail /dev/md5</b> 명령을 입력해서 두 RAID 장치가 잘 작동된는지 확인하자.
+
+![image70](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image70.png)
+
+> 만약 RAID 5 장치의 4번 장치가 'spare rebuilding /dev/sdi1'로 표시된다면 현재 RAID 5를 재구성하는 상태이기 때문이다. 잠시 기다렸다가 다시 확인하면 된다.
+
+- gedit이나 vi 에디터로 /etc/fstab 을 열어 앞에서 주석 (#) 표시했던 /dev/md9 와 /dev/md0 의 주석을 제거하자.
+
+- reboot 명령을 입력해 재부팅한다.
+
+#### step 5
+
+- 이제는 정상적으로 X 윈도 화면으로 부팅될 것이다. root 사용자로 접속하자.
+
+> 만약 부팅 중 멈춘다면 [CTRL] + [D] 를 눌러서 계속 진행한다.
+
+- <b>Is</b> 명령으로 /raid0 디렉터리를 확인하면 당연히 testFile이 보이지 않아야 한다.
+
+> 만약 raid0에 파일이 보인다면 이 파일은 정상 파일이 아닌 50%만 정상인 파일이다 (파일 크기가 기존과 동일해도 실제 내용의 50%는 비었다고 보면 된다). 그러므로 RAID 0을 복구한 후에는 mkfs 명령으로 깨끗이 포맷하는 것이 좋다.
+
+![image71](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image71.png)
+
+- 이번에는 /raidLinear 디렉터리를 확인하자. 기존의 testFile이 보일 것이다. 즉 복구되었다.
+
+![image72](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image72.png)
+
+-  /raid1 과 /raid5 디렉터리의 데이터는 정상적으로 안전하게 있을 것이다. 결함 허용을 제공하므로 또다시 하드디스크가 고장 나도 데이터는 안전하다.
+
+#### step 6
+
+- 앞의 실습에서 RAID 1과 RAID 5는 새로운 하드디스크를 추가하기 전과 후 모두 데이터가 존재하기 때문에, 사용자 입장에서는 겉으로 보기에 변화가 없는 듯 보인다. 하지만 내부적으로는 다음과 같은 변화가 발생했다
+
+![image73](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image73.png)
+
+## 고급 RAID 레벨
+
+- 이제 기본적인 RAID 레벨인 Linear RAID, RAID 0, RAID 1, RAID 5는 이해했을 것이다. 
+- 이번에는 RAID 5보다 신뢰도를 높인 RAID 6과 신뢰도와 속도 두 마리 토끼를 잡기 위한 RAID 1+0, 그리고 성능은 떨어지고 비용도 많이 들지만 신뢰도를 훨씬 높인 RAID 1+6을 차례로 구성해보자.
+
+### RAID 6과 RAID 1+0 개념
+
+- RAID 5는 패리티를 1개 사용하기 때문에 3개의 하드디스크 이상이면 구성할 수 있지만, RAID 6은 패리티를 2개 사용하기 때문에 최소 4개의 하드디스크가 필요하다. 하지만 실무에서는 7~8개 이상의 하드디스크로 구성해야 어느 정도 효과를 볼 수 있다. 
+- 예를 들어 하드디스크 4개로 구성할 때는 공간 효율이 '하드디스크 개수 -2'이므로 4-2=2TB만 사용할 수 있다. 또 RAID 1+0은 RAID 1 (안전성)+RAID 0 (속도)'의 개념이라고 설명했다. 그래서 공간 효율은 50%가 된다. 
+
+- 이번에 구성할 RAID 6과 RAID 1+0의 구성도는 다음과 같다.
+
+- RAID 6은 기존 RAID 5의 구성과 구현 방법이 거의 동일하다. 단, 하드디스크가 최소 4개 이상 필요한 것뿐이다. RAID 1+0의 구현 방법은 약간 다르다. 다음과 같이 각 2개씩 먼저 RAID 1로 구성한 후, 2개의 RAID 1 장치를 다시 RAID 0으로 묶는 방식을 사용한다.
+
+![image74](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image74.png)
+
+### 실습9
+
+- RAID 6과 RAID 1+0을 구성해보자.
+
+#### step 0
+
+- Server를 처음 설치 상태로 초기화하자.
+- 아직 부팅은 하지 말자.
+
+#### step 1
+
+실습에 필요한 하드디스크 8개를 준비하자.
+
+- \<실습 1\> 또는 \<실습 2\>를 참조해서 1GB SCSI 하드디스크 8개를 장착하자. 즉 /dev/sdb ~ /dev/sdi 까지 추가한다. 
+
+![image75](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image75.png)
+
+- 부팅하고 root 사용자로 접속한다.
+- 8개의 하드디스크(sdb ~ sdi) 각각에 <b>fdisk /dev/하드디스크이름</b> 명령을 입력해 RAID 파티션을 생성하자. 
+
+
+
 
 
 * * * 
