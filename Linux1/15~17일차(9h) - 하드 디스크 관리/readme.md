@@ -1090,8 +1090,432 @@ mount /dev/md16 /raid16
 * * * 
 # LVM
 
+- LVM은 Logical Volume Manager의 약자로 '논리 하드디스크 관리자'란 의미다. 
+- LVM은 앞에서배운 Linear RAID와 기본 기능은 비슷해 보이지만 더 많은 기능이 있다. 그래서 CentOS는 기본적으로 설치 시 LVM으로 하드디스크를 분할해서 설치한다.
+
+- LVM의 주요 용도는 여러 개의 하드디스크를 합쳐서 1개의 파티션으로 구성 후, 다시 필요에 따라나누는 것이다. 
+- 또는 1개의 하드디스크를 LVM으로 구성하고 다시 파티션을 구분할 수도 있다. 일례로 2TB의 하드디스크 2개를 합친 후 다시 1TB와 3TB로 나눠서 사용 가능하다. 
+- RAID와 달리 LVM 에서는 새로운 용어가 몇 개 나온다.
+
+- <b>물리 볼륨(Physical Volumn)</b> : /dev/sda1, /dev/sdb1 등의 파티션을 말한다. 
+- <b>볼륨 그룹(Volumn Group)</b> : 물리 볼륨을 합쳐서 1개의 물리 그룹으로 만든 것이다.
+- <b>논리 볼륨(Logical Volumn)</b> : 볼륨 그룹을 1개 이상으로 나눈 것으로 논리적 그룹이라고 한다.
+
+이번에 구성할 하드디스크의 구성도는 다음과 같다.
+
+![image87](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image87.png)
+
+- 물리 볼륨인 2TB와 3TB, 2개의 하드디스크를 합쳐 5TB의 볼륨 그룹으로 묶었다. 그리고 5TB를 1TB, 3TB, 1TB로 분할해서 각 /Ivml, /lvm2, /lvm3 디렉터리에 마운트한 상태를 보여준다.
+
+- 결국 LVM은 여러 개의 하드디스크 (물리 볼륨)를 묶어서 1개의 볼륨 그룹으로 만든 후, 다시 필요한 용량의 파티션 (논리 그룹)으로 나눠서 사용하는 것이라고 보면 된다.
+
+### LVM 구현
+
+이번 실습의 순서는 다음과 같다. RAID 구성과는 명령어가 좀 다르다.
+
+![image88](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image88.png)
+
+### 실습11
+- LVM을 구성하자. 
+
+#### step 0
+
+- Server를 처음 설치 상태로 초기화하자
+- 아직 부팅은 하지 말자.
+
+
+#### step1
+
+- 다음과 같이 2GB와 3GB 용량의 SCSI 하드디스크 2개를 추가한다. 
+- 부팅하고 root 사용자로 접속하자.
+
+![image89](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image89.png)
+
+#### step 2
+
+LVM을 구현하기 위해 선처리 작업 부분을 먼저 수행한다.
+
+- 장착한 SCSI 하드디스크에 파티션을 할당하자. 이번 실습은 LVM 실습이므로 파일 시스템 유형을8e(Linux LVM) 로 지정해야 한다.
+
+> 파일 시스템 유형을 지정하지 않으면 기본인 83 (Linux)가 되며, RAID는 fd (Linux raid autodetect)로 지정했었다.
+
+```
+# fdisk /dev/sdb   -> 하드디스크 선택
+Command : n   -> 새로운 파티션 분할
+Select : p     -> Primary 파티션 선택
+Partition number (1-4) : 1   -> 파티션 번호 1번 선택
+First sector : [Enter]   -> 시작 섹터 번호 입력(기본 설정)
+Last sector : [Enter]   -> 마지막 섹터 번호 입력(기본 설정)
+Command : t   -> 파일 시스템 유형 선택
+Hex Code : 8e    
+		-> 선택한 파일 시스템 유형 번호 입력('L'을 입력하면 유형 번호가 출력됨)
+Command : p   -> 설정된 내용 확인
+Command : w   -> 설정 저장
+```
+
+- 같은 방식으로 /dev/sdc 의 파티션을 나눈다. 
+
+- <b>pvcreate /dev/sdb1</b> 명령과 <b>pvcreate /dev/sdc1</b> 명령을 입력해 물리적인 볼륨을 생성한다.
+
+![image90](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image90.png)
+
+- 2개의 물리 볼륨을 하나로 묶어주자. 즉 볼륨 그룹을 생성하는 단계며 <b>vgcreate myVG /dev/sdb /dev/sdc1</b> 명령을 입력하면 된다. 볼륨 그룹 이름을 myVG로 정했다.
+
+![image91](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image91.png)
+
+- <b>vgdisplay</b> 명령을 입력해 볼륨 그룹이 제대로 생성되었는지 확인해보자.
+
+![image92](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image92.png)
+
+- 생성한 myVG 볼륨 그룹은 현재 물리 볼륨 (Cur PV)이 2개로 구성되어 있으며, 2GB+3GB=5GB인 것을확인할 수 있다. 이로써 선처리 작업이 모두 끝났다.
+- 이제부터는 /dev/myVG 를 하나의 하드디스크처럼 생각하고 작업하면 된다.
+
+#### step 3
+
+- 일반적인 하드디스크의 파티션을 생성한 때는 fdisk 명령을 사용했지만 붙음 그룹의 파티션을 생성할 때는 <b>Ivcreate</b> 명령을 사용한다. 일반적인 하드디스크(/dev/sdb)를 /dev/sdb1 과 /dev/sdb2 로 파티션을 나눠 생성하는 것과 마찬가지로 볼을 그룹(/dev/myVG)을 /dev/myVG/myLG1, /dev/myVG/myLG2, /dev/myVG/myLG3 이라는 논리 그룹으로 파티션을 나눠 생성하는 것이다.
+
+- 논리 그룹을 IGB, 3GB, 1GB로 나누기 위해 다음 명령을 입력하고 /dev/myVG 디렉터리를 확인해보자.
+
+```
+lvcreate --size 1G --name myLG1 myVG   -> myVG아래 myLG1을 1GB 크기로 생성
+lvcreate --size 3G --name myLG2 myVG
+lvcreate --extents 100%FREE --name myLG3 myVG -> 나머지 용량 할당 
+ls -l /dev/myVG
+```
+
+![image93](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image93.png)
+
+> /dev/myVG/myLG1 은 사실 /dev/dm-0이라는 파일에 링크되어 있다. 하지만 이 장치 파일의 이름은 lvcreate 명령의 버전마다 달라질 수 있으므로 /dev/myVG/myLG1 이라고 생각하는 것이 좋다.
+
+#### step 4
+
+- /dev/myVG/myLG1, /dev/myVG/myLG2, /dev/myVG/myLG3 에 파일 시스템을 생성하자.
+
+```
+mkfs.ext4 /dev/myVG/myLG1
+mkfs.ext4 /dev/myVG/myLG2
+mkfs.ext4 /dev/myVG/myLG3
+```
+
+#### step 5
+
+- /vml /vm2 /Ivm3 세 디렉터리를 생성하자. 그리고 myLG1~3 장치를 /lvm1~3 디렉터리에 각각 마운트하자 마운트한 후에는 아무 파일이나 하나 복사해놓고 df 명령을 입력해 여유 공간을 확인해본다.
+
+![image94](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image94.png)
+
+#### step 6
+
+- 컴퓨터를 켤 때 항상 myLG1~3 장치가 /lvm1~3에 마운트되도록 설정하자. /etc/fstab 파일을 vi 에디터나 gedit으로 열어서 맨 아랫부분에 다음을 추가하고 재부팅하면 된다.
+
+```
+/dev/myVG/myLG1    /lvm1   ext4    defaults    0 0
+/dev/myVG/myLG2    /lvm2   ext4    defaults    0 0
+/dev/myVG/myLG3    /lvm3   ext4    defaults    0 0
+```
+
+#### 퀴즈
+- Server(B)에 5GB, 4GB 하드디스크를 장착하고, LVM으로 3GB 3개로 분할해보자.
+- 힌트 : 먼저 Ivm2 패키지를 설치해야 한다.
+
 * * * 
 # CentOS를 RAID에 설치하기
 
+- 우리는 Server, Server(B)를 /dev/sda)에 설치했다. 그런데 이 하드디스크가 고장 나면 아예 부팅이 되지 않으므로 추가한 RAID나 LVM을 전혀 사용할 수 없다. 
+- 그래서 이번에는 아예 결함 허용을 제공하는 RAID 1에 CentOS를 설치하고자 한다. 다음과 같이 /dev/sda), /dev/sdb 를 RAID 1로 구성하면서 CentOS를 설치하면 어떤 하드디스크가 고장 나든 잘 부팅될 것이다. 
+
+![image95](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image95.png)
+
+### 실습12
+
+- RAID 1로 안전하게 작동되는 CentOS를 새로 설치하자.
+
+#### step 0
+- 다음 내용을 참고하여 실습에 사용할 가상머신을 생성한다. 
+
+```
+가상머신 이름 : RAID 1 
+메모리 할당 : 2GB(=2048MB)
+하드디스크 : SCSI 80GB X 2
+```
+
+- 완성된 가상머신은 다음과 같다.
+
+![image96](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image96.png)
+
+#### step 1
+
+기존의 설치 방식과 동일하게 CentOS 8 ISO 파일을 넣고 설치를 진행하자.
+
+- 초기 환영 화면에서 왼쪽의 [한국어]를 선택하고 \<계속 진행\>을 클릭한다. 
+- [언어 설정]에서 [한국어]로 지정한다. 
+- [설치 목적지]를 클릭한다.
+
+![image97](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image97.png)
+
+- [설치 목적지]에서 하드디스크 2개를 한 번씩 클릭해서 선택한 후 <b>사용자 정의</b>을 선택하고 \<완료\>를 클릭한다.
+
+![image98](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image98.png)
+
+- [수동으로 파티션 설정]에서 <b>표준 파티션</b>으로 변경한 후 아래쪽 \<+\>를 클릭하고 [신규 적재 지점 추가]에서 적재 지점(Mount Point)은 [swap]을 선택하며, 희망 용량(Desired Capacity)은 4G를 입력한 후 \<적재 지점 추가\>를 클릭한다.
+
+![image99](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image99.png)
+
+- [수동으로 파티션 설정]에서 [swap]을 선택하고 장치 유형(Device Type)을 [RAID]로 선택한 후 RAID 레벨은 [RAID1]을 선택해 왼쪽 아래의 \<최신화 설정\>을 클릭한다.
+
+![image100](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image100.png)
+
+- 다시 왼쪽에 있는 \<+\>를 클릭해서 동일한 방식으로 / 파티션을 RAID 1로 구성한다.
+
+![image101](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image101.png)
+
+![image102](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image102.png)
+
+- 왼쪽 \<완료\>를 클릭하고 [변경 요약]의 오른쪽 아래에 있는 \<변경 사항 적용\>을 클릭한다.
+- 설정이 완료되었으면 \<설치 시작\>을 클릭한다.
+
+#### step 2
+
+- 설치가 진행된다.
+- 설치가 완료되었으면 재부팅>을 클릭해서 컴퓨터를 재부팅한다.
+
+#### step 3
+
+컴퓨터가 다시 켜지면 일부 설정을 추가로 해줘야 한다.
+
+- 부팅 화면이 나온다. 몇 초를 기다리거나 첫 번째 행이 선택된 상태에서 그냥 Enter를 누르면 부팅된다.
+- [초기 설정]에서 [Lincese Information]을 클릭한 후 아래쪽 '약관에 동의합니다'를 체크하고 \<완료\>를 클릭하자. 그리고 오른쪽 \<설정 완료\>를 클릭해서 진행한다.
+
+- 다시 부팅되면 잠시 후 X 윈도 로그인 화면이 나온다. [목록에 없습니까?]를 클릭해서 root 사용자로 로그인 하자, 암호는 root 사용자의 암호인 'password'를 입력하고 \<로그인\>을 클릭한다.
+
+- 그놈GNOME 의 초기 설정 화면이 나오고 먼저 [환영합니다] 화면이 등장한다. 이미 한국어가 선택되어 있을 것이다. \<다음\>을 클릭한다.
+
+- 입력]이 나온다. '한국어'를 선택하고 \<다음\>을 클릭한다.
+- [개인 정보]가 나오면 그대로 두고 \<다음\>을 클릭한다.
+- [온라인 계정]도 그대로 두고 \<건너뛰기\>를 클릭한다.
+- 마지막 창에서 \<CentOS Linux 시작\>을 클릭한다.
+- [시작하기(GNOME Help)] 창이 나온다. 오른쪽 위의 \<X\>를 클릭해서 닫는다.
+
+#### step 4
+
+RAID 1로 작동되는 것을 확인하자.
+ 
+- 왼쪽 위 [현재 활동] → [프로그램 표시] → [유틸리티] → [터미널]을 선택해서 터미널을 연다.
+- <b>mdadm --detail --scan</b> 명령을 입력해 전체 작동되는 RAID를 확인하자.
+
+![image108](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image108.png)
+
+- <b>mdadm --detail /dev/md/swap</b> 명령과 <b>mdadm --detail /dev/md/root</b> 명령을 입력해 각 RAID 장치를 자세히 확인해 보자. 두 RAID 장치 모두 잘 작동하고 있을 것이다.
+
+![image109](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image109.png)
+
+- <b>halt -p</b> 명령을 입력해 시스템을 종료하자.
+
+
+#### step 5
+
+RAID 1의 결함 허용이 잘 작동하는지 확인하자.
+
+- RAID1의 하드디스크 2개 중 아무거나 제거하고 부팅해보자.
+
+![image110](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image110.png)
+
+- 부팅이 좀 오래걸리지만 기다리면 부팅될 것이다. root로 접속하자. 
+- <b>mdadm --detail /dev/md/root</b> 명령을 입력해 RAID 장치를 다시 확인해보자.
+
+![image111](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image111.png)
+
+> RAID 1은 결함 허용 기능이 있으므로 하드디스크 하나가 고장 나도 운영체제 자체는 잘 작동한다.
+
+### 퀴즈
+
+RAID1 가상머신에 새로운 하드디스크를 장착하고 RAID1 가상머신이 다시 결함 허용을 하도록 원상 복구하자.
+
+- 힌트 1 : 하드디스크를 추가한다.
+- 힌트 2 : fdisk -1 /dev/sda 명령을 입력해 /dev/sda 의 파티션을 확인하고, 동일하게 /dev/sdb 장치의 파티션을 설정한다.
+- 힌트 3 :  mdadm 명령을 사용해 /dev/md/swap 과 /dev/md/root에 파티션을 추가해서 원상복구하자. 이때 하드디스크 추가 후 하드디스크 2개를 동일하게 만드는 데는 오랜 시간이 걸린다.
+
 * * * 
 # 사용자별로 공간을 할당하기
+
+- 리눅스는 여러 명의 사용자가 동시에 접속해서 사용할 수 있다. 만약 A라는 사용자가 시스템을 사용할 때 루트(/) 파일 시스템에 고의든 실수든 큰 파일들을 계속 복사했다고 가정해보자. 하드디스크가 꽉 차면 시스템 전체가 가동되지 않는 치명적인 문제를 일으킬 수 있다. 
+- 이런 상황을 미연에 방지하려면 각 사용자별로 사용할 수 있는 용량을 제한해야 한다. 즉 사용자가 적정 용량 이상을 사용하지 못하게 함으로써 할당된 양만큼의 공간만 사용하게 하면 아무런 문제가 발생하지 않을 것이다.
+
+## 쿼터의 개념과 실습
+
+- 쿼터(Quota)를 간단히 정의하면 다음과 같다.
+
+```
+파일 시스템마다 사용자나 그룹이 생성할 수 있는 파일의 용량과 개수를 제한하는 것
+```
+
+- 일반 사용자가 사용하는 파일 시스템을 루트(/)로 지정하는 것보다는 별도의 파일 시스템을 지정해서 지정한 부분만 사용하도록 하는 것이 여러 면에서 좋다. 우선 실수로 루트(/) 파일 시스템을 사용하는 일이 없으므로 시스템과 관련된 문제를 발생시킬 소지가 적어진다.
+
+- 루트(/) 파일 시스템을 많은 사용자가 동시에 사용하면, 서버를 운영하면서 하드디스크를 읽고 쓰는 작업과 일반 사용자가 하드디스크를 읽고 쓰는 작업이 동시에 발생한다. 이러면 전반적으로 시스템의 성능이 저하될 수 있다.
+
+#### 쿼터 진행 순서
+
+![image103](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image103.png)
+
+
+### 실습13
+
+쿼터 실습을 진행하자. 먼저 사용자를 만들고 해당 사용자에게 공간을 할당해보자.
+
+#### step 0
+
+- Server를 처음 설치 상태로 초기화하자.
+-  아직 부팅은 하지 말자.
+- Server에 10GB 크기의 새로운 SCSI 하드디스크 하나 장착한다.
+- 부팅하고 root 사용자로 접속한 후 터미널을 하나 연다.
+-  /dev/sdb 의 파티션 생성과 포맷을 진행한 후 /userHome 디렉터리에 마운트하자.
+
+```
+# fdisk /dev/sdb
+Command : n
+Select : p
+Partition number (1-4) : 1
+First sector : [Enter]
+Last sector : [Enter]
+Command : p
+Command : w
+mkfs.ext4 /dev/sdb1
+mkdir /userHome
+mount /dev/sdb1 /userHome
+```
+
+- 재부팅해도 인식되도록 vi나 gedit을 이용해서 /etc/fstab 맨 아래에 다음을 추가하자.
+
+```
+/dev/sdb1    /userHome    ext4     defaults   0 0
+```
+
+#### step 1
+
+- 다음 명령을 입력해 쿼터 실습을 할 사용자 john과 bann을 만들고, 비밀번호도 사용자 이름과 동일하게 하자.
+
+```
+useradd -d /userHome/john john
+useradd -d /userHome/bann bann
+passwd john
+(john 입력, 입력되는 문자는 보이지 않는다.)
+(john을 다시 입력, 입력되는 문자는 보이지 않는다.)
+
+passwd bann
+(bann 입력, 입력되는 문자는 보이지 않는다.)
+(bann을 다시 입력, 입력되는 문자는 보이지 않는다.)
+```
+
+![image104](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image104.png)
+
+> useradd 명령어 중 -d 옵션은 사용자의 홈 디렉터리를 임의로 지정하기 위한 옵션이다. 사용자의 비밀번호는 8자 이상이며 사전에 있는 글자 등은 사용할 수 없지만, root 사용자는 아무 비밀번호나 지정할 수 있다. 그래서 경고만 나오고 계속 진행된다.
+
+#### step 2
+
+/etc/fstab 파일을 편집한다.
+
+
+ vi-  에디터나 gedit으로 /etc/fstab 파일을 열어서 /dev/sdb1 을 마운트하는 부분의 defaults 글자에 붙여 다음과 같이 ',usrjquota=aquota.user.jqfmt=vfsv0(맨 뒤는 숫자 0)'이라고 추가한다. 글자가 틀리지 않도록 주의하자. 저장하고 닫는다.
+
+```
+/dev/sdb1   /userHome  ext4   defaults,usrjquota=aquota.user,jqfmt=vfsv0     0  0
+```
+
+- 재부팅하는 효과를 내기 위해 <b>mount --options remount /userHome</b> 명령을 입력하고 다시 마운트한다. <b>mount</b> 명령을 입력해서 확인해보면 /dev/sdb1 디렉터리가 '쿼터용'으로 마운트된 것을 확인할 수있다
+
+![image105](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image105.png)
+
+![image106](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image106.png)
+
+#### step 3
+
+- 쿼터를 사용하려면 쿼터 DB를 생성해야 한다. 다음 명령을 차례로 입력하자(좀 생소한 명령들이지만 쿼터생성 시 한 번만 사용하므로 외울 필요는 없다. 또한 일부 명령은 생략 가능하지만 확실히 하기 위해 반복해서 입력한 것도 있다).
+
+```
+cd /userHome     -> 쿼터용 파일 시스템이 마운트된 디렉토리로 이동
+quotaoff -avug    -> 일단 쿼터를 끈다.
+quotacheck -augmn   -> 파일 시스템의 쿼터 관련 체크를 진행한다.
+rm -rf aquota.*      -> 생성된 쿼터 관련 파일을 일단 삭제한다.
+quotacheck -augmn    -> 다시 파일 시스템의 쿼터 관련 체크를 진행한다. 
+touch aquota.user aquota.group  -> 쿼터 관련 파일을 생성한다.
+chmod 600 aquota.*    -> 보안을 위해 소유자(root) 외에는 접근하지 못하게 한다.
+quotacheck -augmn   -> 마지막으로 파일 스스템의 쿼터 관련 체크를 진행한다. 
+quotaon -avug    -> 설정된 쿼터를 시작한다.
+```
+
+![image112](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image112.png)
+
+> quotacheck 명령어의 기능은 하드디스크를 스캔해서 여러 부분을 체크하는 것이고, quotaon/quotaoff 명령어의 기능은 설정된 쿼터를 켜거나 끄는 것이다. 사용할 수 있는 옵션을 요약하면 다음과 같다. 더 상세한 내용은 <b>man quotacheck</b> 명령을 입력해 확인하자.
+
+- -a(All) : 모든 파일 스스템을 체크한다.
+- -u(User) : 사용자 쿼터 관련 체크를 진행한다.
+- -g(Group) : 그룹 쿼터 관련 체크를 진행한다. 
+- -m(no-remount) : 재마운트를 생략한다.
+- -n(use-first) : 첫 번째 검색된 것을 사용한다.
+- -p(print-state) : 처리 결과를 출력한다.
+- -v(Verbose) : 파일 시스템의 상태를 보여준다.
+
+#### step 4
+
+쿼터 DB 생성을 완료했으므로, 이제 각 사용자별로 공간을 할당해야 한다.
+
+-  john 사용자와 bann 사용자가 사용할 수 있는 공간을 각각 20MB씩 할당하자. <b>edquota -u john</b> 명령을 입력하면 각 사용자별 또는 그룹별 할당량을 편집할 수 있다. 사용법은 vi 에디터와 동일하다 (터미널 창이 작으면 줄이 아래로 내려가서 이상하게 보인다. 터미널 창을 가로로 크게 늘려준다).
+
+![image113](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image113.png)
+
+- 우선 각 열의 의미를 살펴보자.
+
+	- [Filesystem]: 사용자별 쿼터를 할당하는 파일 시스템을 의미한다. 우리는 앞에서 /etc/fstab 파일에/dev/sdb1을 쿼터로 설정해놓았다.
+
+	- [blocks], [soft], [hard]: 현재 사용자가 사용하는 블록 (KB 단위)과 소프트 사용 한도, 하드 사용한도를 의미한다. blocks에 28이 설정되어 있으므로 현재 john이라는 사용자가 28KB를 사용한다는 의미다. [soft]와 [hard] 아래의 0은 사용 한도가 0이라는 의미가 아닌, 한도를 제한하지 않았다는 의미다. 즉 john 사용자는 용량 제한 없이 /dev/sdb1 파일 시스템 (/userHome 에 마운트되어 있음)을 사용할 수 있다.
+
+	- [inodes], [soft], [hard]: [blocks]는 용량을 의미하지만. [inodes] inode의 개수를 의미한다(파일의 개수라고 생각하면 이해가 쉬울 것이다). john 사용자는 현재 7개의 파일을 사용하며 한도는 제한하지 않았다는 뜻이다.
+
+- [inodes] 부분은 그냥 두고, [blocks] 부분에 사용량 제한을 걸어보자. John 사용자의 사용량을 [soft]는 20MB(20,480KB), [hard]는 30MB(30,720KB)로 제한하고 저장하자. 칸을 정확히 맞출 필요는 없으며 차례만 틀리지 않으면 된다 (vi 에디터를 사용하듯 [a]를 눌러 편집을 시작하고, 편집이 끝나면 [Esc]누른 후 :wq'를 입력한다).
+
+![image114](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image114.png)
+
+> 사용자별이 아닌 그룹별로 쿼터를 설정하려면 <b>edquota -g</b> 그룹이름 명령을 실행한다.
+
+- 이제는 john 사용자가 사용할 수 있는 용량이 설정한 대로 제한되었는지 확인해보자. john 사용자로 접속한 후 파일을 몇 개 복사한다. /boot/vmlinuz-4.18.0-80.el8.x86_64 파일의 크기가 약 7.5MB이므로 이 파일을 사용한다.
+
+```
+su - john
+$ pwd
+$ cp /boot/vmlinuz-4* test1   -> 약 7.5MB 사용
+$ cp test1 test2  -> 약 15.0MB 사용
+$ cp test1 test3  
+	-> 약 22.5MB 사용 : 소프트 한도(20MB) 초과. (경고 출력)
+$ ls -l    
+	-> test3 파일이 소프트 한도를 넘었지만 파일은 정상적으로 복사됨
+	
+$ cp test1 test4 
+	-> 약 30MB 사용: 하드 한도(30MB)를 초과해서 더 사용할 수 없음
+	
+$ ls -l 
+	-> test4 파일은 하드 한도까지 사용할 수 있는 남은 용량 만큼 파일이 생성됨.
+	    그러므로 test4는 정상적인 파일이 아님
+```
+
+![image115](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image115.png)
+
+- quota 명령을 입력하면 자신에게 할당된 하드디스크 공간을 확인할 수 있다.
+
+![image116](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image116.png)
+
+- [blocks]는 현재 사용자 (john)가 사용하는 하드디스크 공간이다. [limit](=hard)가 30.720KB이므로 이미 제한된 사용량을 모두 사용했다. 그런데 john 사용자에게 허용된 실제 사용량은 [quota](=soft)인 20,480KB다. 이를 넘는 공간인 10,240KB (30,720-20,480KB)는 [grace](유예 기간 동안인 6일 (또는 7일) 동안만 사용할 수 있다. 그러므로 john 사용자는 6일 안에 자신의 [quota] 사용량인 20,480KB를 넘는 공간을 정리해야 한다.
+
+#### step 5
+- <b>repquota /userHome</b> 명령을 입력해 사용자별 현재 사용량을 확인해보자. 먼저 <b>exit</b> 명령을 입력해 root 사용자의 권한으로 실행해야 한다.
+
+![image117](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image117.png)
+
+> 소프트 한도를 초과한 사용량의 유예 기간(grace period)은 기본 설정이 7일이다. 이 유예 기간은 <b>edquota -t</b> 명령을 사용해서 변경할 수 있다.
+
+#### step 6
+
+- 이번에는 bann 사용자에게도 john 사용자와 똑같이 사용량을 할당해보자. 
+- john 사용자에게 적용된 사항을 bann 사용자에게도 동일하게 적용시키면 좀 더 간단하게 작업할 수 있다. <b>edquota -p 기준사용자 대상사용자</b> 명령을 입력하면 된다. 작업이 끝나면 <b>repquota /userHome</b> 명령을 입력해 사용자별 현재 사용량을 확인해보자.
+
+![image118](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image118.png)
+
+> 더 이상 쿼터를 사용하지 않으려면 <b>quotaoff /userHome</b> 명령을 실행한다.
