@@ -1013,6 +1013,80 @@ Command : w     -> 설정 저장
 - <b>halt -p</b> 명령을 입력해 시스템을 종료한다.
 
 
+### RAID 6과 RAID 1+0의 문제 발생 테스트
+
+- RAID 6과 RAID 1+0의 장점인 신뢰성을 시험해보기 위해 각각 2개의 하드디스크를 고장 내보자. RAID 5에서는 2개의 하드디스크를 고장 낼 경우 모든 데이터를 사용할 수 없지만, RAID 6과 RAID 1+0에서는 데이터에 아무런 이상이 없다. 
+- 2, 4, 6, 7 번째 하드디스크 4개를 다음과 같이 고장 내보자.
+
+![image82](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image82.png)
+
+### 실습10
+
+- RAID 6과 RAID 1+0의 결함 허용을 확인하자. 각 하드디스크를 2개씩 고장 낸 후 파일이 정상적으로 있는지 확인해보자.
+
+#### step 0
+
+- 앞의 \<실습 9\>에 이어서 한다.
+
+
+#### step 1
+
+- Server가 종료된 상태에서 다음과 같이 2, 4, 6, 7 번째 하드디스크 4개의 하드디스크를 고장 내자.
+
+![image83](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image83.png)
+
+#### sten 2
+
+부팅하고 root 사용자로 접속한다. 부팅이 약간 오래 걸릴 수 있다.
+
+#### step 3
+
+현재는 하드디스크 중 몇 개가 고장 난 상황이다.
+
+- 데이터를 확인해보자. 현재 각 RAID의 하드디스크가 2개씩 모두 고장 난 상태지만 데이터는 안전하다.
+
+![image84](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image84.png)
+
+- <b>mdadm --detail /dev/md6</b> 명령을 입력해 RAID 6(/dev/md6) 장치의 구성을 확인하자
+
+![image85](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image85.png)
+
+- 결과를 보면 현재 /dev/md6 장치의 상태가 잘 나타난다. 현재 /dev/sdb1, /dev/sdc1 두 장치만 작동 중인 상태임을 확인할 수 있다.
+- RAID 1 장치인 /dev/md2, /dev/md3 도 역시 1개씩만 작동하고 있을 것이며, RAID 1+0은 잘 작동하고 있을 것이다.
+
+#### step 4
+
+- <b>halt -p</b> 명령을 입력해 시스템을 종료한다.
+
+- 일반적으로 실무에서 많이 사용하는 RAID 방식은드웨어 RAID의 경우 RAID 1, 5 등이고, 소프트웨어 RAID의 경우 사용 용도에 따라 RAID 1, 5, 6을 골고루 사용한다. 특히 RAID 1+0은 안정적이고 빠른 방식이므로 소프트웨어 RAID를 구성할적극 고려할 만하다.
+
+#### 퀴즈1
+- \<실습 10\>을 마치고 새로운 하드디스크 4개를 장착해서 RAID 6과 RAID 1+0을 완전한 상태로 원상 복구해보자. 상세한 명령은 \<실습 8\>을 참조한다.
+
+- 힌트 1 : sdc, sde, sdg, sdh로 사용할 4개의 하드디스크에 파티션을 설정한다.
+- 힌트 2 : md6에는 sdc1과 sde1을, md2에는 sdg1을, md3에는 sdh1 을 추가한 후 재부팅한다.
+
+
+#### 퀴즈2
+
+- Server (B)를 초기화하고 다음고ㅛㅏ 같은 RAID 1+6을 구현해보자. RAID 1+6은 공간 효율이 25%이므로 비용도 비싸고 성능도 느리지만 안전성 면에서는 탁월하다.
+
+- 힌트 : RAID를 구성하는 명령은 다음과 같이 사용하자.
+
+```
+mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb1 /dev/sdc1
+mdadm --create /dev/md1 --level=1 --raid-devices=2 /dev/sdd1 /dev/sde1
+mdadm --create /dev/md2 --level=1 --raid-devices=2 /dev/sdf1 /dev/sdg1
+mdadm --create /dev/md3 --level=1 --raid-devices=2 /dev/sdh1 /dev/sdi1
+mdadm --create /dev/md16 --level=6 --raid-devices=4 /dev/md0 /dev/md1 /dev/md2 /dev/md3
+
+mkfs.ext4 /dev/md16
+mkdir /raid16
+mount /dev/md16 /raid16
+```
+
+![image86](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/15~17%EC%9D%BC%EC%B0%A8(9h)%20-%20%ED%95%98%EB%93%9C%20%EB%94%94%EC%8A%A4%ED%81%AC%20%EA%B4%80%EB%A6%AC/images/image86.png)
+
 * * * 
 # LVM
 
