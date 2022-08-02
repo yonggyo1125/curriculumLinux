@@ -369,3 +369,318 @@ exit 0
 - if문은 참과 거짓이라는 두 가지 경우만 사용할 수 있다(이를 '2중 분기'라고 한다). 그런데 여러 가지 경우의 수가 있다면 if문을 계속 중복해서 사용해야 하므로 구문이 복잡해진다. 이때 사용하는 것이 case문이다. 이를 '다중 분기'라고 한다.
 
 #### case1.sh
+
+```
+1  #!/bin/sh
+2  case "$1" in
+3    start)
+4       echo "시작--";;
+5    stop)
+6       echo "중지--";;
+7    restart)
+8       echo "다시 시작--";;
+9    *)
+10     echo "뭔지 모름--";;
+11 esac
+12 exit 0
+```
+
+![image15](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/18~20%EC%9D%BC%EC%B0%A8(9h)%20-%20%EC%89%98%20%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/images/image15.png)
+
+
+- 2행 : 첫 번째 파라미터 변수 (명령 실행 시 추가한 값인 $1 값에 따라서 3행, 5행, 7행, 9행으로 분기함. start), stop), restart) 이외의 값은 모두 9행 \*) 부분으로 분기한다.
+- 4행 : 3행에서 start)일 경우 실행된다. 주의할 점은 맨 뒤에 세미콜론을 2개(;;) 붙여서 써야 한다. 
+- 9행 : 그 외의 것들이 모두 해당된다.
+- 11행 :  case문 종료를 표시한다.
+
+#### case2.sh
+
+```
+1  #!/bin/sh
+2  echo "리눅스가 재미있나요? (yes / no)"
+3  read answer
+4  case $answer in
+5     yes | y | Y | Yes | YES)
+6        echo "다행입니다."
+7        echo "더욱 열심히 하세요...";;
+8     [nN]*)
+9        echo "안타깝네요...";;
+10    *)
+11      echo "yes 아니면 no만 입력하세요."
+12	     exit 1;;
+13 esac
+14 exit 0
+```
+
+![image16](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/18~20%EC%9D%BC%EC%B0%A8(9h)%20-%20%EC%89%98%20%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/images/image16.png)
+
+- 3행 : answer 변수에 입력한 값을 받는다.
+- 5행 : 입력된 값이 yes, y, Y, Yes, YES 중 하나면 6~7행을 실행한다.
+- 6행 :  실행할 구문이 더 있으므로 끝에 ;;을 붙이지 않는다는 점에 주의한다.
+- 7행 : 실행할 구문이 없으므로 뒤에 ;;을 붙인다.
+- 8행 :  \[nN\]\*)는 앞에 n 또는 N이 들어가는 모든 단어를 다 인정해준다는 의미다.
+- 12행 :  정상적인 종료가 아니므로 exit 1로 종료한다 (꼭 해야 하는 사항은 아님).
+
+#### AND, OR 관계 연산자
+
+- 조건문에서는 and or의 의미를 갖는 관계 연산자를 사용할 수 있다. and는 -a 또는 &&를 사용하며, or는 -o 또는 \|\| 를 사용한다. -a -o는 테스트문(\[\]) 안에서 사용할 수 있는데, 이때 괄호 등의 특수 문자 앞에는 역슬래시 (\\) 를 붙여줘야 한다.
+
+#### andor.sh
+
+```
+1 #!/bin/sh
+2 echo "보고 싶은 파일명을 입력하세요."
+3 read fname
+4 if [ -f $fname ] && [ -s $fname ] ; then
+5    head -5 $fname
+6 else 
+7    echo "파일이 없거나, 크기가 0입니다."
+8 fi 
+9 exit 0
+```
+
+![image17](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/18~20%EC%9D%BC%EC%B0%A8(9h)%20-%20%EC%89%98%20%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/images/image17.png)
+
+- 4행 : 입력한 파일 이름이 일반파일 (-f)이고, 크기가 0이 아니라면 (-s) 5행을 출력한다. then 구문은 다음 줄에 작성해도 되며, 세미콜론(;) 이후에 작성해도 된다. 세미콜론은 앞뒤 구문을 행으로 분리하는 기능이다. 또, 이 구문은 <b>if \[ \\(-f $fname \\) -a \\(-s $fname \\) \]; then</b>과 동일하다.
+
+### 반복문
+
+#### for~in
+
+- for~in 문은 다음 형식과 같이 변수에 각각의 값을 넣은 후 do 안에 있는 '반복할 문장'을 실행한다. 그러므로 값의 개수만큼 반복 실행하게 된다.
+
+```
+for 변수 in 값1 값2 값3
+do 
+   반복할 문장
+done
+```
+
+#### forin1.sh
+
+```
+1 #!/bin/sh
+2 hap = 0
+3 for i in 1 2 3 4 5 6 7 8 9 10
+4 do
+5   hap=`expr $hap + $i`
+6 done
+7 echo "1부터 10까지의 합: "$hap
+8 exit 0
+```
+
+![image18](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/18~20%EC%9D%BC%EC%B0%A8(9h)%20-%20%EC%89%98%20%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/images/image18.png)
+
+- 2행 : 합계를 누적할 변수를 0으로 초기화
+- 3행 : 변수에 1~10까지 반복해 넣으면서 5행을 10회 실행한다.<br>기존의 for문과 비슷하게 for((i=1;i<=10;i++))로 변경해서 사용할 수 있다(변경할 때 괄호가 2개인 것에 주의한다). 또 'seq' 명령을 사용할 수도 있다. 예를 들어 <b>seq 1 10</b>은 1에서 10까지 숫자를 돌려준다.
+- 5행 : hap에 i 변수의 값을 누적한다(결국 1부터 10까지 계속 더함).
+
+
+#### forin2.sh
+
+```
+1 #!/bin/sh
+2 for fname in $(ls *.sh)
+3 do
+4   echo "-----$fname-----"
+5   head -3 $fname
+6 done
+7 exit 0
+```
+
+![image19](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/18~20%EC%9D%BC%EC%B0%A8(9h)%20-%20%EC%89%98%20%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/images/image19.png)
+
+- 2행 : fname 변수에 Is \*.sh 명령의 실행 결과를 하나씩 넣어서 4~5행을 반복한다. 즉, 파일 개수만큼 실행을 반복한다.
+- 4행 : 파일이름을 출력한다.
+- 5행 : 파일의 앞 3줄을 출력한다.
+
+#### while문
+
+- while문은 조건식이 참인 동안 계속 반복하는 특성을 갖는다.
+
+#### while1.sh
+
+```
+1 #!/bin/sh
+2 while [ 1 ]
+3 do
+4   echo "리눅스 공부!"
+5 done
+6 exit 0
+```
+
+- 2행 : 조건식 위치에 \[ 1 \] 또는 \[ : \]이 오면 항상 참이다. 그러므로 4행을 무한히 반복 실행한다. 취소는 Ctrl + C 를 누른다.
+
+
+#### while2.sh
+
+```
+1  #!/bin/sh
+2  hap=0
+3  i=1
+4  while [ $i -le 10]
+5  do
+6     hap=`expr $hap + $i`
+7     i=`expr $i + 1`
+8  done
+9  echo "1부터 10까지의 합 : "$hap
+10 exit 0
+```
+
+![image20](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/18~20%EC%9D%BC%EC%B0%A8(9h)%20-%20%EC%89%98%20%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/images/image20.png)
+
+- 2행 : 누적 hap 변수를 초기화한다.
+- 3행 : 1에서 10까지 증가할 변수를 선언한다.
+- 4행 : i가 10보다 작거나 같으면 6~7행을 실행한다.
+- 6행 : hap 에 i 의 값을 누적해 저장한다.
+- 7행 : 1 변수의 값을 1씩 증가시킨다.
+
+#### while3.sh
+
+```
+1  #!/bin/sh
+2  echo "비밀번호를 입력하세요."
+3  read mypass
+4  while [ $mypass != "1234" ]
+5  do
+6     echo "틀렸음, 다시 입력하세요."
+7     read mypass
+8  done
+9  echo "통과~~"
+10 exit 0
+```
+
+![image21](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/18~20%EC%9D%BC%EC%B0%A8(9h)%20-%20%EC%89%98%20%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/images/image21.png)
+
+- 3행 : mypass 변수에 값을 입력받는다.
+- 4행 : mypass 변수의 값이 1234'가 아니면 6~7행을 실행하고, 맞으면 while문을 종료한다.
+- 7행 : 다시 mypass 변수에 값을 입력받는다.
+
+#### until문
+
+- while문과 용도가 거의 같지만, until문은 조건식이 참일 때까지(=거짓인 동안) 계속 반복한다.
+- while2.sh를 동일한 용도로 until문으로 바꾸려면 4행을 다음과 같이 바꾼다
+
+```
+until [ $i -gt 10 ]
+```
+
+#### break, continue, exit, return
+
+- break는 주로 반복문을 종료할 때 사용되며, continue는 반복문의 조건식으로 돌아가게 한다.
+- 또, exit는 해당 프로그램을 완전히 종료한다. 
+- return 함수 안에서 사용될 수 있으며 함수를 호출한곳으로 돌아가게 한다.
+
+##### bce.sh
+
+```
+1  #!/bin/sh
+2  echo "무한반복 입력을 시작합니다. (b: break, c: continue, e: exit)"
+3  while [ 1 ] ; do
+4    read input
+5    case $input in
+6       b | B)
+8          break;;
+9       c | C)
+10        echo "continue를 누르면 while의 조건으로 돌아감"
+11		   continue;;
+12      e | E)
+13        echo "exit를 누르면 프로그램(함수)를 완전히 종료함"
+14		   exit 1;;
+15   esac;
+16 done
+17 echo "break를 누르면 while을 빠져나와 지금 이 문장이 출력됨."
+18 exit 0
+```
+
+![image22](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/18~20%EC%9D%BC%EC%B0%A8(9h)%20-%20%EC%89%98%20%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/images/image22.png)
+
+
+- 3행 : 무한 반복된다. while \[ : \] 또는 while \[ true \]와 동일하다.
+- 5행 : 4 행에서 입력한 값에 따라 분기한다.
+
+- 6~7행 : b 또는 B가 입력되면 7행의 break가 실행되어, while문을 종료하고 16행이 실행된다.
+- 8~10 행 : c 또는 C가 입력되면 9~10행의 continue가 실행되어 3행 while 문의 조건식인 \[  \1]로 돌아간다(결국 무한 루프임).
+- 11~13행 : e 또는 E가 입력되면 12~13행의 exit 가 실행되어 프로그램 자체를 종료한다. 그러므로 16행이 출력되지 않는다.
+
+
+###  기타 알아둘 내용
+
+#### 사용자 정의 함수
+
+- 사용자가 직접 함수를 작성하고 호출할 수 있다. 형식은 다음과 같다
+
+```
+함수이름(  ) {     -> 함수를 정의
+  내용들 ...
+}
+
+함수이름    -> 함수를 호출
+```
+
+#### func1.sh
+
+```
+1 #!/bin/sh
+2 myFunction ()  {
+3    echo "함수 안으로 들어 왔음"
+4	  return
+5 }
+6 echo "프로그램을 시작합니다."
+7 myFunction
+8 echo "프로그램을 종료합니다."
+9 exit 0
+```
+
+![image23](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/18~20%EC%9D%BC%EC%B0%A8(9h)%20-%20%EC%89%98%20%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/images/image23.png)
+
+- 2~5행 : 함수를 정의한다. 단, 이 부분은 6행에서 호출하기 전에는 실행되지 않는다. 여기서 return문은 함수를 호출한 곳으로 돌아가게 한다. 하지만 지금 예에서는 return문이 없어도 된다.
+- 6행 : 여기서부터 프로그램이 시작된다.
+- 7행 : 함수 이름을 사용하면 함수가 호출된다.
+
+#### 함수의 파라미터 사용
+
+- 함수의 파라미터(Parameter) 즉 인자를 사용하려면 함수를 호출할 때 뒤에 파라미터를 붙여서 호출하며, 함수 안에서는 $1, $2, ... 로 사용한다. 형식은 다음과 같다.
+
+```
+함수이름 (  ) {    -> 함수를 정의
+   $1, $2 ... 등을 사용
+}
+함수이름 파라미터1 파라미터2 ... -> 함수를 호출 
+```
+
+#### func2.sh
+
+```
+1 #!/bin/sh
+2 hap() {
+3    echo `expr $1 + $2`
+4 }
+5 echo "10더하기 20을 실행합니다."
+6 hap 10 20
+7 exit 0
+```
+
+![image24](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/18~20%EC%9D%BC%EC%B0%A8(9h)%20-%20%EC%89%98%20%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/images/image24.png)
+
+- 3행 : 넘겨받은 파라미터 $1과 $2를 더한 값을 출력한다.
+- 6행 : 호출할 때 함수 이름에 넘겨줄 파라미터를 공백으로 분리해서 차례로 적어준다.
+
+#### eval
+
+- 문자열을 명령문으로 인식하고 실행한다.
+
+#### eval.sh
+
+```
+1 #!/bin/sh
+2 str="ls -l eval.sh"
+3 echo $str
+4 eval $str
+5 exit 0
+```
+
+- 3행 : str 변수의 값인 'Is Leval.sh'라는 글자를 그대로 출력한다.
+- 4행 : str 변수의 값인 'Is I eval.sh'를 명령으로 인식하고 실행한다.
+
+
