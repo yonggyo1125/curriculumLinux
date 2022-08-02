@@ -680,7 +680,102 @@ until [ $i -gt 10 ]
 5 exit 0
 ```
 
+![image25](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/18~20%EC%9D%BC%EC%B0%A8(9h)%20-%20%EC%89%98%20%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/images/image25.png)
+
 - 3행 : str 변수의 값인 'Is Leval.sh'라는 글자를 그대로 출력한다.
 - 4행 : str 변수의 값인 'Is I eval.sh'를 명령으로 인식하고 실행한다.
 
+
+#### export
+
+- 외부 변수로 선언한다. 즉, 선언한 변수를 다른 프로그램에서도 사용할 수 있게 한다.
+
+#### exp1.sh
+
+```
+1 #!/bin/sh
+2 echo $var1
+3 echo $var2
+4 exit 0
+```
+
+#### exp2.sh
+
+```
+1 #!/bin/sh
+2 var1="지역 변수"
+3 export var2="외부 변수"
+4 sh exp1.sh
+5 exit 0
+```
+
+![image26](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/18~20%EC%9D%BC%EC%B0%A8(9h)%20-%20%EC%89%98%20%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/images/image26.png)
+
+- exp1.sh 2행~3행 : var1과 var2에 변수를 출력한다. var2는 exp2.sh에서 외부 변수로 선언했다. 
+- exp2.sh 2행 : var1에 값을 넣는다. 일반 변수(지역 변수)이므로 현재 프로그램인 exp2.sh에서만 사용된다. 즉 exp1.sh의 var1과는 우연히 이름만 같을 뿐 다른변수다.
+- exp2.sh 3행 : var2를 외부 변수로 선언하고 값을 넣는다. 외부 프로그램(exp1.sh)에서도 사용 가능하다.
+- exp2.sh 4행 : exp1.sh를 실행한다.
+
+#### printf
+- C 언어의 printf() 함수와 비슷하게 형식을 지정해서 출력할 수 있다.
+
+#### printf.sh
+
+```
+#!/bin/sh
+var1=100.5
+var2="리눅스 공부--"
+printf "%5.2f \n\n %s \n" $var1 "$var2"
+```
+
+![image27](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/18~20%EC%9D%BC%EC%B0%A8(9h)%20-%20%EC%89%98%20%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/images/image27.png)
+
+- 3행 : 공백이 있으므로 " "로 묶어줘야 한다.
+- 4행 : %5.24는 총 5자리며 소수점 아래 2자리까지 출력하라는 의미다. \n은 1줄을 넘기는 개행 문자고, \t는 Tab 문자, %s는 문자열을 출력한다.<br>주의할 점은 $var2의 경우 값 중간에 공백이 있으므로, 변수 이름을 ""로 묶어줘야 오류가 발생하지 않는다는 것이다.
+
+#### set과 $(명령)
+
+- 리눅스 명령을 결과로 사용하려면 $(명령)' 형식을 사용해야 한다. 또, 결과를 파라미터로 사용하고자 할 때는 set 명령과 함께 사용한다.
+
+#### set.sh
+
+```
+1 #!/bin/sh
+2 echo "오늘 날짜는 $(date) 입니다."
+3 set $(date)
+4 echo "오늘은 $4 요일 입니다."
+5 exit 0
+```
+
+![image28](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/18~20%EC%9D%BC%EC%B0%A8(9h)%20-%20%EC%89%98%20%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/images/image28.png)
+
+- 2행 : $(date)는 date 명령을 실행한 결과를 보여준다.
+- 3행 :  $(date)의 결과가 $1, $2, $3 ... 등의 파라미터 변수에 저장된다.
+- 4행 : 4번째 파라미터인 요일이 출력된다.
+
+#### shift
+
+- 파라미터 변수를 왼쪽으로 한 단계씩 아래로 시프트(이동)시킨다.
+
+```
+1 #!/bin/sh
+2 myfunc () {
+3	str=""
+4   while [ "$1" != "" ] ; do
+5	   str="$str $1"
+6       shift
+7    done
+8	echo $str
+9 }
+10 myfunc AAA BBB CCC DDD EEE FFFF GGG HHH III JJJ KKK
+11 exit 0
+```
+
+- 3행 : 결과를 누적할 str 변수를 초기화한다.
+- 4행 : $1 파라미터가 비어 있지 않은 동안에 반복 실행한다(처음 $1은 AAA고, 한 번 반복 실행하면 5, 6행에 의해 $1이 BBB가 됨).
+- 5행 : str 변수에 $1을 추가한다.
+- 6행 : 전체 파라미터를 왼쪽으로 시프트시킨다. 즉 $2 → $1, $3 → $2, $4 → $3, … 의 형태로 작업이 일어난다.
+- 8행 : while문이 끝나면 누적한 str 변수를 출력한다.
+
+![image29](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux1/18~20%EC%9D%BC%EC%B0%A8(9h)%20-%20%EC%89%98%20%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/images/image29.png)
 
