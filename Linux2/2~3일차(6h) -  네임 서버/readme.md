@@ -160,6 +160,134 @@ exit
 
 - 예를 들어 1.1.1.1은 john이라는 이름으로, 2.2.2.2는 bann이라는 이름으로 관리하면 앞으로john이라는 컴퓨터를 찾아갈 때 자동으로 1.1.1.1이라고 알 수 있다(휴대전화에 전화번호를 저장한 후 전화번호를 외우지 않고 그 이름으로 전화를 거는 것과 같은 이야기다).
 
+- 한 발 더 나아가서 IP 주소와 이름을 관리하는 전용 컴퓨터가 있을 경우 '이름 관리 전용 컴퓨터'의 IP 주소만 알면 다른 여러 가지 IP 주소를 모르더라도 언제든지 이름 관리 전용 컴퓨터'에서 확인할수 있다. 앞에서 굽네 치킨의 전화번호를 모르더라도 114 전화번호만 알면 되는 것과 비슷한 원리다. 이제 이름 관리 전용 컴퓨터'(앞으로는 네임 서버라고 부른다)에 관해 이야기해보자.
 
+- 인터넷 초창기에는 전 세계 인터넷에 연결된 컴퓨터가 그렇게 많지 않았으므로, 1대의 네임 서버만으로도 IP 주소와 이름을 충분히 관리할 수 있었다. 하지만 인터넷이 폭발적으로 확장되면서 인터넷에 연결된 컴퓨터는 기하급수적으로 늘어났고, 몇 대의 네임 서버로는 실시간으로 생겼다 없어지는 인터넷상의 컴퓨터를 도저히 관리할 수 없게 되었다.
 
+- 그래서 다음과 같은 트리 구조 형태의 도메인 이름 체계가 고안되었다. 음영이 들어간 사각형을 네임 서버 컴퓨터라고 생각하자. 또, 음영이 없는 사각형은 실제로 운영되는 컴퓨터라고 보면된다. 즉 ROOT(.) 네임 서버는 1단계 네임 서버인 com 네임 서버, net 네임 서버, org 네임 서버, edu 네임 서버 등과 국가 도메인인 kr, fr, sp 등을 관리한다. 그리고 1단계 네임 서버는 자신의 하위에 있는 2단계 네임 서버를 관리한다. 예를 들어 com 네임 서버는 nate, google, naver 등 2단계 도메인을 관리하는 네임 서버들만 관리하면 되는 것이다.
 
+![image13](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image13.png)
+
+- 네이트(회사 이름)의 도메인 이름은 무엇인가? 이 질문에 종종 www.nate.com이라고 대답하지만, 틀린 말이다. 네이트의 도메인 이름은 'nate.com'이다. www.nate.com은 nate.com 도메인에 속한 컴퓨터다(아마도 웹 서버 컴퓨터일 것이다).
+
+## 로컬 네임 서버가 작동하는 순서
+
+- 리눅스에는 각자 사용하는 네임 서버가 /etc/resolv.conf 파일에 'nameserver IP주소' 형식으로 설정되어 있다. 이 네임 서버를 로컬 네임 서버라고 부른다. 그래서 www.nate.com의 IP 주소를 요구하면 이 로컬 네임 서버에 질문하는 것이다.
+
+- 그런데 로컬 네임 서버는 의외로 아는 것이 별로 없다. 로컬 네임 서버 혼자서 전 세계 모든 컴퓨터의 도메인 이름을 관리할 수는 없기 때문이다. 따라서 로컬 네임 서버는 자신이 아는 도메인 이름이면 바로 알려주지만, 자신이 모를 경우에는(이런 경우가 대부분일 것이다) 다음과 같은 작업을 수행한다.
+
+![image14](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image14.png)
+
+- (1) PC의 웹 브라우저 주소창에서 www.nate.com을 입력한다.
+
+- (2) PC가 리눅스일 경우 /etc/resolv.conf 파일을 열어서 'nameserver 네임서버IP' 부분을 찾아 로컬 네임 서버 컴퓨터를 알아낸다.
+
+- (3) 로컬 네임 서버에 www.nate.com의 IP 주소를 물어본다.
+- (4) 로컬 네임 서버는 자신의 캐시 DB를 검색해 www.nate.com의 정보가 들어 있는지 확인한다(만약 정보가 있다면 바로 응답하지만 대개는 정보가 없다).
+- (5) 로컬 네임 서버가 'ROOT 네임 서버'에 www.nate.com의 주소를 물어본다.
+- (6) 'ROOT 네임 서버'도 www.nate.com의 주소를 모르므로 'com 네임 서버'의 주소를 알려주면서 'com 네임 서버'에 물어보라고 한다.
+- (7) 로컬 네임 서버가 'com 네임 서버'에 www.nate.com의 주소를 물어본다.
+
+- (8) 'com 네임 서버'도 www.nate.com의 주소를 모르므로 'nate.com'을 관리하는 네임 서버의 주소를 알려주면서 'nate.com' 네임 서버에 물어보라고 한다.
+
+- (9) 로컬 네임 서버가 'nate.com 네임 서버'에 www.nate.com의 주소를 물어본다.
+- (10) nate.com 네임 서버는 네이트에서 구축한 네임 서버이므로 ○○○.nate.com이라는 이름을 가진 컴퓨터의 목록이 모두 있다. www.nate.com의 IP 주소도 알기 때문에 IP 주소를 알려준다. 
+- (11) 로컬 네임 서버는 www.nate.com의 IP 주소를 요구한 PC에 IP 주소를 알려준다.
+
+> 여기서 기억할 점은 'nate.com 네임 서버'는 현재 자신의 캐시 DB에 적혀 있는 것을 알려줄 뿐이며, 실제 111.111.111.111 컴퓨터가 작동하는지는 관심을 두지 않는다. 즉, 자신이 잘못된 정보를 알고 있더라도 그대로 알려준다(114 안내 담당자가 고객이 질문한 '굽네 치킨'이 영업 중인지 확인하지 않고 그냥 자신이 아는 전화번호를 알려주는 것과 같은 이야기다).
+
+- (12) PC는 획득한 IP 주소로 접속을 시도한다.
+
+## 캐싱 전용 네임 서버
+
+- 캐싱 전용 네임 서버(Caching-only Nameserver)는 PC에서 URL로 IP 주소를 얻고자 할 때 해당하는 URL의 IP 주소를 알려주는 네임 서버를 말한다. 예로 들면 '로컬 네임 서버'라고 지칭한 컴퓨터가 캐싱 전용 네임 서버의 역할을 수행한다. 
+
+![image15](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image15.png)
+
+### 실습2
+
+Server를 캐싱 전용 네임 서버로 구축하자. 그리고 Client와 Server(B)에서 직접 구축한 Server를 네임 서버로 사용하자.
+
+#### step 0
+
+- Server를 처음 설치 상태로 초기화하자.
+- 부팅한다. root 사용자로 접속하고 터미널을 하나 연다
+
+#### step 1
+
+Server에 네임 서버를 설치하고 관련된 설정을 한다.
+
+- <b>dnf -y install bind bind-chroot</b> 명령을 입력해 네임 서버와 관련된 패키지를 설치하자.
+- 캐싱 전용 네임 서버와 관련된 설정 파일인 /etc/named.conf 를 vi 에디터로 열어서 수정하고 저장하자.
+
+> gedit을 써도 관계없지만 행 번호가 보이지 않으므로 지금은 vi 에디터가 더 편하다. vi 에디터에서 행 번호를 보려면 ':set number'를 입력한다.
+
+```
+11행쯤 수정: listen-on port 53 [127.0.0.1; ];     ->    listen-on port 53 [ any; ];
+12행쯤 수정: listen-on-v6 port 53 [ ::1; ];    -> listen-on-v6 port 53 [ none; ];
+19행쯤 수정: allow-query  [ localhost; ];     -> allow-query   [ any; ];
+34행쯤 수정: dnssec-validation yes;       -> dnssec-validation no;
+```
+
+![image16](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image16.png)
+
+![image17](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image17.png)
+
+- 지금 편집한 내용은 VirtualBox 네트워크 주소 안에 있는 모든 컴퓨터가 네임 서버를 사용할 수 있게 설정하는 것이다.
+
+- 다음 명령을 참고해 서비스를 작동하자. 네임 서버의 서비스(=데몬) 이름은 'named'다.
+
+```
+systemctl restart named     -> 재시작(stop + start)
+systemctl enable named    -> 네임 서버 상시 가동
+systemctl status named     -> 네임 서버 상태 확인
+```
+
+![image18](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image18.png)
+
+> 서비스와 소켓<br>서비스(=데몬)와 관련된 스크립트 파일은 /usr/lib/systemd/system/ 디렉터리에 있다. 파일 이름은 대부분 '서비스이름.service'인데 지금 네임 서버는 named.service 파일이다. 이 파일을 실행/중지하는 방법은 <b>systemctl start/stop 서비스이름</b> 명령이다. 그리고 이 서비스를 부팅 시 자동으로 작동하게 하려면 <b>systemctl enable 서비스이름</b> 명령을 실행한다. 그러면 /usr/lib/systemd/system/named.service 파일이 /etc/systemd/system/multi-user.target.wants/named.service 링크 파일로 생성된다. CentOS가 부팅되면 /etc/systemd/system/multi-user.target.wants/ 디렉터리의 링크 파일들을 자동으로가동시켜 준다.
+
+- <b>firewall-config</b> 명령을 입력해 [방화벽 설정]을 실행한다. [설정]에서 [영구적]을 선택한 후 [영]에서[public]이 선택된 상태로 오른쪽 [서비스] 탭 [dns]의 체크를 켜서 DNS 서버를 열어주자. 설정을 적용하기위해 메뉴의 [옵션] - [Firewalld 다시 불러오기]를 선택한 후 [방화벽 설정]을 닫는다.
+
+![image19](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image19.png)
+
+- 네임 서버가 잘 작동하는지는 <b>dig @네임서버IP 조회할URL</b> 형식으로 확인할 수 있다. 여기서는 <b>dig@10.0.2.100 www.nate.com</b> 명령을 입력해 간단히 테스트해보자.
+
+![image20](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image20.png)
+
+![image21](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image21.png)
+
+- <b>nslookup</b> 명령을 이용하는 방법도 있다. 다음 명령을 입력해 테스트할 수 있다.
+
+```
+nslookup
+server 테스트할 네임 서버IP     -> 여기서는 우리가 구축한 10.0.2.100 입력
+조회할 URL    -> 여기서는 www.nate.com 입력
+exit
+```
+
+![image22](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image22.png)
+
+#### step 2
+
+Client를 실행한 후 앞에서 구축한 Server를 네임 서버로 사용해보자.
+
+- 필요하다면 Client를 초기화하자.
+- 다음 명령을 입력해 Server에서 구축한 네임 서버가 잘 가동하는지 확인해보자.
+
+```
+nslookup
+server 네임서버IP     -> 네임 서버를 우리가 구축한 10.0.2.100으로 사용한다.
+www.nate.com
+exit
+```
+
+![image23](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image23.png)
+
+- 네임 서버가 작동되는 것을 확인했으므로 네임 서버를 고정해서 지정하자. <b>su-c 'gedit /etc/resolv.conf'</b> 명령을 입력해 에디터로 /etc/resolv.conf 파일을 열고 Server의 IP 주소인 10.0.2.100 으로 변경한 후 저장하고 닫는다 (root 사용자 권한을 얻은 후 수정해야 한다).
+
+![image24](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image24.png)
+
+- 웹 브라우저로 아무 웹 사이트나 접속해보자. 이제는 다음과 같이 변경된 캐싱 전용 네임 서버를 이용해서 웹 서핑하는 것이다.
+
+![image25](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image25.png)
