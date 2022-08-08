@@ -291,3 +291,313 @@ exit
 - 웹 브라우저로 아무 웹 사이트나 접속해보자. 이제는 다음과 같이 변경된 캐싱 전용 네임 서버를 이용해서 웹 서핑하는 것이다.
 
 ![image25](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image25.png)
+
+#### step 3
+
+Server(B) 텍스트 모드에서 설정해보자.
+
+-  Server(B)를 처음 설치 상태로 초기화하자.
+-  root 사용자로 접속한다vi 에디터로 /etc/resolv.conf 파일을 열고 다음을 참고해 에서 구축한 네임 서버로 변경한 후 vi 에디터를 종료한다.
+
+```
+nameserver 8.8.8.8      -> nameserver 10.0.2.100
+```
+
+![image26](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image26.png)
+
+- nslookup 명령으로 네임서버가 잘 작동하는지 확인하자.
+
+```
+nslookup
+server    -> 10.0.2.100
+www.nate.com
+exit
+```
+
+![image27](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image27.png)
+
+#### step4
+
+Server(B)는 Firefox와 같은 웹 브라우저를 사용할 수 없지만, 텍스트 기반의 웹 브라우저를 사용하면 접속할 수 있다.
+
+- 먼저 <b>dnf -y install --enablerepo=powertools elinks</b> 명령을 입력해 elinks 패키지를 설치하자.
+- <b>elinks</b> 명령을 입력하자. 환영 메시지가 나오면 [Enter]를 누른다.
+
+![image28](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image28.png)
+
+- 접속할 URL을 입력하자. 한글은 정상적으로 보이지 않으므로 영문 사이트를 입력하자. www.kernel.org를 입력하고 Tab을 눌러 \<OK\>로 이동한 후 [Enter]를 누른다.
+
+![image29](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image29.png)
+
+- 텍스트 모드로 사이트에 접속되는 것을 확인할 수 있다. 화살표 키와 [Enter]를 이용하면 웹 서핑할 수 있다. 직접 해보자.
+
+![image30](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image30.png)
+
+-  [Esc]를 누르면 왼쪽 위에 메뉴가 나온다. 살펴보면 일반 웹 브라우저와 비슷한 메뉴다. [Tab], 화살표 키,[Enter]를 이용해 메뉴를 선택하고 실행할 수 있다.
+
+- elinks를 종료하려면 [File] → [Exit]를 선택한다.
+
+#### step 5
+
+- WinClient에서 Server에 설정한 네임 서버를 이용하게 하자
+- [제어판] → [네트워크 및 인터넷] → [네트워크 상태 및 작업 보기] → [Ethernet0]을 클릭해서 [이더넷상태]를 열자.
+
+- [이더넷 상태]에서 \<속성\> → [인터넷 프로토콜 버전 4(TCP/IPv4)] → [속성]을 선택한 후 [다음 DNS서버 주소 사용]을 선택해 'ServerIP주소'를 입력하고 \<확인\> 및 \<닫기\>를 클릭해 창을 모두 닫는다.
+
+![image31](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image31.png)
+
+![image32](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image32.png)
+
+![image33](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image33.png)
+
+- 웹 브라우저를 실행해서 아무 웹 사이트나 접속해보자.
+
+![image34](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image34.png)
+
+- 다시 원상태로 돌려놓자. 
+
+
+## 마스터 네임 서버
+
+- 마스터 네임 서버(Master Nameserver)는 john.com과 같은 도메인에 속해 있는 컴퓨터들의 이름을 관리하고, 외부에서 www.john.com이나 ftp.john.com 등의 컴퓨터 IP 주소를 알고자 할 때 해당 컴퓨터의 IP 주소를 알려주는 네임 서버를 말한다. 
+- 그러므로 일반적으로 john.com이라는 도메인으로 인터넷 서비스를 하려면 john.com 네임 서버를 구축해 외부에서 www.john.com이나 ftp.john.com 등으로 접속할 수 있게 해야 한다.
+
+![image35](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image35.png)
+
+#### 위 그림의 '마스터 네임 서버 구성도'에 대한 설명은 다음과 같다. 
+
+- (1) 우선 테스트하기 위해 Server(B)에 FTP 서버를 설치하고, Server에는 네임 서버와 웹 서버를 설치한다. Server의 네임 서버 설정에서 www.john.com은 Server의 IP 주소인 10.0.2.100 으로 설정하고 ftp.john.com은 Server(B)의 IP 주소인 10.0.2.200으로 설정한다.
+
+- (2) 구성이 완료되면 Client에서 www.nate.com의 접속을 시도할 때 다음과 같은 순서로 진행된다. 
+	- ① 설정된 네임 서버인 10.0.2.100 에게 www.nate.com의 IP 주소를 요청한다.
+	- ② 10.0.2.100 은 자신의 DB를 검색해 www.nate.com이 있는지 확인한다. 해당 내용이 없을 것이므로 외부 인터넷에서 www.nate.com의 IP 주소를 알아온다.
+	- ③ 알아온 www.nate.com의 IP 주소를 Client에게 알려준다(Server는 마치 자기가 원래 알고 있었던 척한다).
+
+- (3) 지금까지의 과정은 캐싱 전용 네임 서버와 큰 차이가 없다. 이번에는 Client에서 www.john.com에 접속을 시도할 때의 과정을 알아보자. 다음과 같은 순서로 진행된다.
+	- ① 설정된 네임 서버인 10.0.2.100에게 www.john.com의 IP 주소를 요청한다.
+	- ② 10.0.2.100은 자신의 DB를 검색해 www.john.com이 있는지 확인한다. 그런데 john.com은 자신이 관리하는 도메인이므로, www.john.com의 IP 주소(10.0.2.100)와 ftp.john.com의 IP 주소(10.0.2.200)를 갖고 있다. 그러므로 외부 인터넷으로 나갈 필요 없이 바로 Client에게 해당 IP 주소를 알려준다.
+
+- (4) 다음은 마지막으로 위 그림의 왼쪽 위에 표현한 외부 '인터넷상에 있는 컴퓨터'에서 ftp.john.com에 접속할 때의 순서다.
+	- ① 외부 인터넷상의 컴퓨터는 자신의 로컬 네임 서버 (그림에는 나와 있지 않다. 그냥 '로컬 네임 서버 A'라고 부르겠다)에게 ftp.john.com의 IP 주소를 요청한다.
+	- ② 로컬 네임 서버 A는 아마도 ftp.john.com의 IP 주소를 모를 것이므로 'ROOT 네임 서버'에게 IP 주소를 요청할 것이다. ROOT 네임 서버는 'COM 네임 서버'의 주소를 알려주며 그쪽에 요청하도록 한다.
+	- ③ 로컬 네임 서버 A는 다시 COM 네임 서버에게 의뢰한다. COM 네임 서버는 john.com의 도메인을 관리하는 john.com 네임 서버의 IP 주소인 10.0.2.100을 로컬 네임 서버 A에게 알려준다.
+	- ④ 로컬 네임 서버 A는 john.com 네임 서버인 10.0.2.100에게 ftp.john.com의 IP 주소를 요청한다.
+	- ⑤ john.com 네임 서버는 자신의 DB에 ftp.john.com의 IP 주소가 있으므로 ftp.john.com의 IP 주소인 10.0.2.200을 알려준다.
+	- ⑥ 로컬 네임 서버 A는 ftp.john.com의 IP 주소인 10.0.2.200을 요청했던 인터넷상의 컴퓨터에게 알려준다.
+	- ⑦ 인터넷상의 컴퓨터는 10.0.2.200(Server(B))으로 접속한다.
+
+- 이렇게 자신이 별도로 관리하는 도메인이 있으며 외부에서 자신이 관리하는 컴퓨터의 IP 주소를 물어볼 때, 자신의 DB에서 찾아서 알려주는 네임 서버를 '마스터(master) 네임 서버'라고 부른다.
+
+### 실습 3
+
+- Server에 john.com의 마스터 네임 서버를 설치하고 운영해보자.
+
+#### step 0
+
+- <code>Server</code> \<실습 2\>에 이어서 실습한다.
+
+#### step 1
+
+- <code>Server</code> 웹 서버를 설정하자. 
+- <b>rpm -qa httpd</b> 명령을 입력해 웹 서버가 설치되었는지 확인한다. 아마 설치되어 있지 않을 것이다. <b>dnf -y install httpd</b> 명령을 입력해 설치한다.
+- <b>systemctl status httpd</b> 명령을 입력해 웹 서비스(httpd)가 작동하는지 확인하고, 정지되어 있다면 <b>systemctl start httpd</b> 명령을 입력해 웹 서비스를 시작한다. 그리고 다시 웹 서비스가 잘 작동하는지 확인한다.
+
+![image36](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image36.png)
+
+- <b>firewall-config</b> 명령을 입력해 [방화벽 설정]을 실행한다. [설정]에서 [영구적]을 선택한 후 [영역]에서 [public]이 선택된 상태로 오른쪽 [서비스] 탭 [http]와 [https]의 체크를 켜서 웹 서버를 열자. 설정을 적용하기 위해 메뉴의 [옵션] → [Firewalld 다시 불러오기]를 선택한 후 [방화벽 설정]을 닫는다.
+
+![image37](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image37.png)
+
+- <b>gedit /var/www/html/index.html</b> 명령을 입력해 /var/www/html/ 디렉터리에 index.html 파일을 만든다. 그리고 '\<h1\> CentOS 웹 서버 입니다. \</h1\>'을 입력한 후 저장하고 닫는다.
+
+- 이로써 아주 간단한 웹 서버 구축이 완료되었다.
+
+#### step 2
+
+- Server(B) FTP 서버를 설치하고 설정한다.
+- <b>dnf -y install vsftpd</b> 명령을 입력해 FTP 서버를 설치한다.
+- <b>firewall-cmd --permanent --add-service=ftp</b> 명령을 입력해서 FTP 서비스의 방화벽 설정을 허용한다. 또 <b>firewall-cmd --reload</b> 명령으로 설정 내용을 적용시킨다. 'success' 메시지가 나오면 잘 설정된 것이다.
+- /var/ftp/ 디렉터리로 이동한 후 <b>vi welcome.msg</b> 명령을 입력해 welcome.msg라는 빈 파일을 생성하자. welcome.msg 파일 안에는 다음 내용을 채운 후 저장하고 닫는다.
+- vi 에디터로 /etc/vsftpd/vsftpd.conf 파일을 열어서 제일 위에 banner_file=/var/ftp/welcome.msg'를 추가한 후 저장하고 닫는다
+
+![image38](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image38.png)
+
+> 지금 한 작업은 외부에서 FTP 서버로 접속했을 때 /var/ftp/welcome.msg 파일의 내용을 환영 메시지로 보여주라는 의미다.
+
+- <b>systemctl restart vsftpd</b> 명령을 입력해 FTP 서버를 시작한다.이로써 간단한 FTP 서버가 구축되었다.
+
+#### step 3
+
+<code>Server</code> john.com 도메인에 대한 설정을 해준다.
+
+- vi 에디터나 gedit으로 /etc/named.conf 파일을 열어서 맨 아래에 다음 내용을 추가한 후 저장하고닫는다.
+
+> 네임 서버는 설정 파일이 한글자라도 틀릴 경우 데몬 자체가 가동하지 않을 수 있으므로 주의해서 입력해야 한다. 물론 대소문자도 모두 정확히 구분되어야 한다.
+
+```
+zone "john.com" IN {
+    type master;
+	file "john.com.db";
+	allow-update { none; };
+};
+```
+
+![image39](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image39.png)
+
+<table>
+	<tr>
+		<td>
+			<h3>/etc/named.conf 파일</h3>
+			<ul>
+				<li>/etc/named.conf 파일은 네임 서버 서비스가 시작될 때 제일 먼저 읽는 파일이다.</li>
+				<li>
+					설정 형식 중에서 중요한 부분은 다음과 같다.<br>
+					<pre>
+						options {
+							listen-on port 53 { any; }      -> 네임 서버에 접속이 허용된 컴퓨터의 IP 주소
+							directory "디렉토리이름" ;    -> 네임 서버 DB 파일이 들어 있는 디렉토리
+							dump-file "덤프파일이름" ;   -> 정보가 갱신될 때 저장되는 파일 
+							statistics-file "통계파일이름" ; -> 통계 처리 용도의 파일
+							allow-query { 컴퓨터; }          -> 도메인 이름의 쿼리가 허용된 컴퓨터 또는 IP 주소
+						};
+						zone "도메인이름" IN {
+							type hint 또는 master 또는 slave;    -> 마스터 네임 서버는 master
+							file "파일이름";       -> options의 directory에 생성될 "도메인 이름"의 상세 설정 파일
+							allow-update { IP 주소 } 또는 { none };   -> 2차 네임 서버의 주소. 생략하면 none으로 됨
+						};
+					</pre>
+				</li>			
+			</ul>	
+		</td>
+	</tr>
+</table>
+
+- <b>named-checkconf</b> 명령을 입력해 입력한 내용이 문법상 틀리지 않는지 확인해보자. 아무 메시지도 안 나오면 문법상 틀린 것이 없다는 뜻이다. 문법이 틀렸을 경우 행 번호와 오류 내용이 출력된다.
+
+![image40](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image40.png)
+
+- 우선 /var/named/ 디렉터리로 이동한 후 <b>touch john.com.db</b> 명령을 입력해 john.com.db라는 이름의 빈 파일을 생성한다. 이 파일을 포워드 존 파일 또는 정방향 영역 파일이라고 부른다.
+
+![image41](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image41.png)
+
+- vi나 gedit으로 john.com.db 파일을 열고 다음 내용을 입력한다.
+
+```
+$TTL        3H
+@   SOA   @      root.   ( 2  1D  1H  1W   1H )
+      IN      NS    @
+      IN      A      10.0.2.100	  
+
+www   IN   A      10.0.2.100
+ftp      IN   A      10.0.2.200
+```
+
+![image42](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image42.png)
+
+> 이번 실습의 경우 10.0.2.100은 네임 서버 겸 웹 서버 역할을 할 것이며 10.0.2.200은 FTP 서버 역할을 할 것이다.
+
+- <b>named-checkzone john.com john.com.db</b> 명령을 입력해 설정한 파일의 문법에 이상이 없는지 확인하자 (명령은 <b>named-checkzone 도메인이름 설정파일이름</b> 형태다).
+
+![image43](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image43.png)
+
+- 포워드 존 파일
+- 포워드 존 파일의 문법을 몇 개 요약하면 다음과 같다.
+	- ; (세미콜론): 주석을 의미한다.
+	- STTL: Time To Live의 약자로, www.john.com의 호스트 이름을 질의해갔을 때 질의해간 다른 네임 서버가 해당 IP 주소를 캐시에 저장하는 시간을 말한다. 3H는 3시간(Hour)을 의미한다.
+	- @: /etc/named.conf 에 정의된 john.com을 의미(john.com으로 고쳐 써도 됨)한다.
+	- IN: 클래스 이름으로 internet을 의미한다.
+	- SOA: Start Of Authority의 약자로 권한 시작을 뜻한다. 또 괄호 안의 숫자는 시간을 의미하는데 차례로 serial(버전 정보), refresh(상위 네임 서버에 업데이트된 정보를 요청하는 간격). retry(상위 네임 서버에문제가 발생했을 때 재접속 간격), expire(상위 네임 서버에 접속하지 못할 경우 이전 정보를 파기하는 간격), minimum (이 시간 이후 정보가 삭제됨)을 말한다. 여기서 H는 Hour, D는 Day, W는 Week의 약자다.
+	- NS: Name Server의 약자로 설정된 도메인의 네임 서버 역할을 하는 컴퓨터를 지정한다.
+	- MX: Mail Exchanger의 약자로, 메일 서버 컴퓨터를 설정한다. 
+	- A: 호스트 이름에 상응하는 IP 주소를 지정한다.
+	- CNAME: 호스트 이름에 별칭을 부여할 때 사용한다. 
+
+- 설정한 내용을 적용하기 위해 <b>systemctl restart named</b> 명령을 입력해 네임 서비스를 재시작하고 <b>systemctl status named</b> 명령을 입력해 확인한다.
+
+![image44](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image44.png)
+
+- <b>firewall-config</b> 명령을 입력해 [방화벽 설정]을 실행한다. [설정]에서 [영구적]을 선택한 후 [서비스탭의 [dns]가 체크됐는지 확인한다(\<실습 2\> 에서 이미 해줬다).
+
+- 이렇게 해서 Server (B)는 FTP 서버로 구축했고, Server는 네임 서버와 웹 서버 용도로 구축했다. 이제 Client에서 작동을 확인한다.
+
+#### step 4
+
+- Client 마스터 네임 서버의 정상적인 작동을 확인한다.
+- 터미널에서 <b>cat /etc/resolv.conf</b> 명령을 입력해 네임 서버가 Server인 10.0.2.100으로 되어있는지 확인한다(\<실습 2\>에서 이미 변경했다).
+- 웹 브라우저에서 www.john.com으로 접속해보자. 이번 실습의 Server에 만든 index.html 홈페이지가 열릴 것이다.
+
+![image45](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image45.png)
+
+- 터미널에서 <b>su -c 'dnf -y install ftp'</b> 명령으로 FTP 클라이언트 패키지를 설치한 후 <b>ftp ftp.john.com</b> 명령을 입력해 FTP 서버에 접속해보자. 환영 메시지를 보면 우리가 Server (B)에 구축한 FTP 서버에 접속할 수 있는 것을 확인할 수 있다(사용자는 centos로 로그인한다)
+
+![image46](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image46.png)
+
+## 라운드 로빈 방식의 네임 서버
+
+- 네이버, 다음과 같은 포털 사이트 웹 서버에는 수십만 이상의 접속이 동시에 이루어질 것이다. 따라서 웹 서버를 1대가 아닌 여러 대로 운영해서, 웹 클라이언트가 서비스를 요청할 경우 교대로 서비스를 실행할 것이다. 그러면 웹 서버의 부하를 여러 대가 공평하게 나눌 수 있다. 이러한 방식을 라운드 로빈(Round Robin) 방식이라고 부른다.
+
+- 예를 들어 외부 사용자는 결국 john.com 네임 서버에 www.john.com의 IP 주소를 요청할 것이다. 이때 www.john.com에 해당하는 웹 서버를 3대 운영한다고 가정하고 각각의 IP가 1.1.1.1, 1․1․1.2, 1.1.1.3이라면, john.com 네임 서버는 물어오는 순서대로 1.1.1.1, 1․1.1.2, 1.1.1.3을 차례로 알려준다. 그러면 3대의 웹 서버에 부하가 공평하게 나뉜다.
+
+![image47](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image47.png)
+
+- 호스트 운영체제의 Windows PowerShell이나 명령 프롬프트에서 다음과 같이 <b>nslookup</b> 명령을 입력해 확인해보면, 네이버 같은 웹 사이트도 여러 대의 웹 서버를 운영한다는 것을 알 수 있다.
+
+![image48](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image48.png)
+
+- 이번 실습은 여러 대의 웹 서버를 설치해서 운영해야 한다. 하지만 환경이 완전하지 않을 것이므로, 이미 인터넷에 구현된 다른 웹 사이트를 우리가 구현한 웹 서버라고 간주하고 실습을 진행하겠다. 그렇게 하면 라운드 로빈 방식이 더욱 확실하게 눈에 보일 것이다.
+
+- 즉 www.john.com 접속 시 A, B, C 3개의 웹 사이트를 차례로 보여주는 방식으로 할 것이다.
+
+### 실습4
+
+- 라운드 로빈 방식의 네임 서버를 구현해보자.
+
+#### step 0
+
+\<실습 3\>에 이어서 진행한다.
+
+#### step 1
+
+- Server를 라운드 로빈 방식의 네임 서버로 설정하자.
+- 기존에 구축된 웹 서버의 IP 주소를 몇 개 확인해보자. 이번 예에서는 <b>nslookup</b> 명령을 입력하여 www.danawa.com, www.nate.com, www.hanbit.co.kr 3개의 IP 주소를 확인할 것이다(웹 사이트 3개가 달라도 관계없다. 접속되는 아무 웹 사이트의 IP 주소를 확인하자.)
+
+![image49](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image49.png)
+
+이렇게 확인한 3개의 IP 주소(19,205.194.11, 120.50.131.112, 218.38.58.195)를 www.john.com의 웹 서버 3 대라고 가정하자.
+
+gedit으로 /var/named/john.com.db 파일을 다음과 같이 수정하고 저장한 후 닫는다. 기존에 있던 'www IN A 10.0.2.100' 행은 삭제했으며 'webserver.john.com.'의 제일 뒤에 '.'이 있는 것에 주의하자.
+
+```
+$TTL        3H
+@   SOA   @          root.   ( 2  1D  1H  1W   1H )
+      IN      NS        @
+      IN      A          10.0.2.100
+	  
+ftp      IN   A          10.0.2.200
+www   IN   CNAME   webserver.john.com.
+webserver  100        IN         A     119.205.194.11
+               200        IN         A      120.50.131.112
+               300        IN         A      210.38.58.195
+```
+
+![image50](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image50.png)
+
+>  CNAME은 Canonical NAME의 의미로 기준이 되는 이름이며, CNAME 행 아래 3개 행이 기준에 해당한다. 100/200/300은 단순한 차례를 나타내는 것이며 서로 다른 숫자면 아무거나 관계없다.
+
+-  변경 사항을 적용하기 위해 <b>systemctl restart named</b> 명령을 입력하여 네임 서버를 다시 가동한다.
+- <b>nslookup</b> 명령을 입력한 다음 <b>server 10.0.2.100</b> 명령을 입력하고 www.john.com의 정보를 확인해본다.
+
+![image51](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image51.png)
+
+#### step 2
+
+Client 외부에서 라운드 로빈의 작동을 테스트한다.
+
+- 웹 브라우저를 실행해 www.john.com에 접속해본다.
+- 웹 브라우저를 닫고 다시 실행해서 www.john.com에 접속해본다. 이렇게 여러 번 반복하면 3개의 사이트가 골고루 돌아가면서 나타날 것이다(잘 안 되면 웹 브라우저를 닫고 다시 실행해본다).
+
+- 이번 실습에서는 라운드 로빈 방식의 작동을 확인하기 위해 www.john.com 접속 시 세 사이트로 접속되는지 확인해보았지만, 실제 상황이라면 웹 서버의 IP 주소가 다를 뿐 www.john.com에 접속하면 당연히모두 같은 웹 페이지가 나와야 한다.
+
+- 지금까지 네임 서버를 다양한 방법으로 구현해보았다. 앞으로 사용된 네트워크 서버는 네임 서버와 같이 사용되어야만 가치가 있다. 예를 들어 웹 서버를 구축했을 때, 웹 클라이언트 사용자에게 http://10.0.2.100/ 과 같은 IP 주소로 웹 서버를 접속하도록 알려줄 수는 없을 것이다. 꼭 http://www.john.com/ 과 같은 URL로 접속하도록 알려줘야 한다. 그러려면 네임 서버의 설정 (특히 정방향 영역 혹은 포워드 존)이 반드시 선행되어야 한다.
+
+> 역방향 영역<br>지금 설정한 내용은 도메인을 IP 주소로 변경하는 정방향 영역을 다뤘다. 반대로 IP 주소를 통해 도메인을 알 수도 있는데, 이를 역방향 영역 또는 리버스 존Reverse Zone이라고 한다. 실습에서는 역방향 영역을 별도로 설정하지 않아도 문제가 없으므로 생략했지만, 필요하다면 직접 인터넷을 검색해서 학습하기를 권장한다.
