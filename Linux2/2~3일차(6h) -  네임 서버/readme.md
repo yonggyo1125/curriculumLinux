@@ -418,6 +418,12 @@ Server(B)는 Firefox와 같은 웹 브라우저를 사용할 수 없지만, 텍�
 - <b>dnf -y install vsftpd</b> 명령을 입력해 FTP 서버를 설치한다.
 - <b>firewall-cmd --permanent --add-service=ftp</b> 명령을 입력해서 FTP 서비스의 방화벽 설정을 허용한다. 또 <b>firewall-cmd --reload</b> 명령으로 설정 내용을 적용시킨다. 'success' 메시지가 나오면 잘 설정된 것이다.
 - /var/ftp/ 디렉터리로 이동한 후 <b>vi welcome.msg</b> 명령을 입력해 welcome.msg라는 빈 파일을 생성하자. welcome.msg 파일 안에는 다음 내용을 채운 후 저장하고 닫는다.
+```
+####################
+Welcome this is ftp server
+####################
+```
+
 - vi 에디터로 /etc/vsftpd/vsftpd.conf 파일을 열어서 제일 위에 banner_file=/var/ftp/welcome.msg'를 추가한 후 저장하고 닫는다
 
 ![image38](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/2~3%EC%9D%BC%EC%B0%A8(6h)%20-%20%20%EB%84%A4%EC%9E%84%20%EC%84%9C%EB%B2%84/images/image38.png)
