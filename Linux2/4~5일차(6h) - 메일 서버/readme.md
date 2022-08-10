@@ -158,5 +158,89 @@ Server(B)의 호스트 이름을 'mail.daum.net'으로 설정하자.
 - vi 에디터나 gedit을 실행해 /var/named/naver.com.db 파일을 다음처럼 추가 및 수정하고 저장한 후 종료한다.
 
 ```
+$TTL    3H
+@       SOA    @      root.   ( 2  1D  1H  1W  1H )
+          IN       NS    @
+	      IN       A      10.0.2.100                  -> Server의 IP 주소
+		  IN       MX    10   mail.naver.com.     -> 메일을 처리하는 컴퓨터를 지정
+
+mail    IN        A      10.0.2.100                  -> Server의 IP 주소 
+```
+
+> IP 주소 부분 끝에 '.'을 입력해서는 안 되며, URL 형식 부분 끝에는 '.'을 찍어줘야 한다.
+
+![image18](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image18.png)
+
+- 역시 vi 에디터나 gedit을 실행해 /var/named/daum.net.db 파일을 다음처럼 추가/수정하고 저장
 
 ```
+$TTL    3H
+@       SOA    @      root.   ( 2  1D  1H  1W  1H )
+          IN       NS    @
+	      IN       A      10.0.2.200                  -> Server(B)의 IP 주소
+		  IN       MX    10   mail.daum.net.     -> 메일을 처리하는 컴퓨터를 지정
+
+mail    IN        A      10.0.2.100                  -> Server(B)의 IP 주소 
+```
+
+![image19](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image19.png)
+
+- 설정한 파일에 이상이 없는지 체크한다.
+```
+# named-checkconf
+# named-checkzone naver.com naver.com.db
+# named-checkzone daum.net daum.net.db
+```
+
+![image20](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image20.png)
+
+-  <b>systemctl restart/enable/status named</b> 명령을 차례대로 입력해 네임 서비스를 재시작하고 상시 가동하도록 설정한 후 상태를 확인하자.
+
+![image21](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image21.png)
+
+- 이제 DNS 포트를 방화벽에서 열어야 한다. 앞으로 다른 포트도 여러 개 열어야 하므로, 실습이 편하도록 <b>systemctl stop/disable firewalld</b> 명령을 차례로 입력해 방화벽 실행을 멈춘 후 잠시 방화벽을 꺼두자.
+
+![image22](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image22.png)
+
+- <b>nslookup</b> 명령을 입력한 후 <b>server 10.0.2.100, mail.naver.com, mail.daum.net</b>을 차례로 입력해 네임 서버가 잘 설정되었는지 확인해본다.
+
+![image23](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image23.png)
+
+- 이렇게 해서 naver.com과 daum.net 도메인을 관리하기 위한 네임 서버의 설정이 완료되었다. <b>exit</b>로 nslookup을 종료한다.
+
+#### step 4
+
+- <b>Server-메일 서버</b> mail.naver.com 메일 서버의 DNS 서버를 우리가 구축한 네임 서버 (10.0.2.100)로 설정한다.
+- vi나 gedit으로 /etc/sysconfig/network-scripts/ifcfg-enp0s3 파일을 열고 DNS1 부분을 10.0.2.100으로 수정한 다음 저장하고 종료한다
+
+![image24](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image24.png)
+
+- 다시 vi나 gedit으로 /etc/resolv.conf 파일을 열고 nameserver 부분을 '10.0.2.100'으로 수정한 다음 저장하고 종료한다.
+
+![image25](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image25.png)
+
+> Server는 메일 서버와 네임 서버의 역할을 동시에 한다. 그래서 10.0.2.100 은 메일서버의 IP 주소이자 네임 서버의 IP 주소다.
+
+- <b>reboot</b> 명령으로 Server를 재부하고 root로 로그인한다.
+
+#### step 5
+- <b>Client</b> 'Server-메일 서버'와 동일하게 네임 서버를 10.0.2.100으로 설정하자.
+- Client를 처음 설치 상태로 초기화하고 부팅한다.
+- <b>su-c 'gedit /etc/resolv.conf'</b> 명령을 입력해 nameserver 부분을 10.0.2.100으로 설정하고 저장한다.
+
+![image26](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image26.png)
+
+- <b>nslookup</b> 명령을 입력하고 mail.naver.com과 mail.daum.net을 차례로 입력해 각각의 IP 주소가 10.0.2.100과 10.0.2.200 인지 확인한다.
+
+#### step 6
+
+- <b>Server (B)</b> 네임 서버를 10.0.2.100으로 설정해보자.
+에디터로 /etc/sysconfig/network-scripts/ifcfg-enp0s3 파일을 열고 DNS1 부분을 10.0.2.100으로 수정하자.
+- vi 에디터로 /etc/resolv.conf 파일을 열고 nameserver 부분을 10.0.2.100으로 수정하자.
+- 수정 후 nslookup 명령을 입력하여 mail.naver.com(10.0.2.100)과 mail.daum.net(10.0.2.200)의 IP 주소가 정확히 나오는지 다시 한 번 확인한다.
+- <b>reboot</b> 명령으로 Server(B)를 재부팅하고 root로 로그인한다.
+
+
+
+
+
