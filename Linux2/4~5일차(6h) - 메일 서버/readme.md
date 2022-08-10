@@ -117,5 +117,5 @@ Server(B)의 호스트 이름을 'mail.daum.net'으로 설정하자.
 - 설정된 내용이 적용되도록 <b>reboot</b> 명령을 입력해 재부팅하고 root 사용자로 로그인한다.
 - <b>hostname</b> 명령을 입력하면 호스트 이름이 변경된 것을 확인할 수 있다.
 
-![image12](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image12.png)
+![image12]git(https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image12.png)
 
