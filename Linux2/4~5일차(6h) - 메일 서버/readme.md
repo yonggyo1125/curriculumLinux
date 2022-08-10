@@ -117,5 +117,46 @@ Server(B)의 호스트 이름을 'mail.daum.net'으로 설정하자.
 - 설정된 내용이 적용되도록 <b>reboot</b> 명령을 입력해 재부팅하고 root 사용자로 로그인한다.
 - <b>hostname</b> 명령을 입력하면 호스트 이름이 변경된 것을 확인할 수 있다.
 
-![image12]git(https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image12.png)
+![image12](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image12.png)
 
+#### step 3
+
+- <b>Server-네임 서버</b> naver.com과 daum.net 도메인 네임 서버를 설정한다.
+- 먼저 <b>dnf -y install bind bind-chroot</b> 명령을 입력해 네임 서버 패키지를 설치하자.
+
+![image13](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image13.png)
+
+- vi 에디터나 gedit으로 /etc/named.conf 파일을 열어서 다음 내용을 수정하거나 추가한다.
+
+```
+11행쯤 수정          listen-on port 53 { 127.0.0.1; };  -> listen-on port 53 { any; };
+12행쯤 수정          listen-on-v6 port 53 { ::1; };    -> listen-on-v6 port 53 { none; }; 
+19행쯤 수정          allow-query   { localhost; };    -> allow-query  { any; };
+34행쯤 수정          dnssec-validation yes;          -> dnssec-validation no;
+제일 아래에 추가    zone "naver.com" IN { 
+                                  type master;
+								  file "naver.com.db";
+								  allow-update { none; };
+                          };
+						  zone "daum.net" IN {
+						          type master;
+								  file "daum.net.db"
+								  allow-update { none; };
+						  };
+```
+
+![image14](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image14.png)
+
+![image15](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image15.png)
+
+![image16](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image16.png)
+
+-  /var/named/ 디렉터리로 이동한 후 naver.com,db 파일과 daum.net.db라는 빈 파일을 만든다. 해당 파일이 만들어졌는지 확인한다.
+
+![image17](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image17.png)
+
+- vi 에디터나 gedit을 실행해 /var/named/naver.com.db 파일을 다음처럼 추가 및 수정하고 저장한 후 종료한다.
+
+```
+
+```
