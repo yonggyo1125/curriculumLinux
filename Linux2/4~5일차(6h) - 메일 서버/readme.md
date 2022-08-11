@@ -388,5 +388,91 @@ systemctl enable dovecot
 
 ![image44](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image44.png)
 
+- [받기 옵션]에서는 그냥 \<다음\>을 클릭한다.
+
+- [메일보내기]에서는 [서버]에 'mail.naver.com'을 입력하고 \<다음\>을 클릭한다.
+
 ![image45](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image45.png)
 
+
+- [계정 요약]에서는 [이름]에 '네이버 메일' 등 계정을 식별할 수 있는 이름을 입력하고 \<다음\>을 클릭한다.
+
+![image46](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image46.png)
+
+- [완료]에서는 \<적용\>을 클릭해서 설정을 마친다.
+
+-  [메일-에볼루션] 창이 나온다. 우선 \<보내기/받기\>를 클릭한 후 [인증서 신뢰...]에서 \<계속 허용\>을 클릭해 Server의 인증서를 허용하자.
+
+![image47](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image47.png)
+
+- 만약 [메인 인증 요청] 창이 나오면 사용자 이름과 암호에 'lee'를 입력하고, 아래에 있는 [이 암호를 키모음에 추가]의 체크를 끈 후 \<확인\>을 클릭하자.
+
+![image48](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image48.png)
+
+- 에볼루션의 메인 화면이 실행되면 왼쪽 위의 \<새로 만들기\>를 클릭해서 자신(lee@naver.com)에게적당히 메일을 써보자.
+
+![image49](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image49.png)
+
+- \<보내기/받기\>를 클릭하고 [받은 편지함]을 확인하면 조금 전에 자신이 보낸 메일을 확인할 수 있다. naver.com 메일 서버가 정상적으로 작동하는 상태다.
+
+![image50](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image50.png)
+
+
+#### step 3
+
+- <code>Server (B)</code> 이번에는 daum.net 메일 서버를 구축한다. 앞의 naver.com 메일 서버 구축과 거의 동일하다.
+- <b>dnf -y install sendmail-cf dovecot</b> 명령으로 패키지를 설치한다.
+
+- vi 에디터로 /etc/mail/sendmail.cf 파일을 열고 다음 내용과 같이 수정한다 (vi 에디터에서 행 번호는 'set number'를 입력하면 확인할 수 있다).
+
+```
+85행쯤 수정:     Cwlocalhost    -> Cwdaum.net(붙여서 쓸 것)
+267행쯤 수정:   0 DaemonPortOptions=Port=smtp, Addr=127.0.0.1, Name=MTA
+                        -> 0 DaemonPortOptions=Port=smtp,Name-MTA('ADDR=127.0.0.1,' 부분 삭제)
+```
+
+- 외부 네트워크 또는 호스트가 메일을 보낼 수 있도록 허가한다. /etc/mail/access 파일을 vi 에디터내용을 추가한다.
+
+```
+naver.com     RELAY     -> naver.com 도메인의 릴레이를 허용한다.
+daum.net      RELAY     -> daum.net 도메인의 릴레이를 허용한다.
+10.0.2           RELAY     -> 10.0.2.xxx 컴퓨터의 릴레이를 허용한다.
+```
+
+![image51](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image51.png)
+
+- /etc/mail/access 파일을 수정한 후에는 <b>makemap hash /etc/mail/access \< /etc/mail/access</b> 명령을 입력해 적용시킨다.
+
+- /etc/dovecot/conf.d/10-mail.conf 파일을 vi 에디터로 열고 다음 부분을 수정한다.
+
+```
+24행쯤 주석(#) 제거:     protocols = imap pop3 lmtp
+30행쯤 주석(#) 제거:     listen = *, ::
+33행쯤 주석(#) 제거:     base_dir = /var/run/dovecot/
+```
+- /etc/dovecot/conf.d/10-ssl.conf 파일을 vi 에디터로 열고 다음 부분을 수정한다.
+
+```
+8행쯤 수정:   ssl = required -> ssl = yes
+```
+
+- /etc/dovecot/conf.d/10-mail.conf 파일을 vi 에디터로 열고 다음 부분을 수정한다.
+
+```
+25행쯤 주석(#) 제거:              mail_location = mbox:~/mail:INBOX=/var/mail/%u
+121행쯤 주석(#) 제거 후 변경:  mail_access_groups = mail
+166행쯤 주석(#) 제거:             lock_method = fcntl 
+```
+
+- daum.net 메일 계정 사용자인 kim을 <b>useradd kim</b> 명령으로 생성하자 (<b>passwd kim</b> 명령을 입력해 비밀번호도 kim으로 지정하자). kim의 메일 계정은 kim@daum.net이 될 것이다.
+
+- 다음 명령을 입력해 sendmail 및dovecot 서비스를 시작하고 상시 가동하자.
+
+```
+systemctl restart sendmail
+systemctl enable sendmail
+systemctl restart dovecot
+systemctl enable dovecot
+```
+
+- 메일 서비스와 관련된 여러 개의 서비스를 실행해야 하므로 <b>systemctl stop firewalld</b> 명령과 <b>systemctl disable firewalld</b> 명령을 입력해 잠시 방화벽을 꺼두자.
