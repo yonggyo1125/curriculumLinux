@@ -240,7 +240,153 @@ mail    IN        A      10.0.2.100                  -> Server(B)의 IP 주소
 - 수정 후 nslookup 명령을 입력하여 mail.naver.com(10.0.2.100)과 mail.daum.net(10.0.2.200)의 IP 주소가 정확히 나오는지 다시 한 번 확인한다.
 - <b>reboot</b> 명령으로 Server(B)를 재부팅하고 root로 로그인한다.
 
+#### step 7
 
+- <b>WinClient</b> 네임 서버를 10.0.2.100으로 변경한다.
 
+![image27](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image27.png)
 
+- 명령 프롬프트에서 <b>nslookup</b> 명령을 입력하고 mail.naver.com(10.0.2.100)과 mail.daum.net(10.0.2.200)의 IP 주소가 정확히 나오는지 확인한다.
+
+![image28](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image28.png)
+
+### 실습2
+naver.com 메일 서버와 daum.net 메일 서버를 구현하자.
+
+#### step 0
+
+\<실습 1\>에 이어서 진행한다.
+
+#### step 1
+
+<b>Server-메일 서버</b> naver.com 메일 서버를 구축한다.
+
+- 메일 서버를 구현하는 필수 패키지는 sendmail, sendmail-cf, dovecot 3가지다. sendmail은 앞의 실습에서 설치했으므로 <b>dnf -y install sendmail-cf dovecot</b> 명령을 입력해 패키지를 설치한다.
+
+![image29](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image29.png)
+
+- 패키지가 잘 설치되었는지 <b>rpm -qa | grep sendmail</b> 및 <b>rpm -qa dovecot</b> 명령으로 확인하자.
+
+![image30](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image30.png)
+
+- vi 에디터로 /etc/mail/sendmail.cf 파일을 열고 다음과 같이 수정한다 (vi 에디터에서 행 번호는 "set
+
+```
+85행쯤 수정      Cwlocalhost     -> Cwnaver.com(붙여서 쓸 것)
+267행쯤 수정    0 DaemonPortOptions=Port=smtp, Addr=127.0.0.1, Name=MTA
+                       -> 0 DaemonPOrtOptions=Port=smtp, Name=MTA
+					     ('Addr=127.0.0.1,' 부분 삭제)
+```
+
+![image31](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image31.png)
+
+![image32](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image32.png)
+
+#### sendmail.cf 파일
+
+- /etc/mail/sendmail.cf 파일은 Sendmail 서버의 설정 파일이다. 설정 내용이 길고 복잡해서 까다롭게 여겨지지만, 꼭 필요한 부분만 알면 된다.
+	- <b>Cw도메인이름</b>: 도메인 이름을 가진 메일 서버로 사용하겠다는 의미다.
+	- <b>MaxMessageSize=용량</b>: 메일 1개의 본문과 첨부파일을 합친 제한 용량(바이트 단위)이다.
+	- <b>Mlocal 설정내용</b>: 전체 메일 공간을 '설정내용'으로 제한한다.
+	- <b>O QueueDirectory=/var/spool/mqueue</b>: 메일 전송 시 사용하는 임시 저장 디렉터리
+	- <b>O DaemonPortOptions=Port=smtp, Addr=127.0.0.1, Name=MTA</b>: 'Addr=127.0.0.1'은 자기자신만 메일을 보낼 수 있다는 의미다. 그래서 외부에서도 메일을 보낼 수 있도록 이 부분을 삭제했다.
+	
+	
+- sendmail.cf 파일을 수정한 후에는 Sendmail 메일 서비스를 재시작해야 한다. 하지만 지금은 다른 설정까지 모두 마친 후에 서비스를 다시 시작할 것이므로, 아직은 서비스를 재시작하지 않아도 된다.
+
+- 외부 네트워크 또는 호스트가 메일을 보낼 수 있도록 허가해준다. gedit이나 vi로 /etc/mail/access 파일에 다음 내용을 추가한다.
+
+```
+naver.com  RELAY    -> naver.com 도메인의 릴레이 허용
+daum.net   RELAY    -> daum.net 도메인의 릴레이 허용
+10.0.2        RELAY    -> 10.0.2.xxx 컴퓨터의 릴레이 허용
+```
+
+![image33](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image33.png)
+
+- /etc/mail/access 파일을 수정한 후에는 <b>makemap hash /etc/mail/access \< /etc/mail/access</b>명령을 입력해서 적용해야 한다.
+
+![image34](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image34.png)
+
+> <b>메일 릴레이</b><br>메일 릴레이(Mail Relay)란 다른 네트워크 또는 호스트에서 자신의 메일 서버를 경유하여 메일을 전송하는것이다. 이 기능을 악용해서 스팸 메일이나 바이러스 메일 등 대량 메일을 발송하는 경우가 종종 발생되어 사회적인 문제까지 야기시키곤 한다.<br><br>그래서 Sendmail에서 제공하는 메일 릴레이 기능은 기본적으로 자기 자신의 IP 주소(127.0.0.1)외에는 아무도 메일을 발송할 수 없도록 설정된 것이다. 이 파일이 /etc/mail/access 파일이다.<br><br>하지만 모든 사용자가 메일 서버 컴퓨터 앞에 앉아서 메일을 보낼 수는 없으므로 신뢰할 수 있는 도메인이나호스트 또는 네트워크에는 메일을 릴레이할 수 있도록 허용한다. 보통 /etc/mail/access 파일의 릴레이 허용은 RELAY로 거부는 REJECT 또는 DISCARD를 사용한다.<br><br>예를 들면 다음과 같다.
+
+```
+10.0.2.200     RELAY        -> 10.0.2.200 컴퓨터 릴레이 허용
+abc.com       RELAY        -> abc.com 도메인에 릴레이 허용 
+192.168        RELAY        -> 192.168.xxx.xxx의 모든 컴퓨터에 릴레이 허용
+babo@         DISCARD    -> babo라는 계정의 메일 거부(거부 메시지 안 보냄)
+@daum.net   REJECT       -> daum.net 메일 사용자의 메일 거부(거부 메시지 보냄)
+```
+
+- /etc/mail/access 파일을 수정하면 꼭 센드메일 서비스를 재시작해야 한다. 지금은 모든 설정을 마친 후에 서비스를 시작할 것이므로 서비스를 재시작하지 않아도 된다.
+
+- 사용자에게 메일 박스의 내용을 보내주는 dovecot 서비스의 설정 파일은 /etc/dovecot/dovecot.conf 다. vi 에디터로 연 다음 다음 부분을 수정한다.
+
+```
+24행쯤 주석(#) 제거: protocols = imap pop3 lmtp
+30행쯤 주석(#) 제거: listen = *, ::
+33행쯤 주석(#) 제거: base_dir = /var/run/dovecot/
+```
+
+![image35](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image35.png)
+
+> dovecot.conf 설정 파일도 내용이 좀 복잡하다.<br><br>앞에서 수정한 내용 중 24행의 protocols는 세 가지 프로토콜을 모두 사용한다는 의미다. 30행의 '\*'는 IPv4를, ':'은 IPv6 프로토콜을 의미한다. dovecot.conf 파일의 주석에 상세히 잘 나와 있으니 참조하자.<br>더 자세한 사항은 http://wwww.dovecot.org 를 방문하거나 man dovecot.conf 명령을 입력해 확인해보자.
+
+- /etc/dovecot/conf.d/10-ssl.conf 를 vi 에디터로 열고 아랫부분을 수정한다.
+
+```
+8행쯤 수정:     SSL = required  -> ssl = yes
+```
+
+![image36](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image36.png)
+
+- /etc/dovecot/conf.d/10-mail.conf 를 vi 에디터로 열고 아랫부분을 수정한다.
+
+```
+25행쯤 주석(#) 제거                  mail_location = mbox:~/mail:INBOX=/var/mail/%u
+121행쯤 주석(#) 제거 후 변경      mail_access_groups = mail
+166행쯤 주석(#) 제거                 lock_method = fcntl
+```
+
+![image37](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image37.png)
+
+![image38](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image38.png)
+
+![image39](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image39.png)
+
+- naver.com의 메일 계정 사용자인 lee를 생성하자(암호도 기억하기 쉽게 lee로 지정하자). lee의 메일 계정은 lee@naver.com이 될 것이다.
+
+![image40](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image40.png)
+
+- 다음 명령을 입력해 sendmail 및 dovecot 서비스를 시작하고 상시 가동하자.
+
+```
+systemctl restart sendmail
+systemctl enable sendmail
+systemctl restart dovecot
+systemctl enable dovecot
+```
+
+![image41](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image41.png)
+
+- 지금까지 진행한 것은 naver.com 메일 서버를 완성한 것이다. daum.net 메일 서버를 만들기 전에 naver.com 메일 서버가 자체적으로 잘 작동하는지 확인해보자.
+
+#### step 2
+
+<b>Client</b> naver.com 메일 서버가 잘 작동하는지 테스트하자. Client는 lee@naver.com 계정 사용자의 PC다.
+
+- 왼쪽 위의 [현재 활동] [에볼루션]을 선택해서 에볼루션을 시작한다. 초기의 [환영합니다]에서 \<다음\>을 클릭한다.
+
+![image42](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image42.png)
+
+- [백업에서 복구]에서는 그냥 \<다음\>을 클릭한다.
+- [신상 정보]에서는 [전체 이름]에 적당히 '이네이버'라고 입력하고 [전자메일 주소]에는 lee@naver.com'을 입력한 후 \<다음\>을 클릭한다.
+
+![image43](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image43.png)
+
+- 잠시 후 [메일 받기]가 나오면 서버 종류를 [POP]으로 변경하고 [서버]에는 'mail.naver.com'을 입력한다. [사용자이름]은 'lee'를 입력하고 [암호화 방식]은 [TLS, 특정 포트 사용]으로 변경한 후 \<다음\>을 클릭한다.
+
+![image44](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image44.png)
+
+![image45](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image45.png)
 
