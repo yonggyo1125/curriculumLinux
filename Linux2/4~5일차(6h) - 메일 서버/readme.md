@@ -476,3 +476,252 @@ systemctl enable dovecot
 ```
 
 - 메일 서비스와 관련된 여러 개의 서비스를 실행해야 하므로 <b>systemctl stop firewalld</b> 명령과 <b>systemctl disable firewalld</b> 명령을 입력해 잠시 방화벽을 꺼두자.
+
+
+#### step 4
+
+- <code>WinClient</code> WinClient에서 kim@daum.net으로 접속한 후 lee@naver.com에게 메일을 보내자.
+
+> 혹시 가상머신을 재부팅했다면 다시 dns 설정을 10.0.2.100으로 변경한다.
+
+-  메일 클라이언트 프로그램을 설치하자. https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/52.8.0/win32/ko/ 에서 썬더버드 52.8.0 버전(파일명: Thunderbird Setup 52.8.0.exe, 38.5MB)를 다운로드하자.
+
+> 최신 버전은 리눅스의 Sendmail 서버와 잘 작동하지 않는 경우도 있으므로 꼭 필자와 동일한 52.8.0 버전을 사용하자.
+
+-  설치는 다른 프로그램과 다르지 않으므로 기본 설정으로 설정하자. 
+- 처음 썬더버드를 실행해서 [시스템 통합]이 나오면 \<기본으로 설정\>을 클릭한다. 
+- [새 메일 주소]가 필요하신 분에서 아래쪽의 \<건너뛰고 기존 메일 사용하기\>를 클릭한다.
+
+![image52](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image52.png)
+
+- [메일 계정 설정]에서 [이름]은 적당히 '김다음'을, [메일 주소]는 kim@daum.net'을, [암호]는 'kim’을 입력하고 \<계속\>을 클릭하자.
+
+![image53](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image53.png)
+
+- 아래의 [서버 이름]에는 [POP3]를 선택하고 \<완료\>를 클릭하자.
+
+![image54](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image54.png)
+
+- 만약 [주의] 창이 나오면 [위험성을 잘 알고 있습니다]의 체크를 켜고 \<완료\>를 클릭한다.
+-  [보안 확인 예외 목록 추가]가 나오면 그대로 두고 \<보안 예외 확인\>을 클릭하자.
+
+![image55](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image55.png)
+
+- 왼쪽 [kim@daum.net]에서 마우스 오른쪽 버튼을 클릭한 후 [설정]을 선택한다. [계정 설정] 창에서 [보내는 서버]를 클릭하고 \<편집\>을 클릭해서 보안 연결은 '없음'으로 인증 방식은 '인증 없음'으로 변경한 후 \<확인\>을 클릭한다. 그리고 \<확인\>을 클릭해서 [계정 설정] 창을 닫는다.
+
+![image56](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image56.png)
+
+- 왼쪽 메뉴에서 [kim@daum.net]을 클릭하고 \<쓰기\>를 클릭해서 lee@naver.com에게 메일을 보내자.
+
+#### step 5
+
+- <code>Client</code> 이네이버가 받은 편지를 확인해보자.
+
+- 에볼루션에서 \<보내기/받기\>를 클릭하면 kim@daum.net에서 보낸 메일을 확인할 수 있다. 이번에는 \<답장\>을 클릭해서 답장을 보내보자.
+
+![image59](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image59.png)
+
+- 적당히 내용을 채우고 \<보내기\>를 클릭하자. 필요하면 \<첨부파일 추가\>를 클릭해서 파일을 첨부해도 된다.
+
+![image60](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image60.png)
+
+#### step 6
+
+- <code>WinClient</code> 썬더버드에서 \<받기\>를 클릭하면 lee@naver.com에게 회신한 메일을 확인할 수 있다. 첨부파일이 있다면 첨부파일도 확인할 수 있다.
+
+![image58](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image58.png)
+
+- 사설 네트워크 내부에 구현했지만, 외부 인터넷상에 구현하는 것도 이와 동일하다고 생각하면 된다. 
+
+#### 웹 메일 설치 및 사용
+
+- 메일 계정을 제공하는 많은 인터넷 사이트는 대개 웹 브라우저에서 메일을 보내고 받을 수 있다. 이렇게 웹 브라우저에서 사용하는 메일을 '웹 메일'이라고 부른다.
+
+- 요즘 이메일을 사용하는 수많은 사용자는 에볼루션, 오페아 메일, 아웃룩 등을 한 번도 사용해본 적이 없거나 아예 모르는 사람들이 더 많은 것 같다. 그래서 요즘에는 이메일 서버와 함께 필수적으로설치해야 하는 것이 '웹 메일'이다. 웹 메일은 우리가 잘 아는 것처럼 웹 브라우저에서 이메일 서비스를 사용하는 것이다. 메일 계정을 주는 많은 사이트가 이 웹 메일 서비스를 제공한다.
+
+- 이번에 우리가 설치할 웹 메일은 라운드 큐브 Roundcube다.
+- 라운드 큐브 웹 메일의 소스 코드와 상세한 내용은 https://roundcube.net/ 를 참고하자.
+- 라운드 큐브는 PHP로 만들어졌으며, Sendmail과 IMAP 서버(dovecot)를 기반으로 둔 웹 메일프로그램이다. 반드시 아파치 웹 서버(httpd) 및 PHP가 설치되어 있어야 한다.
+
+### 실습3
+
+- naver.com 메일 서버에 라운드 큐브(Roundcube)를 설치하고 운영하자.
+
+#### step 0
+
+- Server-메일 서버 \<실습 2\>에 이어서 실습한다.
+
+- 먼저 <b>dnf -y install httpd mariadb-server php php-mysqlnd php-gd php-mbstring php-pecl-zip php-xml php-json php-intl</b> 명령으로 관련 패키지를 설치한다.
+
+![image61](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image61.png)
+
+- httpd와 mariadb 서비스를 가동/상가동시켜놓자.
+
+```
+systemctl restart httpd
+systemctl enable httpd
+systemctl restart mariadb
+systemctl enable mariadb
+```
+
+#### step 1
+
+<code>Server-메일 서버</code> 라운드 큐브를 다운로드하고 설치하자.
+
+- 라운드 큐브는 공식적으로 CentOS에서 제공하지 않는다. https://github.com/roundcube/roundcubemail/releases/download/1.3.10/roundcubemail-1.3.10-complete.tar.gz 에서 wget명령으로 다운로드하자.
+
+> 라운드 큐브 1.3.10 이후 버전도 나왔으나, CentOS 8에서 잘 작동하는 1.3.10 버전을 사용하자.
+
+![image62](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image62.png)
+
+- 압축을 풀고 /var/www/html 폴더 아래로 옮긴 후, 폴더의 링크를 roundcube로 생성하자.
+
+```
+tar xfz roundcubemail-1.3.10-complete.tar.gz
+mv roundcubemail-1.3.10 /var/www/html
+ln -s /var/www/html/roundcubemail-1.3.10 /var/www/html/roundcube
+```
+
+![image63](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image63.png)
+
+- 일부 폴더의 권한을 변경하자.
+
+```
+chmod 777 /var/www/html/roundcube/temp/
+chmod 777 /var/www/roundcube/logs/
+```
+
+![image64](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image64.png)
+
+- 사용할 데이터베이스를 emailDB 이름으로 생성하자. 사용자는 emailAdmin@localhost로 하고 비밀번호는 1234로 한다.
+
+```
+# mysql
+CREATE DATABASE emailDB;
+GRANT ALL ON emailDB.* TO 'emailAdmin'@'localhost' IDENTIFIED BY '1234';
+FLUSH PRIVILEGES;
+EXIT
+```
+
+![image65](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image65.png)
+
+#### step 2
+
+<code>Server-메일 서버</code> 라운드 큐브 초기 설정을 진행한다. Server 가상머신에서 진행한다.
+
+- http://mail.naver.com/roundcube/installer/ 에 접속하면 [1. Check environment] 화면이 나온다. PHP 관련 부분이 모두 OK로 나오면 된다. 그 외 부분은 일부 NOT AVAILABLE이나 NOT OK가 나와도 된다. 제일 아래로 스크롤해서 \<NEXT\>를 클릭한다.
+
+![image66](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image66.png)
+
+![image67](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image67.png)
+
+- [2. Create config] 화면이 나오면 product_name을 적당히 입력하고 아래로 스크롤하여 [Database setup]MySQL을 선택한 후 앞서 만든 계정 정보 localhost, emailDB, emailAdmin, 1234로 채운다. 제일 아래로 스크롤해서 \<CREATE CONFIG\>를 클릭한다.
+
+![image68](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image68.png)
+
+![image69](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image69.png)
+
+![image70](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image70.png)
+
+- 자동으로 위로 올라가면 \<Download\>를 클릭해서 config.inc.php를 저장한다.
+
+![image71](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image71.png)
+
+- 아직 웹 브라우저를 닫지 말고, 터미널을 열어서 다음 명령으로 저장한 파일을 이동시키고 속성도 바꾸자.
+
+```
+mv /root/다운로드/config.inc.php  /var/www/html/roundcube/config
+chmod 707 /var/www/html/roundcube/config/config.inc.php
+```
+
+![image72](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image72.png)
+
+-  다시 웹 브라우저에서 약간 아래로 스크롤하여 \<CONTINUE\>를 클릭한다.
+
+![image73](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image73.png)
+
+- [3. Test config] 화면에서 Initialize database \> 를 클릭하면 DB Schema 부분이 OK로 변경된다.
+
+![image74](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image74.png)
+
+- 아래로 스크롤해서 [Test SMTP config]의 Sender와 Recipient에 모두 'lee@naver.com'을 입력하고 \<Send test mail\>을 클릭하면 'SMTP send: OK' 메세지가 나온다. 또 [Test IMAP config]의 Username과 Password에 모두 'lee'를 입력하고 \\<Check login\>을 클릭하면 'IMAP connect : OK'메시지가 나온다.
+
+![image75](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image75.png)
+
+- 이렇게 해서 라운드 큐브 설정이 정상적으로 마무리되었다. 별도로 저장할 것은 없으므로 그냥 웹 브라우저를 종료한다.
+
+#### step 3
+
+<code>Client 또는 WinClient</code> 웹 메일 접속이 원활한지 테스트한다. 어떤 가상머신을 사용해도 상관없다
+
+- 웹 브라우저를 열고 http://mail.naver.com/roundcube에 접속하자. 초기 화면이 나오면 [이름]에는 기존 사용자인 'lee'를 입력하고 [비밀번호]에도 'lee'를 입력해 로그인하자.
+
+![image76](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image76.png)
+
+- 익숙한 웹 메일 초기 화면이 나온다. 화면이 영문으로 보이면 오른쪽 위에 있는 [Settings]를 클릭한다.
+
+- [Preferences] ->  [User Interface]를 선택하고 Language [Korean (한국어)]로 변경한 후 \<Save\>를 클릭한다.
+
+- 화면이 한글로 보일 것이다. 왼쪽 상단의 [roundcube] 아이콘을 클릭해서 초기 화면으로 돌아온다. [작성] 아이콘을 클릭하고 새 메일을 쓰자
+
+![image77](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image77.png)
+
+- 보내는 사람이 lee \<lee@localhost\>'로 보인다면 \<신원 편집\>을 클릭한다.
+
+![image78](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image78.png)
+
+- 신원에서 lee\<lee@localhost\>를 클릭하고 이메일을 'lee@naver.com'으로 변경한 후 \<저장\>을 클릭한다.
+
+![image79](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image79.png)
+
+- 다시 왼쪽 상단에 있는 [roundcube] 아이콘을 클릭해서 초기 화면으로 돌아와 [작성] 아이콘을 클릭한다. 보내는 사람이 'lee\<lee@naver.com\>'으로 되어 있을 것이다. 받는 사람에 'kim@daum.net'을 입력하고, 제목과 내용은 적당히 채운다. \<보내기\>를 클릭해서 메일을 전송하자.
+
+![image80](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image80.png)
+
+#### step 4
+
+<code>WinClient</code> kim@daum.net 계정으로는 썬더버드의 \<받기\>를 클릭해서 메일을 확인하고, \<답장\>을 클릭해서 답장을 보내보자.
+
+![image81](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image81.png)
+
+#### step 5
+
+<code>Client 또는 WinClient</code> daum.net에서 보낸 메일을 확인하자
+
+- 웹 브라우저의 \<새로 고침\>을 클릭하고 김다음(kim@daum.net)이 보낸 답장을 확인한다.
+
+![image82](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/4~5%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%A9%94%EC%9D%BC%20%EC%84%9C%EB%B2%84/images/image82.png)
+
+- 다시 [작성]을 클릭해서 메일을 보내보자. 이번에는 2MB가 넘는 파일을 첨부해본다. 2MB 초과시 에러 메세지가 출력 된다.
+
+- 첨부파일의 크기가 2MB로 제한되어 있다. 이를 수정해보자.
+
+#### step 6
+
+<code>Server-메일 서버</code> 웹 서버의 PHP 설정에서 2MB보다 큰 파일을 업로드할 수 없도록 기본 설정되어 있다. 웹 서버의 설정을 변경해보자.
+
+- vi 에디터로 /etc/php.ini 파일을 열고, 행 번호를 표시한 후 다음에 소개하는 행을 수정하자 (vi 에디터에서 행 번호 표시는 'set number'). 파일 하나를 500MB까지 업로드할 수 있도록 변경하고 저장하자.
+
+```
+383행쯤 : max_execution_time = 30    -> 300
+672행쯤 : post_max_size = 8M          -> 500M
+825행쯤 : upload_max_filesize = 2M   -> 500M
+```
+
+> max_execution_time은 파일을 업로드할 때 스크립트가 실행되는 초 단위의 시간을 설정한다. 시간을 너무 짧게 설정하면, 대용량 파일을 업로드할 때 시간이 오래 걸릴 경우 업로드가 중단될 수도 있다. post_max_size는 POST 방식으로 데이터를 전송할 수 있는 최대 용량이다. upload_max_filesize는 업로드 가능한 파일의 최대 크기다. upload_max_filesize가 실질적으로 업로드할 수 있는 파일의 크기를 결정하는 부분이다.
+
+- httpd 서비스를 <b>systemctl restart httpd</b>로 재시작한다.
+
+#### step 7
+
+<code>Client 또는 WinClient</code> 대용량 파일이 첨부되는지 확인하자.
+
+- 웹 브라우저를 실행해서 http://mail.naver.com/roundcube/ 에 lee사용자(암호: lee)로 접속한다.
+- [작성] 아이콘 클릭 후 최대 500MB 이하 대용량 파일을 첨부해서 kim@daum.net에게 메일을 보내자.
+
+#### step 8
+
+<code>WinClient</code> kim@daum.net 계정으로는 썬더버드의 \<받기\>를 클릭해서 메일을 확인하자 (대용량이라서 시간이 좀 걸린다). 대용량 파일이 첨부된 것을 확인할 수 있다.
+
+- 이제 일반 사용자도 웹 브라우저만 있으면 어디서든 아무 불편 없이 구축한 메일 서버를 사용할 수 있게 되었다. 
+
