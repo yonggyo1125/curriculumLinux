@@ -17,7 +17,6 @@
 * 6~7일차(6h) : 데이터베이스 서버
 	- DBMS의 개념과 간단한 SQL문
 	- MariaDB 설치와 운영 
-	- Windows용 응용 프로그램과 리눅스 DBMS 연동
 	- Oracle Database Express 설치와 운영
 
 * 8~9일차(6h) : 웹 서버
@@ -26,7 +25,6 @@
 	
 * 10일차(3h) : FTP 서버
 	- vsftpd 설치와 운영 
-	- Pure-FTPd의 설치와 운영
 
 * 11일차(3h) : NFS 서버
 	- NFS 서버 구현 
