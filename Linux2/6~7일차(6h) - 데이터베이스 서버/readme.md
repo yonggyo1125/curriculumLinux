@@ -389,3 +389,227 @@ GRANT 사용권한 ON 데이터베이스이름.테이블이름 TO 사용자이�
 
 ![image15](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image15.png)
 
+#### step 1
+
+<code>WinClient 또는 호스트 운영체제</code>
+
+- <b>CREATE DATABASE shopping_db CHARACTER SET utf8;</b> 구문을 입력해 쇼핑몰의 데이터베이스에 해당하는 shopping_db를 생성하고 <b>SHOW DATABASES;</b> 구문을 입력해 잘 생성되었는지 확인한다.
+
+> 데이터베이스 생성 시 <b>'CHARACTER SET utf8'</b> 옵션을 지정하면 한글 입출력이 문제없이 잘 되지만, MariaDB 버전에 따라서 생략해도 별 문제가 없기도 한다.
+
+![image16](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image16.png)
+
+> <b>데이터베이스가 저장되는 디렉터리</b><br><br><b>SHOW DATABASES</b> 구문을 실행했을 때 보이는 데이터베이스의 실체는 운영체제 입장에서 디렉터리일 뿐이다. 그리고 내부에 정의된 테이블은 파일 형태를 갖는다. 위치는 /var/lib/mysql/ 이다.<br>SHOW DATABASES 구문을 실행해서 출력된 mysql. shopping_db, test 등의 데이터베이스가 디렉터리 형태로 존재한다는 것을 확인할 수 있다.
+
+- shopping_db 데이터베이스 안에 customer (고객 정보) 테이블과 purchase (구매 정보) 테이블을 생성한다.
+
+```
+USE shopping_db;
+CREATE TABLE customer (
+	id VARCHAR(10) NOT NULL PRIMARY KEY,
+	name VARCHAR(5), 
+	age INT,
+	address VARCHAR(5));
+
+CREATE TABLE purchase (
+	no INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	cust_id VARCHAR(10),
+	date CHAR(8),
+	product VARCHAR(5));
+```
+
+![image17](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image17.png)
+
+> 테이블 생성 시 사용한 예약어의 의미는 다음과 같다.<br>- NOT NULL: Null 값을 허용하지 않는다.<br>- PRIMARY KEY : 해당 필드를 주 키로 지정한다.<br>- AUTO_INCREMENT : 별도의 값을 입력하지 않고, 자동으로 입력 값이 증가하는 필드로 만든다.
+
+- <b>DESC customer;</b> 구문과 <b>DESC purchase;</b> 구분을 차례로 입력해 생성한 두 테이블의 구조를 확인해보자.
+
+![image18](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image18.png)
+
+- 다음 SQL문을 참고해 테이블에 레코드를 입력한다. customer 테이블에는 4개행, purchase 테이블에는 5개 행을 입력한다.
+
+```sql
+INSERT INTO customer VALUES ('hong', '홍길동', 22, '경기');
+INSERT INTO customer VALUES ('dang', '당탕이', 23, '충북');
+INSERT INTO customer VALUES ('ppuni', '이뿌니', 30, '서울');
+INSERT INTO customer VALUES ('john', '존밴이', 28, '강원');
+INSERT INTO purchase VALUES (null, 'hong', '20160122', 'TV');
+INSERT INTO purchase VALUES (null, 'ppuni', '20160211', 'TV');
+INSERT INTO purchase VALUES (null, 'john', '20160211', '냉장고');
+INSERT INTO purchase VALUES (null, 'hong', '20160222', '세탁기');
+INSERT INTO purchase VALUES (null, 'john', '20160311', '비디오');
+```
+
+> purchase 테이블의 no(일련번호) 필드는 auto_increment 옵션을 설정해 자동으로 증가하게 했다. 그러므로 행을 삽입할 때 no 필드 부분은 null 값으로 입력하는 것이다. 그러면 알아서 1,2,3, .…으로 자동 증가하며 값이 입력된다.
+
+- <b>SELECT \* FROM customer;</b> 구문과 <b>SELECT \* FROM purchase;</b> 구문을 입력해 데이터를 확인해본다.
+- <b>exit</b> 구문을 입력해 종료한다.
+
+* * * 
+# Oracle Database Express 설치와 운영
+
+- DBMS 중에서 가장 많이 사용되는 Oracle을 CentOS에 설치해보자. 그리고 설치한 Oracle을 활용하는 환경도 알아보자.
+
+> Oracle을 구동하려면 높은 사양의 컴퓨터가 필요하다. 특히 Oracle Database Enterprise/Standard는 최소 2GB의 메모리 용량이 필요하다. 지금 우리가 사용할 Oracle Database Express 11g 512MB 메모리에서 잘 작동하기 때문에 VirtualBox상에서 큰 문제없이 구동할 수 있다. 또, 아무런 비용도 지불할 필요 없이 무료로 사용할 수 있다(상용 Oracle은 상당히 고가다).<br>기본적인 사용법은 모든 Oracle이 비슷하므로 무료이며 비교적 저사양에서도 잘 작동하는 Oracle Database Express11g로 사용법을 익히자.
+
+## Oracle Database Express 11g 설치
+
+### 실습 4
+
+Server에 리눅스용 Oracle Database Express 11g를 설치하자.
+
+#### step 0
+
+- Server를 처음 설치 상태로 초기화하자.
+- 아직 부팅하지 말고 Memory를 2GB (=2048MB)로 올리자.
+- 부팅하고 root 사용자로 접속한다. 
+- 터미널을 열고 <b>dnf -y install libnst</b> 명령으로 관련 패키지를 설치해놓자.
+
+
+#### step 1
+
+오라클사(http://www.oracle.co.kr) 에서 Oracle Database Express 11g를 다운로드하자.
+
+- 웹 브라우저로 https://www.oracle.com/database/technologies/xe-prior-releases-downloads.html 에 접속해서 [Oracle Database 11gR2 Express Edition for Linux x64]를 클릭한다.
+- 다운로드 페이지에 접속하면 [Accept License Agreement]를 클릭하고 [Oracle Database Express Edition 11g Release 2 for Linux x64]를 클릭해 다운로드하자. 다운로드한 파일 이름은 oracle-xe11.2.0-1.0.x86_64.rpm.zip이며 약 301MB 정도다.
+- Oracle을 다운로드하려면 오라클사에 회원으로 가입되어 있어야 한다. 가입은 무료이므로 회원으로 가입한 적이 없다면 가입하자. 회원의 사용자 이름은 가입 시 등록한 이메일 주소를 사용하면 된다.
+
+![image19](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image19.png)
+
+- 터미널에서 다운로드한 파일을 확인하고 <b>unzip oracle\*</b> 명령을 입력해 압축을 풀자. 압축을 푼 다음에는 다시 Disk1 디렉터리로 이동한 후 rpm 파일이 존재하는지 확인한다.
+
+![image20](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image20.png)
+
+#### step 2
+
+Oracle Database Express 11g를 설치한다.
+
+- <b>dnf-y install oracle</b> 명령을 입력해 Oracle Database Express 11g를 설치하자.
+
+![image21](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image21.png)
+
+- 설치가 완료되면 <b>service oracle-xe configure</b> 명령을 입력해 환경 설정을 시작한다. 대부분 [Enter] 누르면 되며, 비밀번호 입력 부분에서만 비밀번호를 지정하면 된다(편의를 위해 password로 입력한다). 완료되는데 시간이 좀 걸린다.
+
+```
+Specify the HTTP --- Application Express [8080]: [Enter]     -> 웹 접속 포트 번호
+Specify the port  --- database listener [1521] : [Enter]    -> SQL*Plus 접속 포트 번호
+Specify password -- initial configuration: 암호 입력 후 [Enter]
+      -> SYS 및 SYSTEM 사용자의 비밀번호를 지정하는 것이며, 입력되는 글자가 보이지 않는다.
+confirm password: 한 번 더 입력 후 [Enter]
+Do you want --- boot (y/n) [y]: [Enter]
+     -> 자동으로 시작되도록 설정(몇 분간 시간이 걸림)
+```
+
+![image22](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image22.png)
+
+- <b>systemctl restart/enable/status oracle-xe</b> 명령을 입력해 서비스 시작/상시 가동/상태 확인을 하자.
+
+![image23](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image23.png)
+
+- Oracle 환경을 설정하는 스크립트를 실행하자.
+
+```
+. /u01/app/oracle/product/11.2.0/xe/bin/oracle_env.sh     -> 제일 앞에 '.'과 공백이 있다.
+```
+
+![image24](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image24.png)
+
+- gedit으로 /etc/bashrc 파일을 열고 재부팅한 후에도 계속 설정이 적용되도록 제일 아래에 . /u01/app/oracle/product/11.2.0/xe/bin/oracle_env.sh' 를 추가로 입력한 후 저장하고 닫는다.
+
+![image25](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image25.png)
+
+#### step 3
+
+- Oracle을 사용하기 위한 포트를 열자.
+- 다음 명령으로 Oracle과 관련된 8080 및 1521 포트를 열어주자.
+
+```
+firewall-cmd --permanent --add-port=8080/tcp
+firewall-cmd --permanent --add-port=1521/tcp
+firewall-cmd --reload
+```
+
+![image26](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image26.png)
+
+#### step 4
+
+- 웹에서 Oracle에 접속해보자.
+- 웹 브라우저에서 http://10.0.2.100:8080/apex 또는 http://127.0.0.1:8080/apex라는 주소를 입력해 접속하자. [Workspace]에는 internal을, [Username]에는 admin을, [Password]에는 설치 시 지정한 비밀번호를 입력하고 \<Login\>을 클릭하자.
+
+![image27](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image27.png)
+
+- ADMIN 사용자의 비밀번호를 바꾸라는 메시지가 나오면 [Enter Current Password]에는 기존 비밀번호를 넣고, [Enter New Password]와 [Confirm New Password]에는 새로 설정할 비밀번호를 넣은다음 \<Apply Changes\>를 클릭하자 (굳이 바꾸지 않아도 되므로 모두 password로 입력했다).
+
+- 비밀번호가 바뀌었다는 메시지 화면이 나오면 \<Return\>을 클릭하고 다시 접속 화면이 나오면 'internal/ADMIN/비밀번호'를 차례로 입력한 후 \<Login\>을 클릭하자. 
+- Oracle 관리 화면이 나온다. 이 화면에서 Oracle의 대부분을 관리할 수 있다.
+
+![image28](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image28.png)
+
+- 설치와 가동을 확인했으니 웹 브라우저를 닫는다.
+
+##  Oracle에서 데이터베이스 구축
+- 지난 실습에서 MariaDB에서 데이터베이스를 구축해보았다. 이번에는 Oracle에서 동일한 데이터베이스를 구축해보자. 일부 과정을 제외하고는 MariaDB와 별 차이가 없음을 느낄것이다.
+
+> 최신 버전의 Oracle은 웹 환경을 잘 지원하지만, 이전 버전의 Oracle을 사용할 때는 대부분 텍스트 환경에서만 사용했다. 또 Oracle 개발자들도 텍스트 환경에서의 사용을 더 선호하는 경향이 있다. 텍스트 환경의 Oracle 클라이언트는SQL\*Plus를 주로 사용한다.
+
+### 실습 5
+
+Oracle에 쇼핑몰에서 사용할 데이터베이스를 구축하자.
+
+#### step 0
+
+\<실습 4\>에 이어서 진행한다.
+
+#### step 1
+
+- 이제는 Oracle 클라이언트 프로그램인 SQL\*Plus로 Oracle 서버에 접속해서  동일한 데이터베이스를 구축하자.
+- \<실습 3\>에서 mysql을 이용해 구축했던 과정과 비교해보자. 상당히 유사할 것이다.
+- 먼저 데이터 파일을 저장할 /oradata 디렉터리를 만들고, 누구나 읽기/쓰기가 가능하게 설정하자.
+
+![image29](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image29.png)
+
+#### step 2
+
+- 터미널에서 <b>sqlplus</b> 명령을 입력하고, system 사용자(필비밀번호를 password로 설정했다)로 접속하자. 그러면 프롬프트가 SQL\>로 변경될 것이다(이것은 MariaDB의 [MariaDB [none]\>] 프롬프트와 동일한 상태다)
+
+- <b>CREATE TABLESPACE shopping_db DATAFILE '/oradata/shop.dbf' SIZE 5M;</b> 구문을 입력해 쇼핑몰의 데이터베이스인 shopping_db를 생성하고, <b>SELECT tablespace_name FROM DBA_DATA_FILES;</b> 구문을 입력해 데이터베이스가 잘 생성되었는지 확인한다(Oracle의 테이블스페이스(tablespace)는 MariaDB의 데이터베이스와 비슷한 개념이라고 보면 된다).
+
+![image30](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image30.png)
+
+- 다음 SQL문을 입력해 테이블을 생성하자.
+
+```SQL
+CREATE TABLE customer (
+	id  VARCHAR(10)  NOT  NULL   PRIMARY   KEY,
+	name  NCHAR(5),
+	age  INT,
+	address  NCHAR(5) )  TABLESPACE   shopping_db;
+	
+CREATE TABLE purchase (
+	no  INT  NOT  NULL   PRIMARY   KEY,
+	cust_id  VARCHAR(10),
+	mdate  CHAR(8),
+	product  NCHAR(5) ) TABLESPACE   shopping_db;
+```
+
+#### MariaDB와 Oracle의 차이점은 다음과 같다.
+
+- 테이블 생성 구문 뒤에 테이블이 생성될 테이블스페이스를 지정한다.
+- 한글이 들어갈 문자형은 NCHAR를 사용한다.
+- purchase 테이블의 date 열 이름은 예약어로 인식되지
+- AUTO_INCREMENT는 인식하지 않으므로 생략했다.
+
+![image31](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image31.png)
+
+![image32](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image32.png)
+
+- <b>DESC customer;</b> 구문과 <b>DESC purchase;</b> 구문을 차례로 입력해 정의한 두 테이블의 구조를 확인해보자.
+
+![image33](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84/images/image33.png)
+
+- <b>INSERT INTO customer VALUES ('hong', '홍길동', 22, '경기' );</b> 구문과 <b>INSERT INTO purchase VALUES (1, 'hong', '20160122', 'TV');</b> 구분을 차례로 입력해 customer 테이블과 purchase 테이블에 데이터를 입력하자. MariaDB와 달리 purchase 테이블의 no 일에는 직접 숫자를 입력한다.
+
+> 터미널에서 한글 깨짐 등의 문제로 입력이 잘 안 된다면 gedit을 실행해서 SQL문을 입력하고 터미널에 복사/붙여넣기 방식을 사용해보자.
+
+- <b>SELECT \* FROM customer;</b> 구문과 <b>SELECT FROM purchase;</b> 구문을 입력하여 테이블에 삽입한 데이터를 확인한다.
+
