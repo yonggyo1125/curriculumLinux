@@ -19,5 +19,28 @@
 
 -  간단히 DHCP 서버의 작동 원리를 파악해보자.
 
+![image1](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/13%EC%9D%BC%EC%B0%A8(3h)%20-%20DHCP%20%EC%84%9C%EB%B2%84/images/image1.png)
 
+- 위 그림은 DHCP 서버의 작동 순서를 표현한다. 그림에 있는 ①~⑧을 살펴보면 어렵지 않게 DHCP 서버의 작동 방식을 알 수 있을 것이다. 여기서 주목할 점은 PC(DHCP 클라이언트)의 경우 ①번과 ⑧번 컴퓨터의 전원을 켜고 끄기만 하면 나머지는 자동으로 작동한다는 점이다. 즉 사용자는 더 이상 IP 주소와 관련된 정보에 신경쓸 필요가 없으며, 컴퓨터를 켜고 인터넷만 사용하면 된다.
+
+- 여기서 궁금할 만한 사항은 PC는 아직 DHCP 서버의 주소를 모르는데 어떻게 ②번의 IP 주소 요청이 가능하냐는 점이다. DHCP 클라이언트로 설정된 PC는 전원이 켜지면 자신의 네트워크 케이블에 연결된 모든 컴퓨터에 ②번의 IP 주소 요청을 방송 Broadcast한다. 그러면 네트워크에 연결된 컴퓨터 중에서 다른 컴퓨터는 PC의 요청을 무시하고 DHCP 서버만 ④번의 응답을 하게 된다.
+
+- DHCP 서버를 구현했다고 가정한다면, DHCP 클라이언트를 구현할 때는 별도로 설치할 프로그램이 없다. 윈도우에서 DHCP 클라이언트가 되려면, 다음처럼 [Internet Protocol Version4(TCP/IPv4) 속성]에서 [자동으로 IP 주소 받기]와 [자동으로 DNS 서버 주소 받기]를 선택한다.
+
+
+- 리눅스에서 DHCP 클라이언트를 설정하려면 X 윈도가 설치된 환경에서 <b>nm-connection-editor</b>명령을 실행해 [네트워크 설정]을 열고 다음처럼 [IPv4 설정]을 '자동(DHCP)'으로 선택한다.
+
+
+- CentOS를 텍스트 모드에서 DHCP 클라이언트로 설정하려면 /etc/sysconfig/networkscripts/ifcfg-enp0s3 파일의 BOOTPROTO 부분을 BOOTPROTO=dhcp로 수정한다.
+
+> DHCP의 최신 내용을 살펴보거나 소스 파일을 다운로드하려면 https://www.isc.org/software/dhcp 에 접속하자.
+
+* * * 
+# DHCP 구현
+
+DHCP 서버를 VMware에서 구현해보자. 우선 이 책에서 구현할 DHCP 서버인 다음 그림을 확인해본다.
+
+다음 그림은 기존에 실습하던 환경과 거의 비슷한 환경이다. 실무 환경에서도 가상 컴퓨터와 가상 허브 Hub 대신 진짜 컴퓨터와 진짜 허브를 사용하는 것 외에는 다음 그림과 같은 환경과 차이가 없을 것이다.
+
+![image2](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/13%EC%9D%BC%EC%B0%A8(3h)%20-%20DHCP%20%EC%84%9C%EB%B2%84/images/image2.png)
 
