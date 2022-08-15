@@ -192,6 +192,7 @@ PHP 7.4 Test Page
 
 [MariaDB 설치와 운용 참고](https://github.com/yonggyo1125/curriculumLinux/tree/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84#mariadb-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9A%B4%EC%98%81)
 
+- phpmyadmin 설치해 보기
 
 * * * 
 ## 그누보드 설치해 보기
