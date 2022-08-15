@@ -174,3 +174,13 @@ PHP 7.4 Test Page
 
 ````
 * * * 
+# Apache httpd : Use PHP Scripts
+
+- PHP 설치가 완료되면 다음과 같이 PHP 설정을 활성화 한다.
+```
+[root@www ~]# systemctl restart httpd
+[root@www ~]# systemctl status php-fpm
+
+# PHP 동작 테스트를 위한 정보 확인 페이지 생성 
+[root@www ~]# echo '<?php phpinfo(); ?>' > /var/www/html/info.php
+```
