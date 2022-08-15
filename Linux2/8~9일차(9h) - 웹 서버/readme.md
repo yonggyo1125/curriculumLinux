@@ -144,7 +144,9 @@ UserDir Test Page
 ```
 
 * * * 
-# PHP 7.4 : Install
+# APM 설치(Apache, PHP, MariaDB)
+
+## PHP 7.4 : Install
 
 ```
 root@dlp ~]# dnf module list php
@@ -173,8 +175,8 @@ Zend Engine v3.4.0, Copyright (c) Zend Technologies
 PHP 7.4 Test Page
 
 ````
-* * * 
-# Apache httpd : Use PHP Scripts
+
+## Apache httpd : Use PHP Scripts
 
 - PHP 설치가 완료되면 다음과 같이 PHP 설정을 활성화 한다.
 ```
@@ -184,3 +186,25 @@ PHP 7.4 Test Page
 # PHP 동작 테스트를 위한 정보 확인 페이지 생성 
 [root@www ~]# echo '<?php phpinfo(); ?>' > /var/www/html/info.php
 ```
+
+* * * 
+## MariaDB 설치
+
+[MariaDB 설치와 운용 참고](https://github.com/yonggyo1125/curriculumLinux/tree/master/Linux2/6~7%EC%9D%BC%EC%B0%A8(6h)%20-%20%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%20%EC%84%9C%EB%B2%84#mariadb-%EC%84%A4%EC%B9%98%EC%99%80-%EC%9A%B4%EC%98%81)
+
+
+* * * 
+## 그누보드 설치해 보기
+
+- [다운로드](https://sir.kr/g5_pds)
+
+- PHP 문법을 알아보고 간단한 웹페이지 만들어 보기
+
+* * * 
+## Node.js 
+
+- Node.js 설치하기
+	- [다운로드](https://nodejs.org/ko/)
+
+- 간단한 Node.js 사용법 알아보기
+- Node.js + Express를 이용해서 간단한 웹페이지 만들어 보기
