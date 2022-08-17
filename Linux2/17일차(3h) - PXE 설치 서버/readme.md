@@ -124,4 +124,84 @@ systemctl enable tftp
 
 #### step 5
 
-호스트 운영체제 VirtualBox가 제공하는 DHCP 서비스는 중지해야 한다.
+- 호스트 운영체제 VirtualBox가 제공하는 DHCP 서비스는 중지해야 한다.
+- [파일] -> [환경설정] -> [네트워크] -> [활성화된 네트워크 선택] -> DHCP 지원 체크 해제
+
+![image10](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/images/image10.png)
+
+#### step 6
+
+<code>새 가상머신</code> 테스트할 가상머신을 생성하자.
+
+- 적절하게 가상머신을 하나 만들자 OS는 Linux(RedHat 64bit),  기존과 다르게 CD항목에 Centos8 ISO는 추가하지 않는다.
+- [환경설정] -> [시스템] -> [부팅순서] 에서 네트워크만 체크하고 다른 항목은 모두 해제한다.
+
+![image11](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/images/image11.png)
+
+- [환경설정] -> [네크워크] -> [고급] 에서 어탭터 종류로 Pcnet-FAST III를 선택해야 한다. Intel PRO/1000 시리즈는 PXE Boot을 지원하지 않는다. 
+
+![image12](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/images/image12.png)
+
+- 가상머신을 부팅하고 잠시 기다리자. 스스로 tftp에 접속해서 파일을 다운로드할 것이다.
+
+![image13](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/images/image13.png)
+
+- 잠시 기다리면 CentOS의 설치 화면이 나올 것이다.
+
+- 앞서 소개한 시나리오대로라면 100대의 컴퓨터 전체에 설치를 위한 언어 선택, 디스크 파티션 설정 등의 작업을 일일이 해줘야 한다. 이러한 설정도 모두 한 번에 자동으로 진행되도록 해보자.
+
+* * * 
+# 킥스타트
+
+- 킥스타트(Kickstart)는 레드햇이나 CentOS에서 PXE 설치 서버를 이용할 때, 부팅 후 필요한 작업까지미리 설정하여 원격 설치 시 편리하게 설치할 수 있도록 도와주는 기능이다. 그러므로 킥스타트는 PXE 설치 서버와 함께 구성해서 사용하는 것이 일반적이다. 직접 실습을 통해 확인하자.
+
+### 실습3
+
+#### step 0
+<code>Server</code> \<실습 1\>에 이어서 한다.
+
+#### step 1
+
+<code>Server</code> 킥스타트 기능을 구현하자.
+
+>  CentOS 7까지는 system-config-kickstart 패키지가 제공되어 GUI 환경으로 킥스타트를 설정할 수 있었으나, CentOS 8에서는 이 기능이 제거되었다. 좀 불편하지만 직접 텍스트 파일을 편집해야 한다.
+
+- /root/anaconda-ks.cfg 파일은 CentOS를 설치할 때 설정한 정보가 그대로 저장되어 있다. 이 파일을 /var/ftp/centos.ks 파일로 복사하자.
+
+```
+cp /root/anaconda-ks.cfg /var/ftp/centos.ks
+```
+
+![image14](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/images/image14.png)
+
+- gedit이나 vi로 /var/ftp/centos.ks 를 열고 7행, 9행을 변경한 후 약 33행의 %package~%end 사이에 설치할 패키지를 지정해야 한다. 가장 큰 단위의 환경그룹은 '@^환경그룹명', 그룹은 '@그룹명', 가장 작은 단위인 패키지는 그냥 '패키지' 형식으로 추가할 수 있다. 다음 내용을 수정하고 저장하자.
+
+> 사용 가능한 환경 그룹명 및 그룹명은  'Available Environment Groups'가 환경 그룹명이고, 'Installed Groups'와 'Available Groups'가 그룹명이다. 설치 가능한 패키지명은 dnt list 명령으로 수천 개를 확인할 수 있다.
+
+
+```
+22행쯤 : url --url=ftp=10.0.2.100/pub
+25행쯤 : cdrom 주석(#) 처리
+7~11행쯤(%package ~ %end 사이) : 기존 내요ㅕㅇ에 다음으로 변경
+@^Server with GUI   -> GUI 지원 서버 환경 그룹
+@GNOME Application  -> 그놈 응용 프로그램 그룹
+mc                          -> 명령어 관리 패키지
+```
+
+![image15](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/images/image15.png)
+
+- <b>chmod 644 /var/ftp/centos.ks</b> 명령으로 외부에서 읽을 수 있도록 허용하자.
+
+- 이번에는 gedit으로 /var/lib/tftpboot/pxelinux.cfg/default 파일을 열어 마지막 행 뒤에 킥스타트설정 파일을 지정하는 ks=ftp://10.0.2.100/centos.ks'를 추가 입력한 후 저장하고 gedit을 종료하자.
+
+#### step 2
+
+<code>새 가상머신</code> PXE 설치 서버와 킥스타트를 테스트하자
+
+- \<실습 1\>에서 사용한 가상머신의 하드디스크를 제거하고 새로운 하드디스크를 장착해서 사용하자. 이번에 주의할 점은 Server 가상머신이 설치된 환경의 킥스타트 파일 (anaconda-ks.cfg)을 사용했으므로, 하드디스크는 Server 가상머신과 동일한 80GB 용량의 SCSI 디스크로 장착해야 한다는 점이다.
+
+- 부팅하자. 한동안 기다리면 아무것도 하지 않아도 설치까지 자동으로 진행될 뿐 아니라, root 암호 및 사용자(centos) 생성까지 자동으로 될 것이다.
+
+#### step 3
+
+- <code>호스트 운영체제</code> 실습을 모두 마쳤으면, 다시 DHCP를 활성화 한다.
