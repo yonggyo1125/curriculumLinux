@@ -2,7 +2,7 @@
 
 - PXE는 Preboot Execution Environment의 약자로, 아직 운영체제가 설치되지 않은 컴퓨터가 네트워크를 통해 PXE 서버에 접속해서 부팅되도록 해주는 인터페이스를 지칭하는 용어다. PXE 서버의 간단한 개념은 다음과 같다.
 
-![image1](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/image1.png)
+![image1](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/images/image1.png)
 
 - 실제로도 처리 과정은 간단하다.
 	- ① PXE 설치 서버를 준비한다. PXE 설치 서버는 별도의 패키지가 있는 것이 아니라 IP 주소를 자동으로 할당하는 DHCP 서버, syslinux 부팅 파일을 전송할 TFTP 서버, CentOS DVD의 설치 파일을 전송할 FTP 서버 또는 웹 서버로 구성된다.
@@ -45,11 +45,11 @@ subnet 10.0.2.0 netmask 255.255.255.0 {
 }
 ```
 
-![image2](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/image2.png)
+![image2](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/images/image2.png)
 
 - ftp 서버 기능을 하는 vsftpd 설정 파일인 /etc/vsftpd/vsftpd.conf 파일에서 익명(anonymous) 사용자의 접속을 허용해줘야 한다. vi나 gedit으로 /etc/vsftpd/vsftpd.conf 파일을 열고 12행쯤의 anonymous_enable=NO를 YES로 변경한다. 참고로 ftp서버는 CentOS 설치 패키지를 클라이언트에 전송하는 역할을 할 것이다.
 
-![image3](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/image3.png)
+![image3](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/images/image3.png)
 
 - tftp 서버는 클라이언트 PC에게 부팅된 파일을 전송하는 역할을 할 것이다. 역시 특별히 설정할 것은 없다.
 
@@ -58,11 +58,11 @@ subnet 10.0.2.0 netmask 255.255.255.0 {
 
 - VirtualBox 설정에서 -> 저장소 -> CD 디스크 아이콘 선택 -> CentOS DVD ISO파일을 연결한다.
 
-![image4](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/image4.png)
+![image4](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/images/image4.png)
 
 - 잠시 기다리면 X 윈도에 자동으로 마운트될 것이다. <b>umount /dev/cdrom</b> 명령으로 마운트를 끊고 <b>mount /dev/cdrom /var/ftp/pub</b> 명령으로 새로 마운트하자 쓰기 방지와 읽기 전용으로 마운트된다.
 
-![image5](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/image5.png)
+![image5](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/images/image5.png)
 
 >DVD 복사<br>지금은 가상머신에서 실습 중이므로 DVD를 그냥 마운트해서 사용해도 되지만, 이번 장의 처음에 가정한 시나리오대로 운영하는 경우라면 DVD 장치에 동시에 100여 대의 클라이언트가 접근할 것이며, 너무 느려서 진행이 거의 되지 않을 것이다. 그러므로 다음 명령을 실행해 DVD 마운트는 다른 디렉터리에 하고 DVD의 전체 파일을 /var/ftp/pub 디렉터리에 복사해놓은 후 사용해야 한다.<br>mount /dev/cdrom /media<br>cp -r /media/\* /var/ftp/pub<br><br>가능하면 /var/ftp/pub 디렉터리는 성능이 좋은 별도의 SSD에 마운트해서 사용하는 것이 바람직하다.
 
@@ -80,7 +80,7 @@ cp /usr/share/syslinux/pxelinux.0  /var/lib/tftpboot/
 ls -l /var/lib/tftpboot/
 ```
 
-![image6](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/image6.png)
+![image6](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/images/image6.png)
 
 - 다음 명령을 입력해 /var/lib/tftpboot/ 디렉터리에 부팅 관련 디렉터리와 설정 파일을 생성하자.
 
@@ -102,7 +102,7 @@ Label   CentOS_Auto_Install   -> Label 시작
    APPEND initrd=initrd.img repo=ftp://10.0.2.100/pub    -> CentOS 패키지 저장소 지정
 ```
 
-![image8](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/image8.png)
+![image8](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/images/image8.png)
 
 #### step 4
 
@@ -120,7 +120,7 @@ systemctl enable vsftpd
 systemctl enable tftp
 ```
 
-![image9](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/image9.png)
+![image9](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/17%EC%9D%BC%EC%B0%A8(3h)%20-%20PXE%20%EC%84%A4%EC%B9%98%20%EC%84%9C%EB%B2%84/images/image9.png)
 
 #### step 5
 
