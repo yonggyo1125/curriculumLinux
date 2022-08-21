@@ -63,8 +63,12 @@
 ## 비밀번호 설정 및 로그인
 - [현재활동] -> [파이어폭스]를 열고 10.0.2.100을 입력합니다.
 
+![image5](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/19~20%EC%9D%BC%EC%B0%A8(6h)%20-%20GitLab%20%EC%84%9C%EB%B2%84/images/image5.png)
+
 - 깃랩 초기 화면 화면에서 root 패스워드를 설정합니다. 8자리 이상에 특수문자를 포함해야 합니다. 설정이 완료되면 root 계정으로 로그인합니다.
+
+![image6](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/19~20%EC%9D%BC%EC%B0%A8(6h)%20-%20GitLab%20%EC%84%9C%EB%B2%84/images/image6.png)
 
 - 로그인을 하게 되면 깃랩의 첫 화면이 나오게 됩니다.
 
-
+![image7](https://raw.githubusercontent.com/yonggyo1125/curriculumLinux/master/Linux2/19~20%EC%9D%BC%EC%B0%A8(6h)%20-%20GitLab%20%EC%84%9C%EB%B2%84/images/image7.png)
